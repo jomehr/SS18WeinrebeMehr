@@ -8,8 +8,6 @@ const express = require("express"),
 
 let app = express();
 
-let test = require("./routes/test");
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -26,7 +24,7 @@ app.use(function(req, res, next) {
 
 // handling 404 errors
 app.use(function(req, res, next) {
-    var err = new Error("Sorry, nothing was found here");
+    let err = new Error("Sorry, nothing was found here");
     err.status = 404;
     next(err);
 });
@@ -35,7 +33,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
     let time = new Date();
     console.log("Time: " + time);
-    console.log("Request-Pfad: " + req.path + ":");
+    console.log("Request-Path: " + req.path + ":");
     console.error(err.message)
 
     res.status(err.status || 500);
