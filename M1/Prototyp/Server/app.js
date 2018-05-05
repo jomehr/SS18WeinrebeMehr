@@ -8,10 +8,12 @@ const express = require("express"),
 
 let app = express();
 
+let test = require("./routes/test");
+
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+app.use(bodyParser.urlencoded({extended: false}));
+
+app.use("/test", test);
 
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -24,7 +26,7 @@ app.use(function(req, res, next) {
 
 // handling 404 errors
 app.use(function(req, res, next) {
-    var err = new Error("Hier wurde nichts gefunden");
+    var err = new Error("Sorry, nothing was found here");
     err.status = 404;
     next(err);
 });
