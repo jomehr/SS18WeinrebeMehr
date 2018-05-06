@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+//Wird zurzeit nicht verwedent. Ist direkt in receipt.js eingebaut
 const articleSchema = new Schema ({
     name: {type: String, required: true},
     price: {type: Number, required: true},

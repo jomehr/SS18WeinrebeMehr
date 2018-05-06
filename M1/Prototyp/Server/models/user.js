@@ -5,9 +5,15 @@ const SALT_WORKER_FACTOR = 10;
 
 const Schema = mongoose.Schema;
 
+const addressSchema = new Schema ({
+    street: {streetName: String, streetNumber: Number},
+    location: {zipCode: Number, city: String, state: String},
+    country: String
+});
+
 const userSchema = new Schema ({
-    name: [{preName: String, required: true, trim: true}, {surName: String, required: true, trim: true}],
-    address: {type: Schema.Types.ObjectId, ref: "Address"},
+    name: {type: String, trim: true, required: true},
+    address: {type: addressSchema},
     email: {type: String, required: true, trim: true, unique: true, match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']},
     password: {type: String, required: true}
 });

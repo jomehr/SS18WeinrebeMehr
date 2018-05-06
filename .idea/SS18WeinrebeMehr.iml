@@ -9,5 +9,7 @@
     <content url="file://$MODULE_DIR$/M1/Prototyp/Server/node_modules" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="@types/mongoose" level="application" />
+    <orderEntry type="library" name="@types/express" level="application" />
   </component>
 </module>

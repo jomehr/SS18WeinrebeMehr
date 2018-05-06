@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+const addressSchema = new Schema ({
+    street: {streetName: String, streetNumber: Number},
+    location: {zipCode: Number, city: String, state: String},
+    country: String
+});
+
 const groupSchema = new Schema ({
     name: String,
     creator: {type: Schema.Types.ObjectID, ref: "User", required: true},
@@ -9,8 +15,8 @@ const groupSchema = new Schema ({
     endDate: Date,
     finished: {type: Boolean, default: false},
     participants: [{type: Schema.Types.ObjectID, ref: "User"}],
-    startLocation: {type: Schema.Types.ObjectId, ref: "Address"},
-    endLocation: {type: Schema.Types.ObjectId, ref: "Address"},
+    startLocation: {type: addressSchema},
+    endLocation: {type: addressSchema},
     settlement: [{type: Schema.Types.ObjectId, ref: "Settlement"}]
 });
 

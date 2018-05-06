@@ -4,14 +4,13 @@ Diese Datei ist für das Routing, Debugging, Error-Handling und allgemeine Anwen
 
 const express = require("express"),
     bodyParser = require("body-parser"),
-    methodOverride = require("method-override");
+    app = express();
 
-let app = express();
+let test = require("./routes/test");
+let user = require("./routes/user");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-
-app.use("/test", test);
 
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -19,6 +18,16 @@ app.use(function(req, res, next) {
         'DELETE');
     res.setHeader('Access-Control-Allow-Headers',
         'X-Requested-With, content-type, Authorization');
+    next();
+});
+
+app.use("/test", test);
+app.use("/user", user);
+
+app.use(function(req, res, next) {
+    let time = new Date();
+    console.log("Time: " + time);
+    console.log("Request-Pfad: " + req.path);
     next();
 });
 
@@ -31,14 +40,9 @@ app.use(function(req, res, next) {
 
 //error handler with time and route
 app.use(function(err, req, res, next) {
-    let time = new Date();
-    console.log("Time: " + time);
-    console.log("Request-Path: " + req.path + ":");
-    console.error(err.message)
-
     res.status(err.status || 500);
     res.send(err.message);
-    next();
+    next(err);
 });
 
 module.exports = app;

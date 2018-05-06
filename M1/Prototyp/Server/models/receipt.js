@@ -11,13 +11,18 @@ const articleSchema = new Schema ({
     priceAll: Number
 });
 
+const addressSchema = new Schema ({
+    street: {streetName: String, streetNumber: Number},
+    location: {zipCode: Number, city: String, state: String},
+    country: String
+});
 
 const receiptSchema = new Schema ({
     owner: {type: Schema.Types.ObjectID, ref: "User", required: true},
     participants: [{type: Schema.Types.ObjectID, ref: "User"}],
     store: {type: String, required: true},
     date: {type: Date, default: Date.now()},
-    address: {type: Schema.Types.ObjectId, ref: "Address"},
+    address: {type: addressSchema},
     article: [{type: articleSchema, required: true}],
     total: {type: Number, required: true},
     payment: {type: Number, required: true},
