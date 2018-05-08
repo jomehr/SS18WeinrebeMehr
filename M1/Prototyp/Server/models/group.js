@@ -10,11 +10,11 @@ const addressSchema = new Schema ({
 
 const groupSchema = new Schema ({
     name: String,
-    creator: {type: Schema.Types.ObjectID, ref: "User", required: true},
+    creator: {type: Schema.Types.ObjectId, ref: "User", required: true},
     startDate: {type: Date, default: Date.now()},
     endDate: Date,
     finished: {type: Boolean, default: false},
-    participants: [{type: Schema.Types.ObjectID, ref: "User"}],
+    participants: [{type: Schema.Types.ObjectId, ref: "User", unique: true}],
     startLocation: {type: addressSchema},
     endLocation: {type: addressSchema},
     settlement: [{type: Schema.Types.ObjectId, ref: "Settlement"}]
