@@ -3,6 +3,7 @@ const express = require("express");
 let router = express.Router();
 
 let Settlement = require("../models/settlement");
+let Receipt = require("../models/receipt");
 
 router.get("/", function (req, res) {
     Settlement.find({}, function (err, result) {
@@ -47,13 +48,13 @@ router.patch("/:settlementId", function (req, res) {
     let method = req.query.m;
 
     switch (method) {
-        case "push":
+        case "push": //fügt Werte einem Array hinzu
             Settlement.findByIdAndUpdate(id, {$addToSet: req.body}, {new: true}, function (err, result) {
                 if(err) console.log(err);
                 res.send(result);
             });
             break;
-        case "pull":
+        case "pull": //entfernt Wert aus einem Array
             /*re.body muss folgendes Format haben: [ "arrayname": "id"].
               Mehr als 1 id gleichzeitig zu entfernen ist zurzeit nicht möglich */
             Settlement.findByIdAndUpdate(id, {$pull: req.body}, {new: true}, function (err, result) {
@@ -61,12 +62,43 @@ router.patch("/:settlementId", function (req, res) {
                 res.send(result);
             });
             break;
-        default:
+        default: //ändert einzelne Werte (keine Arrays)
             Settlement.findByIdAndUpdate(id, req.body, {new: true}, function (err, result) {
                 if(err) console.log(err);
                 res.send(result);
             });
     }
+});
+
+//6,552
+router.patch("/:settlementId/calc", function (req, res) {
+    let id = req.params.settlementId;
+
+    Settlement.findById(id, function (err, settlement) {
+        if (err) return console.log(err);
+        settlement.receipts.forEach(function (receiptId) {
+            Receipt.findById(receiptId, "article", function (err, result) {
+               result.article.forEach(function (article) {
+                   article.participation.forEach(function (participation) {
+                       let tmp = article.priceAll * participation.percentage;
+                       Settlement.findByIdAndUpdate (
+                           id,
+                           {$push: {
+                                   "debtor": {
+                                       "id": participation.participant,
+                                       "dept": tmp
+                                   }}},
+                           {upsert: true, new: true},
+                           function (err, result) {
+                               if (err) return console.log(err);
+                               console.log(result)
+                       });
+                   });
+               })
+            })
+        });
+        res.status(204).end()
+    });
 });
 
 router.delete("/:settlementId", function (req, res) {

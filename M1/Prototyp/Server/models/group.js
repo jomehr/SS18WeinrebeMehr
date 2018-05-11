@@ -14,7 +14,7 @@ const groupSchema = new Schema ({
     startDate: {type: Date, default: Date.now()},
     endDate: Date,
     finished: {type: Boolean, default: false},
-    participants: [{type: Schema.Types.ObjectId, ref: "User", unique: true}],
+    participants: [{type: Schema.Types.ObjectId, ref: "User"}],
     startLocation: {type: addressSchema},
     endLocation: {type: addressSchema},
     settlement: [{type: Schema.Types.ObjectId, ref: "Settlement"}]

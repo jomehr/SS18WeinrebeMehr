@@ -2,12 +2,16 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+const participationSchema = new Schema ({
+    participant: {type: Schema.Types.ObjectId, ref: "User"},
+    percentage: Number
+});
+
 const articleSchema = new Schema ({
-    id: {type: Schema.Types.ObjectID, required: true},
     name: {type: String, required: true},
     price: {type: Number, required: true},
-    participants: [{type: Schema.Types.ObjectID, ref: "User"}],
-    category: [{type: Schema.Types.ObjectID, ref: "Category"}],
+    participation: [{type: participationSchema}],
+    category: [{type: Schema.Types.ObjectId, ref: "Category"}],
     amount: Number,
     priceAll: Number
 });
@@ -19,8 +23,7 @@ const addressSchema = new Schema ({
 });
 
 const receiptSchema = new Schema ({
-    owner: {type: Schema.Types.ObjectID, ref: "User", required: true},
-    participants: [{type: Schema.Types.ObjectID, ref: "User"}],
+    owner: {type: Schema.Types.ObjectId, ref: "User", required: true},
     store: {type: String, required: true},
     date: {type: Date, default: Date.now()},
     imagePath: {type: String, required: true},

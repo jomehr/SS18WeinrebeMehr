@@ -11,7 +11,7 @@ router.get("/", function (req, res) {
 
         //DEV CONSOLE OUTPUT
         let copy = [];
-        console.log(result.length + " Gruppen in DB gefunden")
+        console.log(result.length + " Gruppen in DB gefunden");
         result.forEach(function (receipt, index) {
             copy.push(receipt._id);
             console.log("Gruppe " + (index + 1) + " mit ID: " + receipt._id.toString());
@@ -29,11 +29,12 @@ router.get("/:receiptId/", function (req, res) {
 });
 
 router.post("/", function (req, res) {
+    console.log("TEST")
     console.log(req.body);
 
     let receipt = new Receipt({
         owner: req.body.owner,
-        participants: req.body.participants,
+        participation: req.body.participation,
         store: req.body.store,
         date: req.body.date,
         imagePath: req.body.imagePath,
@@ -43,6 +44,7 @@ router.post("/", function (req, res) {
         payment: req.body.payment,
         change: req.body.change
     });
+    console.log(receipt)
     receipt.save(function (err, result) {
         if (err) console.log(err);
         res.send(result);
