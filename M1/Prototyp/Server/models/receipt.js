@@ -26,7 +26,7 @@ const receiptSchema = new Schema ({
     owner: {type: Schema.Types.ObjectId, ref: "User", required: true},
     store: {type: String, required: true},
     date: {type: Date, default: Date.now()},
-    imagePath: {type: String, required: true},
+    imagePath: {type: String, default: "folgt", required: true},
     address: {type: addressSchema},
     article: [{type: articleSchema, required: true}],
     total: {type: Number, required: true},
