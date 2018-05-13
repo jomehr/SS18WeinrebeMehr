@@ -97,3 +97,4 @@ Zuerst muss eine Abrechnung existieren:
  * PATCH-Anfrage (kein Body benötigt) auf 'http://localhost:8081/settlement/{settlementId}/calc' startet den Abrechnungsalgorithmus
  * Der Algorithmus aktualisiert die Abrechnung automatisch mit einem Array aus Schuldnern und den zu zahlenenden Beträgen
  * Der subscribende Client erhält Nachrichten mit Angaben der Schuldnerid und den für den jeweiligen Artikel  zu zahlenden Betrag
+ * Der subscribende Client published daraufhin dem Server, dass die Abrechnung aktzeptiert wurde.

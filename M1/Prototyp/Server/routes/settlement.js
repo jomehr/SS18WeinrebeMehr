@@ -92,9 +92,12 @@ router.patch("/:settlementId/calc", function (req, res) {
                         }
 
                         client.publish("/settlement/" +id,
-                            {message: participation.participant + " schuldet " + tmp +
+                            {
+                                user: participation.participant,
+                                message: participation.participant + " schuldet " + tmp +
                                 " (" + article.priceAll + "*" + participation.percentage + ")" +
-                                " für " + article.name});
+                                " für " + article.name
+                            });
 
                         if (settlement.debtor.length === 0) {
                             console.log("debtor ist leer");
@@ -147,6 +150,9 @@ router.delete("/:settlementId", function (req, res) {
 
 let client = new faye.Client("http://localhost:8081/test");
 client.subscribe("/settlement/*", function (message) {
+    console.log(message);
+});
+client.subscribe("/user/*", function (message) {
     console.log(message);
 });
 

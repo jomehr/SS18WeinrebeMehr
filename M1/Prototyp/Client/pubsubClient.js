@@ -4,6 +4,18 @@ let client = new faye.Client("http://localhost:8081/test");
 
 let subscription = client.subscribe('/settlement/*', function(message) {
     console.log(message);
+
+    let publication = client.publish('/user/' + message.user, {
+        user: message.user,
+        message: "Abrechnung angenommen"
+    });
+
+    publication.callback(function() {
+        console.log('[PUBLISH SUCCEEDED]');
+    });
+    publication.errback(function(error) {
+        console.log('[PUBLISH FAILED]', error);
+    });
 });
 
 subscription.callback(function() {
