@@ -23,6 +23,8 @@ Gläubiger--(Kassenzettel referenzieren)
     (Abrechnung Upload)..>(Schulden berechnen):extend
         (Schulden berechnen).>(Schuldner\n referenzieren):extends
             (Schuldner\n referenzieren)--Schuldner
+ (Korrektur vorschlagen)--Schuldner:schlägt vor
+ (Korrektur vorschlagen)--Gläubiger:ändert Abrechnung
 }
 
 @enduml
