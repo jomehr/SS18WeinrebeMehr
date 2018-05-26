@@ -1,0 +1,37 @@
+@startuml
+skinparam packageStyle rectangle
+actor User
+actor User2
+
+User .l.>(Login):include
+
+rectangle Funktionen {
+left to right direction
+
+(Kassenzettel\n scannen) as (Scan)
+(Reisegruppe\n erstellen) as (Gruppe)
+(Statistiken\n einsehen) as (Statistik)
+(Statistiken\n aktualisieren) as (Statistik+)
+(Abrechnung\n erstellen) as (Abrechnung)
+(User hinzufügen) as (Invite)
+
+    User -- (Scan)
+        (Scan)..>(editieren): extends
+        (Scan)..>(upload): includes
+            (upload)..>(Statistik+):includes
+            (upload)..> (hinzufügen):extends
+            (hinzufügen) .> (Abrechnung)
+    User -- (Gruppe)
+        (Gruppe)..>(Abrechnung):extends
+          (Abrechnung).>(Schuld berechnen):include
+          (Schuld berechnen)--User2
+          (Abrechnung)--User2
+        (Gruppe)..>(Invite):extends
+            (Invite) -- (User2)
+    User -- (Statistik)
+
+}
+User -(Schuld bezahlen)
+(Schuld bezahlen)---User2
+
+@enduml

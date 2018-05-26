@@ -1,0 +1,28 @@
+@startuml
+skinparam packageStyle rectangle
+actor Gläubiger
+actor Schuldner
+
+Gläubiger ..>(Login):include
+(Login)<...(Schuldner):include
+Gläubiger--(Schuld begleichen)
+(Schuld begleichen)-Schuldner
+(Schuld begleichen).> (Online-Bezahldienst):extends
+
+
+rectangle Abrechnung {
+left to right direction
+
+Gläubiger--(Abrechnung erstellen)
+Gläubiger--(Kassenzettel referenzieren)
+    (Kassenzettel referenzieren).> (Kassenzettel\nScan):include
+    (Kassenzettel referenzieren)..> (Kassenzettel\nUpload):include
+    (Kassenzettel referenzieren)..> (Daten ändern):extend
+    (Kassenzettel referenzieren)<..(Schulden berechnen):includes
+ Gläubiger--(Abrechnung Upload)
+    (Abrechnung Upload)..>(Schulden berechnen):extend
+        (Schulden berechnen).>(Schuldner\n referenzieren):extends
+            (Schuldner\n referenzieren)--Schuldner
+}
+
+@enduml
