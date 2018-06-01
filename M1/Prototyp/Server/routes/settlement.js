@@ -6,8 +6,6 @@ let router = express.Router();
 let Settlement = require("../models/settlement");
 let Receipt = require("../models/receipt");
 
-let dept = 0;
-
 router.get("/", function (req, res) {
     Settlement.find({}, function (err, result) {
         if (err) console.log(err);
@@ -76,7 +74,6 @@ router.patch("/:settlementId", function (req, res) {
 router.patch("/:settlementId/calc", function (req, res) {
     let id = req.params.settlementId;
     let tmp = 0;
-    let tmp2;
 
     Settlement.findById(id, function (err, settlement) {
         if (err) return console.log(err);
