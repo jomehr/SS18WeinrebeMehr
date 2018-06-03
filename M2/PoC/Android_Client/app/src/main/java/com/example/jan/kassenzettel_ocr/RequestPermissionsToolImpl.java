@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
-import com.example.jan.kassenzettel_ocr.RequestPermissionsTool;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,7 +38,7 @@ public class RequestPermissionsToolImpl implements RequestPermissionsTool {
         }
 
         for (Map.Entry<Integer, String> permission : permissionsMap.entrySet()) {
-            if (!isPermissionGranted(activity, permission.getValue())) {
+            if (isPermissionGranted(activity, permission.getValue())) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission.getValue())) {
 
                     ConfirmationDialog.newInstance(permission.getKey(), permission.getValue()).
@@ -59,7 +57,7 @@ public class RequestPermissionsToolImpl implements RequestPermissionsTool {
     public boolean isPermissionsGranted(Context context, String[] permissions) {
 
         for (String permission : permissions) {
-            if (!isPermissionGranted(context, permission)) {
+            if (isPermissionGranted(context, permission)) {
                 return false;
             }
         }
@@ -75,7 +73,7 @@ public class RequestPermissionsToolImpl implements RequestPermissionsTool {
     private boolean isPermissionGranted(Context context, String permission) {
         return ActivityCompat.checkSelfPermission(context,
                 permission)
-                == PackageManager.PERMISSION_GRANTED;
+                != PackageManager.PERMISSION_GRANTED;
     }
 
 
