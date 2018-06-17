@@ -266,9 +266,9 @@ public class ReceiptScan extends AppCompatActivity{
         }
         tessBaseApi.end();
 
-        if ( lang.equalsIgnoreCase("deu") ) {
+        /*if ( lang.equalsIgnoreCase("deu") ) {
             extractedText = extractedText.replaceAll("[^a-zA-Z0-9]+", " ");
-        }
+        }*/
 
         extractedText = extractedText.trim();
 
