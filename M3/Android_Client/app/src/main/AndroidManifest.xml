@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.jan.kassenzettel_ocr">
+    package="com.example.jan.kassenzettel_scan">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:configChanges="orientation"
         android:theme="@style/AppTheme">
-        <activity android:name=".ReceiptScan">
+        <activity android:name="com.example.jan.kassenzettel_scan.activities.ReceiptScan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
