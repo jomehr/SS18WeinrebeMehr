@@ -1,4 +1,4 @@
-package com.example.jan.kassenzettel_ocr;
+package com.example.jan.kassenzettel_scan.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,14 +11,10 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
+import com.example.jan.kassenzettel_scan.interfaces.RequestPermissionsTool;
+
 import java.util.HashMap;
 import java.util.Map;
-
-/**
- * This class in used only for API>=23
- * https://developer.android.com/training/permissions/requesting.html
- * Created by iuliia on 10/15/16.
- */
 
 public class RequestPermissionsToolImpl implements RequestPermissionsTool {
 

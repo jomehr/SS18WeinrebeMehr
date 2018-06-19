@@ -1,4 +1,4 @@
-package com.example.jan.kassenzettel_ocr
+package com.example.jan.kassenzettel_scan
 
 import org.junit.Test
 
