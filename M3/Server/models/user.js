@@ -12,9 +12,9 @@ const userSchema = new Schema ({
     password: {type: String, required: true},
     dateofbirth: Date,
     group: {type: Schema.Types.ObjectId, ref: "Group"},
-    pastgroups: {type: Schema.Types.ObjectId, ref: "Group"},
-    receipts: {type: Schema.Types.ObjectId, ref: "Receipt"},
-    ratings: {type: Schema.Types.ObjectId, ref: "Rating"},
+    pastgroups: [{type: Schema.Types.ObjectId, ref: "Group"}],
+    receipts: [{type: Schema.Types.ObjectId, ref: "Receipt"}],
+    ratings: [{type: Schema.Types.ObjectId, ref: "Rating"}],
     paypal: String
 });
 

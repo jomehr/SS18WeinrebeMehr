@@ -2,12 +2,6 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const addressSchema = new Schema ({
-    street: {streetName: String, streetNumber: Number},
-    location: {zipCode: Number, city: String, state: String},
-    country: String
-});
-
 //enums
 const INTERVAL = ["DAY", "WEEK", "MONTH", "RECEIPT"]
 const METHOD   = ["PREPAID","ONLINE", "CASH"]

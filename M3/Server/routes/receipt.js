@@ -1,90 +1,41 @@
 const express = require("express");
-
 let router = express.Router();
+let receiptController = require("../controllers/receiptController");
 
-let Receipt = require("../models/receipt");
 
-router.get("/", function (req, res) {
-    Receipt.find({}, function (err, result) {
-        if (err) console.log(err);
-        res.send(result);
-
-        //DEV CONSOLE OUTPUT
-        let copy = [];
-        console.log(result.length + " Gruppen in DB gefunden");
-        result.forEach(function (receipt, index) {
-            copy.push(receipt._id);
-            console.log("Gruppe " + (index + 1) + " mit ID: " + receipt._id.toString());
-        });
-        console.log(copy)
-    });
-});
-
-router.get("/:receiptId/", function (req, res) {
-    let id = req.params.receiptId;
-    Receipt.findById(id, function (err, result) {
-        if (err) console.log(err);
-        res.send(result);
-    })
-});
-
-router.post("/", function (req, res) {
-    console.log("TEST")
-    console.log(req.body);
-
-    let receipt = new Receipt({
-        owner: req.body.owner,
-        participation: req.body.participation,
-        store: req.body.store,
-        date: req.body.date,
-        imagePath: req.body.imagePath,
-        address: req.body.address,
-        article: req.body.article,
-        total: req.body.total,
-        payment: req.body.payment,
-        change: req.body.change
-    });
-    console.log(receipt)
-    receipt.save(function (err, result) {
-        if (err) console.log(err);
-        res.send(result);
-    });
-});
-
-router.patch("/:receiptId", function (req, res) {
-    let id = req.params.receiptId;
-    let method = req.query.m;
-
-    switch (method) {
-        case "push":
-            Receipt.findByIdAndUpdate(id, {$addToSet: req.body}, {new: true}, function (err, result) {
-                if(err) console.log(err);
-                res.send(result);
-            });
-            break;
-        case "pull":
-            /*re.body muss folgendes Format haben: [ "arrayname": "id"].
-              Mehr als 1 id gleichzeitig zu entfernen ist zurzeit nicht möglich */
-            Receipt.findByIdAndUpdate(id, {$pull: req.body}, {new: true}, function (err, result) {
-                if(err) console.log(err);
-                res.send(result);
-            });
-            break;
-        default:
-            Receipt.findByIdAndUpdate(id, req.body, {new: true}, function (err, result) {
-                if(err) console.log(err);
-                res.send(result);
-            });
-    }
-});
-
-router.delete("/:receiptId", function (req, res) {
-    let id = req.params.receiptId;
-
-    Receipt.findByIdAndRemove(id, function (err, result) {
-        if (err) console.log(err);
-        res.send(result);
-    });
-});
-
-module.exports = router;
+router.get("/", receiptController.receipts_get_all);
+router.get("/:receiptId/", receiptController.receipts_get_single);
+router.post("/", receiptController.receipts_create_receipt);
+router.patch("/:receiptId", receiptController.receipts_update_receipt);
+router.delete("/:receiptId", receiptController.receipts_delete_receipt);
+//----------------------------------------------------------------------
+//TODO: add get image
+//----------------------------------------------------------------------
+router.get("/:receiptId/articles", receiptController.receipts_get_all_article);
+router.post("/:receiptId/articles", receiptController.receipts_create_article);
+router.get("/:receiptId/articles/:articleId",
+receiptController.receipts_get_single_article);
+router.patch("/:receiptId/articles/:articleId",
+receiptController.receipt_update_article);
+router.delete("/:receiptId/articles/:articleId",
+receiptController.receipts_delete_article);
+//-----------------------------------------------------------------------
+router.get("/:receiptId/articles/:articleId/participations",
+receiptController.receipts_get_all_participant);
+router.post("/:receiptId/articles/:articleId/participations",
+receiptController.receipts_create_participant);
+router.get("/:receiptId/articles/:articleId/participations/:participantId",
+receiptController.receipts_get_single_participant);
+router.patch("/:receiptId/articles/:articleId/participations/:participantId",
+receiptController.receipt_update_participant);
+router.delete("/:receiptId/articles/:articleId/participations/:participantId",
+receiptController.receipts_delete_participant);
+//--------------------------------------------------------------------------
+router.get("/:receiptId/articles/:articleId/participations/:participantId/suggestion",
+receiptController.receipt_get_suggestion);
+router.post("/:receiptId/articles/:articleId/participations/:participantId/suggestion",
+receiptController.receipts_create_suggestion);
+router.patch("/:receiptId/articles/:articleId/participations/:participantId/suggestion",
+receiptController.receipts_update_suggestion);
+router.delete("/:receiptId/articles/:articleId/participations/:participantId/suggestion",
+receiptController.receipts_delete_suggestion);
