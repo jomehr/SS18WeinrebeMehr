@@ -2,20 +2,20 @@ const mongoose = require("mongoose"),
     bcrypt = require("bcrypt");
 
 const SALT_WORKER_FACTOR = 10;
-
 const Schema = mongoose.Schema;
 
-const addressSchema = new Schema ({
-    street: {streetName: String, streetNumber: Number},
-    location: {zipCode: Number, city: String, state: String},
-    country: String
-});
 
 const userSchema = new Schema ({
     name: {type: String, trim: true, required: true},
-    address: {type: addressSchema},
+    address: {type: Schema.Types.ObjectId, ref: "Adress"},
     email: {type: String, required: true, trim: true, unique: true, match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']},
-    password: {type: String, required: true}
+    password: {type: String, required: true},
+    dateofbirth: Date,
+    group: {type: Schema.Types.ObjectId, ref: "Group"},
+    pastgroups: {type: Schema.Types.ObjectId, ref: "Group"},
+    receipts: {type: Schema.Types.ObjectId, ref: "Receipt"},
+    ratings: {type: Schema.Types.ObjectId, ref: "Rating"},
+    paypal: String
 });
 
 userSchema.pre("save", function (next) {

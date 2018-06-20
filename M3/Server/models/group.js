@@ -8,6 +8,10 @@ const addressSchema = new Schema ({
     country: String
 });
 
+//enums
+const INTERVAL = ["DAY", "WEEK", "MONTH", "RECEIPT"]
+const METHOD   = ["PREPAID","ONLINE", "CASH"]
+
 const groupSchema = new Schema ({
     name: String,
     creator: {type: Schema.Types.ObjectId, ref: "User", required: true},
@@ -17,7 +21,10 @@ const groupSchema = new Schema ({
     participants: [{type: Schema.Types.ObjectId, ref: "User"}],
     startLocation: {type: addressSchema},
     endLocation: {type: addressSchema},
-    settlement: [{type: Schema.Types.ObjectId, ref: "Settlement"}]
+    settlement: [{type: Schema.Types.ObjectId, ref: "Settlement"}],
+    finished: Boolean,
+    interval: {type: String, enum: INTERVAL},
+    method: {type: String, enum: METHOD}
 });
 
 module.exports = mongoose.model("Group", groupSchema);

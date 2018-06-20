@@ -1,37 +1,23 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
-
-const participationSchema = new Schema ({
-    participant: {type: Schema.Types.ObjectId, ref: "User"},
-    percentage: Number
-});
-
-const articleSchema = new Schema ({
-    name: {type: String, required: true},
-    price: {type: Number, required: true},
-    participation: [{type: participationSchema}],
-    category: [{type: Schema.Types.ObjectId, ref: "Category"}],
-    amount: Number,
-    priceAll: Number
-});
-
-const addressSchema = new Schema ({
-    street: {streetName: String, streetNumber: Number},
-    location: {zipCode: Number, city: String, state: String},
-    country: String
-});
+const TYPE = ["SOLO", "GROUP"];
+const CURRENCY = ["DOLLAR", "EURO"];
 
 const receiptSchema = new Schema ({
+
+    type:  {type: String, enum: TYPE}
     owner: {type: Schema.Types.ObjectId, ref: "User", required: true},
+    participation: {type: Schema.Types.ObjectId, ref: "User" },
+    articles: {type: Schema.Types.ObjectId, ref: "Article", required: true},
+    location: {type: Schema.Types.ObjectId, ref: "Address"},
     store: {type: String, required: true},
-    date: {type: Date, default: Date.now()},
-    imagePath: {type: String, default: "folgt", required: true},
-    address: {type: addressSchema},
-    article: [{type: articleSchema, required: true}],
+    date:  {type: Date, default: Date.now()},
     total: {type: Number, required: true},
     payment: {type: Number, required: true},
     change: {type: Number, required: true},
+    currency: {type: String, enum: CURRENCY, required:true}, 
+    edited: {type: Boolean, required: true}
 });
 
 module.exports = mongoose.model("Receipt", receiptSchema);
