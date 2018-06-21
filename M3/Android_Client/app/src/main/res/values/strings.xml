@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Kassenzettel-OCR</string>
+    <string name="scan">Scan</string>
+    <string name="solo_receipt_list">Deine Kassenzettel</string>
+    <string name="group_receipt_list">Gruppenzettel</string>
+    <string name="statistic">Statisitk</string>
+    <string name="settings">Einstellungen</string>
+    <string name="logout">Abmelden</string>
+    <string name="navigation_drawer_open">Öffne Navigations-Leiste</string>
+    <string name="navigation_drawer_close">Schließe Navigations-Leiste</string>
+    <string name="group">Gruppe</string>
+    <string name="settlement_list">Abrechnungen</string>
+    <string name="shopping_list">Einkaufsliste</string>
+    <string name="participants">Mitglieder</string>
+    <string name="miscellaneous">Sonstiges</string>
+    <string name="create_group">Gruppe erstellen</string>
+    <string name="no_alerts">keine Benachrichtigungen</string>
+    <string name="no_new_alerts">Keine neuen Benachrichtigungen</string>
+    <string name="profile_picture">Profilbild</string>
+    <string name="later_implementation">Dieses Featuer wird später implementiert</string>
+    <string name="details">Details</string>
 </resources>

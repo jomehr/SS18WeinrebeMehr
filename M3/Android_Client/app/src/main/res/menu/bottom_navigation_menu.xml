@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_group_shopping_list"
+        android:icon="@drawable/ic_shopping_black"
+        android:title="@string/shopping_list" />
+    <item
+        android:id="@+id/nav_group_receipt_list"
+        android:icon="@drawable/ic_receipt_black"
+        android:title="@string/group_receipt_list" />
+    <item
+        android:id="@+id/nav_group_settlement_list"
+        android:icon="@drawable/ic_settlement_black"
+        android:title="@string/settlement_list" />
+
+</menu>

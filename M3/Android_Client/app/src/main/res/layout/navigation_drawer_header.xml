@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Container for Navigation Drawer header -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/navigation_header_profile"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:background="@color/colorSecondary"
+    android:padding="24dp"
+    android:orientation="vertical"
+    android:gravity="bottom">
+
+    <!-- Profil picture of user -->
+    <ImageView
+        android:id="@+id/navigation_header_profile_picture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccent"
+        android:contentDescription="@string/profile_picture" />
+
+    <!-- Container for user data summary -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toEndOf="@+id/navigation_header_profile_picture">
+
+        <!-- User name -->
+        <TextView
+            android:id="@+id/navigation_header_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:layout_centerInParent="true"
+            android:text="{Profilname}"
+            android:textSize="20sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+        <!-- Average user rating -->
+        <TextView
+            android:id="@+id/navigation_header_profile_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/navigation_header_profile_name"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:text="{Rating}"
+            android:textSize="20sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

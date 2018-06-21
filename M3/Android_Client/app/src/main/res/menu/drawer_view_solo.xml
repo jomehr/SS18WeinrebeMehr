@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_scan"
+            android:icon="@drawable/ic_scan_black"
+            android:title="@string/scan" />
+        <item
+            android:id="@+id/nav_receipt_list"
+            android:icon="@drawable/ic_receipt_black"
+            android:title="@string/solo_receipt_list" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:title="@string/group"
+            android:checkable="false">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_group_create"
+                        android:icon="@drawable/ic_creategroup_black"
+                        android:title="@string/create_group" />
+                </group>
+            </menu>
+        </item>
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:title="@string/miscellaneous"
+            android:checkable="false">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_statistic"
+                        android:icon="@drawable/ic_statistic_black"
+                        android:title="@string/statistic" />
+                    <item
+                        android:id="@+id/nav_settings"
+                        android:icon="@drawable/ic_settings_black"
+                        android:title="@string/settings" />
+                    <item
+                        android:id="@+id/nav_logout"
+                        android:icon="@drawable/ic_logout_black"
+                        android:title="@string/logout" />
+                </group>
+            </menu>
+        </item>
+    </group>
+</menu>

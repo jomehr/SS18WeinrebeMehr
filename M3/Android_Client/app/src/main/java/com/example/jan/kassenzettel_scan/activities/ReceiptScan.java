@@ -14,12 +14,18 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import com.example.jan.kassenzettel_scan.R;
 import com.example.jan.kassenzettel_scan.interfaces.RequestPermissionsTool;
@@ -35,22 +41,49 @@ import java.io.OutputStream;
 public class ReceiptScan extends AppCompatActivity{
     private static final String TAG = ReceiptScan.class.getSimpleName();
     static final int PHOTO_REQUEST_CODE = 1;
-    private TessBaseAPI tessBaseApi;
-    TextView textView;
-    Uri outputFileUri;
     private static final String lang = "deu";
-    String result = "empty";
-    private RequestPermissionsTool requestTool; //for API >=23 only
 
     private static final String DATA_PATH = Environment.getExternalStorageDirectory().toString() + "/TesseractSample/";
     private static final String TESSDATA = "tessdata";
+
+    private TessBaseAPI tessBaseApi;
+    private RequestPermissionsTool requestTool; //for API >=23 only
+
+    private DrawerLayout mDrawerLayout;
+    private TextView textView;
+    private Uri outputFileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
 
-        Button captureImg = (Button) findViewById(R.id.action_btn);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //ActionBar actionbar = getSupportActionBar();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
+
+                        // Add code here to update the UI based on the item selected
+                        // For example, swap UI fragments here
+
+                        return true;
+                    }
+                });
+
+        Button captureImg = findViewById(R.id.action_btn);
         if (captureImg != null) {
             captureImg.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -59,11 +92,21 @@ public class ReceiptScan extends AppCompatActivity{
                 }
             });
         }
-        textView = (TextView) findViewById(R.id.textResult);
+        textView = findViewById(R.id.textResult);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -228,7 +271,7 @@ public class ReceiptScan extends AppCompatActivity{
                 Log.e(TAG, "Couldn't correct orientation: " + e.toString());
             }
 
-            result = extractText(bitmap);
+            String result = extractText(bitmap);
 
             textView.setText(result);
 
