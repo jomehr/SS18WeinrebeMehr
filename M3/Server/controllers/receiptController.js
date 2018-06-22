@@ -5,6 +5,8 @@ let Adress = require("../models/address");
 let Article = require("../models/article");
 //let Category = require("../models/category");
 
+//let users = require("./userController")
+
 exports.receipts_get_all = function (req, res) {
 
     let query = Receipt.find({});
@@ -14,6 +16,8 @@ exports.receipts_get_all = function (req, res) {
 
         res.send(result);
     });
+
+
 };
 
 exports.receipts_create_receipt = function (req, res) {

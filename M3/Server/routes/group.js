@@ -11,7 +11,16 @@ router.delete("/:groupId", groupController.groups_delete_group);
 router.get("/:groupId/participants", groupController.groups_get_participants);
 router.post("/:groupId/participants", groupController.groups_add_participant);
 router.delete("/:groupId/participants/:participantId", groupController.groups_remove_participant);
+router.delete("/:groupId/participants", groupController.groups_remove_participant);
+/*
+router.get("/:groupId/participants",
+groupController.groups_get_participants);
+router.post("/:groupId/participants",
+groupController.groups_create_participant);
+//router.delete("/:groupId/participants"),
+//groupController.groups_delete_participant);
 //--------------------------------------------------------------
+
 router.get("/:groupId/settlements", groupController.groups_get_settlements);
 router.post("/:groupId/settlements", groupController.groups_add_settlement);
 router.delete("/:groupId/settlements/:settlementId", groupController.groups_remove_settlement);
