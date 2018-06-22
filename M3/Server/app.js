@@ -9,7 +9,7 @@ const express = require("express"),
 let user = require("./routes/user");
 let group = require("./routes/group");
 let receipt = require("./routes/receipt");
-let settlement = require("./routes/settlement");
+//let settlement = require("./routes/settlement");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -32,7 +32,7 @@ app.use(function(req, res, next) {
 app.use("/user", user);
 app.use("/group", group);
 app.use("/receipt", receipt);
-app.use("/settlement", settlement);
+//app.use("/settlement", settlement);
 
 // handling 404 errors
 app.use(function(req, res, next) {

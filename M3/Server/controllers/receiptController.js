@@ -2,7 +2,7 @@ let Receipt = require("../models/receipt");
 let Group = require("../models/group");
 let User = require("../models/user");
 let Adress = require("../models/address");
-let Article = require("../models/article");
+//let Article = require("../models/article");
 //let Category = require("../models/category");
 
 exports.receipts_get_all = function (req, res) {
