@@ -9,41 +9,43 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+
 
 import com.example.jan.kassenzettel_scan.R;
 import com.example.jan.kassenzettel_scan.adapter.ReceiptAdapter;
 import com.example.jan.kassenzettel_scan.data.ReceiptData;
+import com.example.jan.kassenzettel_scan.tasks.AsyncGetGroupReceipts;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
 
 public class ReceiptList_Group extends Fragment {
 
-    Date date = new Date();
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
-    String formatDate = simpleDateFormat.format(date);
 
+    String user1 = "Jan";
+    String user2 = "Armin";
+    String user3 = "Sebastian";
 
     ReceiptData receiptData1 = new ReceiptData(
-            "Kaufland",formatDate, 5, 19.99, "€");
+            user1,"Kaufland","10.06.2018", 5, 19.99, "€");
     ReceiptData receiptData2 = new ReceiptData(
-            "Rewe",formatDate, 7, 24.99, "€");
+            user2,"Rewe","21.06.2018", 7, 24.99, "€");
     ReceiptData receiptData3 = new ReceiptData(
-            "Rewe","19.06.2018", 4, 8.50, "€");
+            user3,"Rewe","18.06.2018", 4, 8.50, "€");
     ReceiptData receiptData4 = new ReceiptData(
-            "Nahkauf","15.06.2018", 2, 2.30, "€");
+            user1,"Nahkauf","30.06.2018", 2, 2.30, "€");
     ReceiptData receiptData5 = new ReceiptData(
-            "Aldi","22.06.2018", 20, 101, "€");
+            user2,"Aldi","18.05.2018", 20, 101, "€");
     ReceiptData receiptData6 = new ReceiptData(
-            "Aldi","15.06.2018", 11, 30.4, "€");
+            user3,"Aldi","02.07.2018", 11, 30.4, "€");
     ReceiptData receiptData7 = new ReceiptData(
-            "Kaufland","12.06.2018", 1, 2, "€");
+            user1,"Kaufland","18.06.2018", 1, 2, "€");
+
 
     @Nullable
     @Override
@@ -51,33 +53,66 @@ public class ReceiptList_Group extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_group_receipt_list,container,false);
 
-        List<ReceiptData> data = new ArrayList<>();
-        data.add(receiptData1);
-        data.add(receiptData2);
-        data.add(receiptData3);
-        data.add(receiptData4);
-        data.add(receiptData5);
-        data.add(receiptData6);
-        data.add(receiptData7);
+       /* String currentUser = "Jan";
+
+        List<ReceiptData> dataGroup = new ArrayList<>();
+        List<ReceiptData> dataUser = new ArrayList<>();
+        dataGroup.add(receiptData1);
+        dataGroup.add(receiptData2);
+        dataGroup.add(receiptData3);
+        dataGroup.add(receiptData4);
+        dataGroup.add(receiptData5);
+        dataGroup.add(receiptData6);
+        dataGroup.add(receiptData7);
+
+        for (int i = 0; i <= dataGroup.size(); i++) {
+            if (dataGroup.get(i).getUser().equals(currentUser)) {
+                dataUser.add(dataGroup.get(i));
+                dataGroup.remove(i);
+            }
+        }
 
         //Sort in descending order
-        Collections.sort(data, new Comparator<ReceiptData>() {
+        //TODO FIX BUG: only sorts by day not month, implement more complex sorting (date and name)
+        Collections.sort(dataGroup, new Comparator<ReceiptData>() {
             @Override
             public int compare(ReceiptData o1, ReceiptData o2) {
-                return o2.getDate().compareTo(o1.getDate());
+                return o1.getUser().compareTo(o2.getUser());
+            }
+        });
+        Collections.sort(dataUser, new Comparator<ReceiptData>() {
+            @Override
+            public int compare(ReceiptData o1, ReceiptData o2) {
+                return o1.getUser().compareTo(o2.getUser());
             }
         });
 
-        RecyclerView recyclerView = rootView.findViewById(R.id.rv_group_receipt_list);
-        ReceiptAdapter adapter = new ReceiptAdapter(this.getContext(), data);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        RecyclerView recyclerViewGroup = rootView.findViewById(R.id.rv_group_receipt_list);
+        RecyclerView recyclerViewUser = rootView.findViewById(R.id.rv_group_receipt_list_user);
 
-        if (adapter.getItemCount() != 0) {
-            TextView text =  rootView.findViewById(R.id.group_receipt_list_text);
-            text.setVisibility(View.GONE);
-        }
+        ReceiptAdapter adapterUser = new ReceiptAdapter(this.getContext(), dataUser);
+        ReceiptAdapter adapterGroup = new ReceiptAdapter(this.getContext(), dataGroup);
+        recyclerViewUser.setAdapter(adapterUser);
+        recyclerViewGroup.setAdapter(adapterGroup);
+        recyclerViewUser.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerViewGroup.setLayoutManager(new LinearLayoutManager(this.getContext()));*/
+       new AsyncGetGroupReceipts(this, "sfefsefse23").execute();
 
         return rootView;
+    }
+
+    public void showProgressBar() {
+        LinearLayout resultView = (LinearLayout) getActivity().findViewById(R.id.receipt_group_recyclerlayout);
+        resultView.setVisibility(View.GONE);
+        ProgressBar progress = (ProgressBar)getActivity().findViewById(R.id.receipt_group_pb);
+        progress.setVisibility(View.VISIBLE);
+        progress.setIndeterminate(true);
+    }
+
+    public void dismissProgressBar() {
+        LinearLayout resultView = (LinearLayout) getActivity().findViewById(R.id.receipt_group_recyclerlayout);
+        resultView.setVisibility(View.VISIBLE);
+        ProgressBar progress = (ProgressBar)getActivity().findViewById(R.id.receipt_group_pb);
+        progress.setVisibility(View.GONE);
     }
 }

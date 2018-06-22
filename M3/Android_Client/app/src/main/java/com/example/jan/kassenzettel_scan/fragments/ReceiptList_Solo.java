@@ -15,6 +15,8 @@ import com.example.jan.kassenzettel_scan.R;
 import com.example.jan.kassenzettel_scan.adapter.ReceiptAdapter;
 import com.example.jan.kassenzettel_scan.data.ReceiptData;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,27 +27,28 @@ import java.util.Locale;
 
 public class ReceiptList_Solo extends Fragment {
 
-        Date date = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
-        String formatDate = simpleDateFormat.format(date);
+    Date date = new Date();
+    DateFormat df = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+
+    String user1 = "Jan";
+
+    ReceiptData receiptData1 = new ReceiptData(
+            user1,"Kaufland","10.06.2018", 5, 19.99, "€");
+    ReceiptData receiptData2 = new ReceiptData(
+            user1,"Rewe","21.06.2018", 7, 24.99, "€");
+    ReceiptData receiptData3 = new ReceiptData(
+            user1,"Rewe","18.06.2018", 4, 8.50, "€");
+    ReceiptData receiptData4 = new ReceiptData(
+            user1,"Nahkauf","30.06.2018", 2, 2.30, "€");
+    ReceiptData receiptData5 = new ReceiptData(
+            user1,"Aldi","18.05.2018", 20, 101, "€");
+    ReceiptData receiptData6 = new ReceiptData(
+            user1,"Aldi","02.07.2018", 11, 30.4, "€");
+    ReceiptData receiptData7 = new ReceiptData(
+            user1,"Kaufland","18.06.2018", 1, 2, "€");
 
 
-        ReceiptData receiptData1 = new ReceiptData(
-                "Kaufland",formatDate, 5, 19.99, "€");
-        ReceiptData receiptData2 = new ReceiptData(
-                "Rewe",formatDate, 7, 24.99, "€");
-        ReceiptData receiptData3 = new ReceiptData(
-                "Rewe","19.06.2018", 4, 8.50, "€");
-        ReceiptData receiptData4 = new ReceiptData(
-                "Nahkauf","15.06.2018", 2, 2.30, "€");
-        ReceiptData receiptData5 = new ReceiptData(
-                "Aldi","22.06.2018", 20, 101, "€");
-        ReceiptData receiptData6 = new ReceiptData(
-                "Aldi","15.06.2018", 11, 30.4, "€");
-        ReceiptData receiptData7 = new ReceiptData(
-                "Kaufland","12.06.2018", 1, 2, "€");
-
-        @Nullable
+    @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 

@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true">
 
     <include
-        layout="@layout/simple_toolbar"
+        layout="@layout/navigation_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

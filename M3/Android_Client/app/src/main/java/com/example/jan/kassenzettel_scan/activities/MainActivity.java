@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity
                 // Highlight the selected item has been done by NavigationView
                 item.setChecked(true);
                 // Set action bar title
-                setTitle(item.getTitle());
+                getSupportActionBar().setTitle(item.getTitle());
                 return true;
             }
         });
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity
         // Highlight the selected item has been done by NavigationView
         item.setChecked(true);
         // Set action bar title
-        setTitle(item.getTitle());
+        getSupportActionBar().setTitle(item.getTitle());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -26,8 +26,6 @@ exports.users_create_user = function (req, res) {
           dateofbirth: req.body.dateofbirth,
           group: req.body.group,
           pastgroups: req.body.pastgroups,
-          //receipts: req.body.receipts//,
-          //ratings: req.body.ratings,
           paypal: req.body.paypal
 
         });
@@ -62,8 +60,6 @@ exports.users_update_user = function (req, res) {
             dateofbirth: req.body.dateofbirth,
             group: req.body.group,
             pastgroups: req.body.pastgroups,
-            //receipts: req.body.receipts//,
-            //ratings: req.body.ratings,
             paypal: req.body.paypal
           }
       }, function (err, result) {

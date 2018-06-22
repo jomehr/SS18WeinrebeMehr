@@ -5,9 +5,9 @@ const TYPE = ["SOLO", "GROUP"];
 const CURRENCY = ["DOLLAR", "EURO"];
 
 const receiptSchema = new Schema ({
-
     type:  {type: String, enum: TYPE, required:true},
     owner: {type: Schema.Types.ObjectId, ref: "User", required: true},
+    group: {type: Schema.Types.ObjectId, ref: "Group"},
     participants: [{type: Schema.Types.ObjectId, ref: "User" }],
     articles: [{type: Schema.Types.ObjectId, ref: "Article", required: true}],
     location: {type: Schema.Types.ObjectId, ref: "Address"},

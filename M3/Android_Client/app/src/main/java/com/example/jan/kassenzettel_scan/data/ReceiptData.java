@@ -1,15 +1,24 @@
 package com.example.jan.kassenzettel_scan.data;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class ReceiptData {
 
-    private String storeName, currency;
+    private String user, storeName, currency;
     private String date;
     private int numberArticles;
     private double totalAmount;
 
-    public ReceiptData(String storeName, String date, int numberArticles, double totalAmount, String currency) {
+    DateFormat df = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+
+
+    public ReceiptData(String user, String storeName, String date, int numberArticles,
+                       double totalAmount, String currency) {
+        this.user = user;
         this.storeName = storeName;
         this.date = date;
         this.numberArticles = numberArticles;
@@ -39,6 +48,10 @@ public class ReceiptData {
     }
 
     //Getter
+    public String getUser() {
+        return user;
+    }
+
     public String getStoreName() {
         return storeName;
     }

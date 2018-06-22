@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema ({
     group: {type: mongoose.Schema.Types.ObjectId, ref: "Group"},
     pastgroups: [{type: Schema.Types.ObjectId, ref: "Group"}],
     receipts: [{type: Schema.Types.ObjectId, ref: "Receipt"}],
-  //  ratings: [{type: Schema.Types.ObjectId, ref: "Rating"}],
+    ratings: [{type: Schema.Types.ObjectId, ref: "Rating"}],
     paypal: String
 });
 

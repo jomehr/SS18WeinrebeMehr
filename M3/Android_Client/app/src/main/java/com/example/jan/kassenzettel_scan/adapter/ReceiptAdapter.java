@@ -21,7 +21,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
     private LayoutInflater layoutInflater;
     private List<ReceiptData> receiptData;
 
-    // create constructor to innitilize context and data sent from MainActivity
+    // create constructor to initialize context and data sent from MainActivity
     public ReceiptAdapter(Context context, List<ReceiptData> data) {
         layoutInflater = LayoutInflater.from(context);
         this.receiptData = data;
@@ -29,7 +29,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
 
     @NonNull
     @Override
-    // Inflate the layout when viewholder created
+    // Inflate the layout when ViewHolder created
     public ReceiptAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                         int viewType) {
         // create a new view
@@ -43,13 +43,15 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get current position of item in recyclerview to bind data and assign values from list
         ReceiptData curReceipt = receiptData.get(position);
+        holder.owner.setText(curReceipt.getUser());
         holder.name.setText(curReceipt.getStoreName());
         holder.date.setText(curReceipt.getDate());
         holder.articleNumber.setText(String.valueOf(curReceipt.getNumberArticles()));
         holder.total.setText(String.valueOf(curReceipt.getTotalAmount()));
         holder.currency.setText(curReceipt.getCurrency());
 
-/*        if (position %2 == 1) {
+/*      //changes background colour of uneven items
+        if (position %2 == 1) {
             holder.itemView.setBackgroundColor(Color.parseColor("#b2fab4"));
         }*/
     }
@@ -63,18 +65,17 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView name, date, articleNumber, total, currency;
-        ImageView articleCart;
+        TextView owner, name, date, articleNumber, total, currency;
 
         // create constructor to get widget reference
         ViewHolder(View itemView) {
             super(itemView);
+            owner = itemView.findViewById(R.id.receipt_owner_name);
             name = itemView.findViewById(R.id.receipt_storename);
             date = itemView.findViewById(R.id.receipt_date);
             articleNumber = itemView.findViewById(R.id.receipt_numberarticles);
             total = itemView.findViewById(R.id.receipt_total);
             currency = itemView.findViewById(R.id.receipt_currency);
-            articleCart = itemView.findViewById(R.id.receipt_articleimage);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
