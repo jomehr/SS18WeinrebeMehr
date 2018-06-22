@@ -46,12 +46,13 @@ exports.groups_get_single = function (req, res) {
 
     Group.findById(id)
         .populate("creator", "name")
+        .populate("participants", "name")
         .populate("receipts")
         .exec(function (err, result) {
             if (err) console.log(err);
 
             console.log(result);
-            res.send(result);
+            res.send(result.toString());
         });
 };
 
@@ -144,19 +145,9 @@ exports.groups_get_settlements = function (req, res) {
 exports.groups_add_settlement = function (req, res) {
     let id = req.params.groupId;
 
-    Group.findByIdAndUpdate(id,
-        {
-            $push:
-                {
-                    settlements: req.body.settlements
-                }
-        },
-        {new: true},
-        function (err, result) {
+    Group.findByIdAndUpdate(
+        id, {$addToSet: req.body}, {new: true}, function (err, result) {
             if (err) console.log(err);
-
-            console.log(result);
-            res.send(result);
 
             console.log(result.settlements);
             res.send(result.settlements);
@@ -165,20 +156,11 @@ exports.groups_add_settlement = function (req, res) {
 
 exports.groups_remove_settlement = function (req, res) {
     let id = req.params.groupId;
+    let settlement = req.params.settlementId;
 
-    Group.findByIdAndUpdate(id,
-        {
-            $pull:
-                {
-                    settlements: req.body.settlements
-                }
-        },
-        {new: true},
-        function (err, result) {
+    Group.findByIdAndUpdate(
+        id, {$pull: settlement}, {new: true}, function (err, result) {
             if (err) console.log(err);
-
-            console.log(result);
-            res.send(result);
 
             console.log(result.settlements);
             res.send(result.settlements);
@@ -199,19 +181,10 @@ exports.groups_get_receipts = function (req, res) {
 exports.groups_add_receipt = function (req, res) {
     let id = req.params.groupId;
 
-    Group.findByIdAndUpdate(id,
-        {
-            $push:
-                {
-                    receipts: req.body.receipts
-                }
-        },
-        {new: true},
+    Group.findByIdAndUpdate(
+        id, {$addToSet: req.body}, {new: true},
         function (err, result) {
             if (err) console.log(err);
-
-            console.log(result);
-            res.send(result);
 
             console.log(result.receipts);
             res.send(result.receipts);
@@ -220,16 +193,9 @@ exports.groups_add_receipt = function (req, res) {
 
 exports.groups_remove_receipt = function (req, res) {
     let id = req.params.groupId;
+    let receipt = req.params.receiptId;
 
-    Group.findByIdAndUpdate(id,
-        {
-            $pull:
-                {
-                    receipts: req.body.receipts
-                }
-        },
-        {new: true},
-        function (err, result) {
+    Group.findByIdAndUpdate(id, {$pull: receipt}, {new: true}, function (err, result) {
             if (err) console.log(err);
 
             console.log(result);

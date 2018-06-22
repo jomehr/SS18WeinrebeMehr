@@ -4,6 +4,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.jan.kassenzettel_scan.R;
@@ -25,19 +28,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
-public class AsyncGetGroupReceipts extends AsyncTask<String, String, String> {
+public class AsyncGetGroupReceipts extends AsyncTask<String,String, String> {
 
     // CONNECTION_TIMEOUT and READ_TIMEOUT are in milliseconds
     private static final int CONNECTION_TIMEOUT = 10000;
     private static final int READ_TIMEOUT = 15000;
     private ReceiptList_Group receiptListGroup;
-    private String id;
 
     public AsyncGetGroupReceipts (ReceiptList_Group receiptListGroup, String id) {
         this.receiptListGroup = receiptListGroup;
-        this.id = id;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class AsyncGetGroupReceipts extends AsyncTask<String, String, String> {
         URL url;
         HttpURLConnection conn;
         try {
-            url = new URL("http://127.0.0.1:8081/group/"+ id);
+            url = new URL("http://192.168.0.172:8081/receipt/");
         } catch (MalformedURLException e) {
             e.printStackTrace();
             return e.toString();
@@ -59,17 +61,16 @@ public class AsyncGetGroupReceipts extends AsyncTask<String, String, String> {
             conn.setConnectTimeout(CONNECTION_TIMEOUT);
             conn.setRequestMethod("GET");
 
-            // setDoOutput to true as we recieve data from json file
-            conn.setDoOutput(true);
-        } catch (IOException e1) {
+            // setDoOutput to false as we recieve data from json file
+            conn.setDoOutput(false);
+        } catch (IOException e) {
             // TODO Auto-generated catch block
-            e1.printStackTrace();
-            return e1.toString();
+            e.printStackTrace();
+            return e.toString();
         }
 
         try {
             int response_code = conn.getResponseCode();
-
             // Check if successful connection made
             if (response_code == HttpURLConnection.HTTP_OK) {
 
@@ -113,6 +114,7 @@ public class AsyncGetGroupReceipts extends AsyncTask<String, String, String> {
 
         String currentUser = "Jan";
 
+
         List<ReceiptData> dataGroup = new ArrayList<>();
         List<ReceiptData> dataUser = new ArrayList<>();
 
@@ -123,21 +125,23 @@ public class AsyncGetGroupReceipts extends AsyncTask<String, String, String> {
             for(int i=0;i<jArray.length();i++){
                 JSONObject json_data = jArray.getJSONObject(i);
                 ReceiptData receiptData = new ReceiptData(
-                        json_data.getString("owner"),
+                        json_data.getJSONObject("owner").getString("name"),
                         json_data.getString("store"),
                         json_data.getString("date"),
-                        json_data.getJSONArray("receipts").length(),
-                        json_data.getDouble("total"),
+                        json_data.getJSONArray("articles").length(),
+                        json_data.getDouble("paid"),
                         json_data.getString("currency")
                 );
-
+                Log.d("DATA", receiptData.getUser());
                 dataGroup.add(receiptData);
             }
 
-            for (int i = 0; i <= dataGroup.size(); i++) {
-                if (dataGroup.get(i).getUser().equals(currentUser)) {
-                    dataUser.add(dataGroup.get(i));
-                    dataGroup.remove(i);
+            Iterator<ReceiptData> i = dataGroup.iterator();
+            while (i.hasNext()) {
+                ReceiptData receiptData = i.next();
+                if (receiptData.getUser().equals(currentUser)) {
+                    dataUser.add(receiptData);
+                    i.remove();
                 }
             }
 
@@ -156,19 +160,28 @@ public class AsyncGetGroupReceipts extends AsyncTask<String, String, String> {
 
             RecyclerView recyclerViewGroup = receiptListGroup.getView().findViewById(R.id.rv_group_receipt_list);
             RecyclerView recyclerViewUser = receiptListGroup.getView().findViewById(R.id.rv_group_receipt_list_user);
+            LinearLayout linearLayoutGroup = receiptListGroup.getView().findViewById(R.id.ll_group_receipt_list);
+            LinearLayout linearLayoutUser = receiptListGroup.getView().findViewById(R.id.ll_group_receipt_list_user);
 
-            ReceiptAdapter adapterUser = new ReceiptAdapter(receiptListGroup.getContext(), dataUser);
-            ReceiptAdapter adapterGroup = new ReceiptAdapter(receiptListGroup.getContext(), dataGroup);
+            if (dataUser.isEmpty()) {
+                linearLayoutUser.setVisibility(View.GONE);
+            } else {
+                ReceiptAdapter adapterUser = new ReceiptAdapter(receiptListGroup.getContext(), dataUser);
+                recyclerViewUser.setAdapter(adapterUser);
+                recyclerViewUser.setLayoutManager(new LinearLayoutManager(receiptListGroup.getContext()));
+            }
 
-            recyclerViewUser.setAdapter(adapterUser);
-            recyclerViewGroup.setAdapter(adapterGroup);
-
-            recyclerViewUser.setLayoutManager(new LinearLayoutManager(receiptListGroup.getContext()));
-            recyclerViewGroup.setLayoutManager(new LinearLayoutManager(receiptListGroup.getContext()));
+            if (dataGroup.isEmpty()) {
+                linearLayoutGroup.setVisibility(View.GONE);
+            } else {
+                ReceiptAdapter adapterGroup = new ReceiptAdapter(receiptListGroup.getContext(), dataGroup);
+                recyclerViewGroup.setAdapter(adapterGroup);
+                recyclerViewGroup.setLayoutManager(new LinearLayoutManager(receiptListGroup.getContext()));
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
-            Toast.makeText(receiptListGroup.getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(receiptListGroup.getContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 

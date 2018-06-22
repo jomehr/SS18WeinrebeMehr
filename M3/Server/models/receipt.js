@@ -17,7 +17,8 @@ const receiptSchema = new Schema ({
     paid: {type: Number, required: true},
     change: {type: Number, required: true},
     currency: {type: String, enum: CURRENCY, required:true},
-    edited: {type: Boolean, required: true}
+    edited: {type: Boolean, default: false}
 });
 
 module.exports = mongoose.model("Receipt", receiptSchema);
+

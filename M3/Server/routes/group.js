@@ -13,11 +13,11 @@ router.post("/:groupId/participants", groupController.groups_add_participant);
 router.delete("/:groupId/participants/:participantId", groupController.groups_remove_participant);
 //--------------------------------------------------------------
 router.get("/:groupId/settlements", groupController.groups_get_settlements);
-router.post("/:groupId/participants", groupController.groups_add_settlement);
-router.post("/:groupId/participants", groupController.groups_remove_settlement);
+router.post("/:groupId/settlements", groupController.groups_add_settlement);
+router.delete("/:groupId/settlements/:settlementId", groupController.groups_remove_settlement);
 //--------------------------------------------------------------
 router.get("/:groupId/receipts", groupController.groups_get_receipts);
 router.post("/:groupId/receipts", groupController.groups_add_receipt);
-router.delete("/:groupId/receipts", groupController.groups_remove_receipt);
+router.delete("/:groupId/receipts/receiptId", groupController.groups_remove_receipt);
 
 module.exports = router;

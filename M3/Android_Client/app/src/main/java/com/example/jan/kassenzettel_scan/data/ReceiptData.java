@@ -1,8 +1,14 @@
 package com.example.jan.kassenzettel_scan.data;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
@@ -13,14 +19,15 @@ public class ReceiptData {
     private int numberArticles;
     private double totalAmount;
 
-    DateFormat df = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+    private SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
 
     public ReceiptData(String user, String storeName, String date, int numberArticles,
                        double totalAmount, String currency) {
         this.user = user;
         this.storeName = storeName;
-        this.date = date;
+        Log.d("DATE", date);
+        setDate(date);
         this.numberArticles = numberArticles;
         this.totalAmount = totalAmount;
         this.currency = currency;
@@ -32,8 +39,15 @@ public class ReceiptData {
     }
 
     public void setDate(String date) {
-        this.date = date;
+        Date tmpDate= null;
+        try {
+            tmpDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'",Locale.GERMANY).parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        this.date = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY).format(tmpDate);
     }
+
 
     public void setNumberArticles(int numberArticles) {
         this.numberArticles = numberArticles;
@@ -49,7 +63,7 @@ public class ReceiptData {
 
     //Getter
     public String getUser() {
-        return user;
+        return user.split("\\s+")[0];
     }
 
     public String getStoreName() {
@@ -57,7 +71,7 @@ public class ReceiptData {
     }
 
     public String getDate() {
-        return date;
+        return date.split("T")[0];
     }
 
     public int getNumberArticles() {
