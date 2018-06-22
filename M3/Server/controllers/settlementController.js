@@ -59,10 +59,10 @@ exports.settlements_update_settlement = function (req, res) {
 
 
 exports.settlements_get_totaldept = function (req,res){
-      //let id = req.params.receiptdeptId;
 
 
-      let x = Receiptdept.find({})
+
+      Receiptdept.find({})
   //    .select("dept")
       .distinct("dept", function(err, result){
         if (err) console.log(err);
@@ -73,8 +73,8 @@ exports.settlements_get_totaldept = function (req,res){
           total += result[i];
 
         }
-          result = total;
-          console.log(total); // 6
+          
+          console.log(total);
 
 
         // console.log(result);

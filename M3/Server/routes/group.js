@@ -28,5 +28,5 @@ router.delete("/:groupId/settlements/:settlementId", groupController.groups_remo
 router.get("/:groupId/receipts", groupController.groups_get_receipts);
 router.post("/:groupId/receipts", groupController.groups_add_receipt);
 router.delete("/:groupId/receipts/receiptId", groupController.groups_remove_receipt);
-
+*/
 module.exports = router;
