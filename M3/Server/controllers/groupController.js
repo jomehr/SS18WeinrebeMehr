@@ -109,33 +109,21 @@ exports.groups_add_participant = function (req, res) {
     console.log(req.body.participants);
 
     Group.findByIdAndUpdate(
-        id, {$push: req.body},{new: true, upsert: true}, function (err, result) {
+        id, {$addToSet: req.body}, {new: true}, function (err, result) {
             if (err) console.log(err);
 
-            console.log(result);
-            res.send(result);
-
-            //console.log(result.participants);
-            //res.send(result.participants);
+            console.log(result.participants);
+            res.send(result.participants);
         });
 };
 
 exports.groups_remove_participant = function (req, res) {
     let id = req.params.groupId;
+    let participant = req.params.participantId;
 
-    Group.findByIdAndUpdate(id,
-        {
-            $pull:
-                {
-                    participants: req.body.participants
-                }
-        },
-        {new: true},
-        function (err, result) {
+    Group.findByIdAndUpdate(
+        id, {$pull: {participants: participant}}, {new: true}, function (err, result) {
             if (err) console.log(err);
-
-            console.log(result);
-            res.send(result);
 
             console.log(result.participants);
             res.send(result.participants);
