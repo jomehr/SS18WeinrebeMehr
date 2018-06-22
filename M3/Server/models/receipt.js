@@ -6,7 +6,7 @@ const CURRENCY = ["DOLLAR", "EURO"];
 
 const receiptSchema = new Schema ({
 
-    type:  {type: String, enum: TYPE}
+    type:  {type: String, enum: TYPE, required:true},
     owner: {type: Schema.Types.ObjectId, ref: "User", required: true},
     participants: [{type: Schema.Types.ObjectId, ref: "User" }],
     articles: [{type: Schema.Types.ObjectId, ref: "Article", required: true}],

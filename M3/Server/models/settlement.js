@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 
 
 const settlementSchema = new Schema ({
+
+    //_id: new mongoose.Types.ObjectId,
     startDate: {type: Date, default: Date.now(), valid: Boolean},
     endDate:   {type: Date, valid: Boolean, required: true},//***
     creditor:  {type: Schema.Types.ObjectId, ref: "User", required: true},

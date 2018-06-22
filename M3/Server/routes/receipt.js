@@ -11,7 +11,9 @@ router.delete("/:receiptId", receiptController.receipts_delete_receipt);
 //----------------------------------------------------------------------
 //TODO: add get image
 //----------------------------------------------------------------------
-router.get("/:receiptId/articles", receiptController.receipts_get_all_article);
+
+router.get("/:receiptId/articles", receiptController.receipts_get_all_article,
+receiptController.receipts_get_single_article);
 router.post("/:receiptId/articles", receiptController.receipts_create_article);
 router.get("/:receiptId/articles/:articleId",
 receiptController.receipts_get_single_article);
@@ -19,8 +21,9 @@ router.patch("/:receiptId/articles/:articleId",
 receiptController.receipt_update_article);
 router.delete("/:receiptId/articles/:articleId",
 receiptController.receipts_delete_article);
+
 //-----------------------------------------------------------------------
-router.get("/:receiptId/articles/:articleId/participations",
+/*router.get("/:receiptId/articles/:articleId/participations",
 receiptController.receipts_get_all_participant);
 router.post("/:receiptId/articles/:articleId/participations",
 receiptController.receipts_create_participant);
@@ -39,3 +42,5 @@ router.patch("/:receiptId/articles/:articleId/participations/:participantId/sugg
 receiptController.receipts_update_suggestion);
 router.delete("/:receiptId/articles/:articleId/participations/:participantId/suggestion",
 receiptController.receipts_delete_suggestion);
+*/
+module.exports = router;

@@ -9,6 +9,7 @@ router.get("/:groupId/", groupController.groups_get_single);
 router.patch("/:groupId", groupController.groups_update_group);
 router.delete("/:groupId", groupController.groups_delete_group);
 //-------------------------------------------------------------
+/*
 router.get("/:groupId/participants",
 groupController.groups_get_participants);
 router.post("/:groupId/participants",
@@ -17,6 +18,6 @@ router.delete("/:groupId/participants"),
 groupController.groups_delete_participant);
 //--------------------------------------------------------------
 router.get("/:groupId/settlements", groupController.groups_get_settlement);
-
+*/
 
 module.exports = router;

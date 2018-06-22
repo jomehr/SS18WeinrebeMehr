@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 const totaldeptSchema = new Schema({
 
+  //_id: new mongoose.Types.ObjectId,
   deptor: [{type: Schema.Types.ObjectId, ref: "User", required: true}],
   settlement: {type: Schema.Types.ObjectId, ref: "Settlement", required:true},
   receiptdept: {type: Schema.Types.ObjectId, ref: "Receiptdept", required:true},
