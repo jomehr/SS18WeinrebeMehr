@@ -39,7 +39,7 @@ exports.users_create_user = function (req, res) {
 exports.users_get_single = function (req, res) {
         let id = req.params.userId;
 
-        user.findById(id, function (err, result) {
+        User.findById(id, function (err, result) {
             if (err) console.log(err);
 
             console.log(result);

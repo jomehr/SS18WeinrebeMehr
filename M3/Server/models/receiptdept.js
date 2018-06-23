@@ -13,4 +13,4 @@ const receiptdeptSchema = new Schema({
   paid: {type: Boolean, default: false}
 });
 
-module.exports = mongoose.model("Receiptdept", receiptSchema);
+module.exports = mongoose.model("Receiptdept", receiptdeptSchema);
