@@ -1,9 +1,9 @@
-package com.example.jan.kassenzettel_scan.interfaces;
+package com.example.jan.kassenzettel_scan.utils.interfaces;
 
 import android.app.Activity;
 import android.content.Context;
 
-public interface RequestPermissionsTool {
+public interface RequestPermissionInterface {
     void requestPermissions(Activity context, String[] permissions);
 
     boolean isPermissionsGranted(Context context, String[] permissions);

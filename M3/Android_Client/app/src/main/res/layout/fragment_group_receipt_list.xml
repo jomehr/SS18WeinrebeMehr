@@ -6,61 +6,69 @@
     android:layout_height="match_parent"
     android:background="@color/colorSecondaryLight">
 
-    <LinearLayout
-        android:id="@+id/receipt_group_recyclerlayout"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/rv_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/ll_group_receipt_list_user"
+            android:id="@+id/receipt_group_recyclerlayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/ll_group_receipt_list_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="Deine Kassenzettel:"
-                android:textSize="15sp"/>
+                android:orientation="vertical"
+                android:clickable="false">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_group_receipt_list_user"
-                android:layout_width="match_parent"
-                android:layout_height="180dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="Deine Kassenzettel:"
+                    android:textSize="15sp"/>
 
-            <View
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_group_receipt_list_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/colorAccent"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_group_receipt_list"
                 android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@color/colorAccent"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="Die Kassenzettel der restlichen Mitglieder:"
+                    android:textSize="15sp"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_group_receipt_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="55dp"/>
+            </LinearLayout>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_group_receipt_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:text="Die Kassenzettel der restlichen Mitglieder:"
-                android:textSize="15sp"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_group_receipt_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="55dp"/>
-        </LinearLayout>
-
-    </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/receipt_group_pb"

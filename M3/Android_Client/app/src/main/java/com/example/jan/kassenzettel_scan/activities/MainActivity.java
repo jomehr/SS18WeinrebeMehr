@@ -11,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -71,8 +72,7 @@ public class MainActivity extends AppCompatActivity
                         bottomNavigationView.setVisibility(View.VISIBLE);
                         break;
                     default :
-                        fragmentClass = ReceiptList_Group.class;
-                        bottomNavigationView.setVisibility(View.VISIBLE);
+                        break;
                  }
 
                 try {
@@ -103,6 +103,13 @@ public class MainActivity extends AppCompatActivity
 
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
         bottomNavigationView.setSelectedItemId(R.id.nav_group_receipt_list);
+
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                Object value = getIntent().getExtras().get(key);
+                Log.d("FCM_INTENT", "Key: " + key + " Value: " + value);
+            }
+        }
     }
 
     @Override
@@ -115,12 +122,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -178,6 +185,8 @@ public class MainActivity extends AppCompatActivity
                 break;
             case (R.id.nav_logout) :
                 Toast.makeText(MainActivity.this, R.string.later_implementation, Toast.LENGTH_LONG).show();
+                break;
+            default:
                 break;
         }
 

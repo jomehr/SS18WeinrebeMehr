@@ -1,16 +1,9 @@
-package com.example.jan.kassenzettel_scan.tasks;
+package com.example.jan.kassenzettel_scan.network;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.jan.kassenzettel_scan.R;
-import com.example.jan.kassenzettel_scan.adapter.ReceiptAdapter;
 import com.example.jan.kassenzettel_scan.data.ReceiptData;
 import com.example.jan.kassenzettel_scan.fragments.ReceiptList_Group;
 
@@ -36,9 +29,10 @@ public class AsyncGetGroupReceipts extends AsyncTask<String,String, String> {
     // CONNECTION_TIMEOUT and READ_TIMEOUT are in milliseconds
     private static final int CONNECTION_TIMEOUT = 10000;
     private static final int READ_TIMEOUT = 15000;
+
     private ReceiptList_Group receiptListGroup;
 
-    public AsyncGetGroupReceipts (ReceiptList_Group receiptListGroup, String id) {
+    public AsyncGetGroupReceipts (ReceiptList_Group receiptListGroup) {
         this.receiptListGroup = receiptListGroup;
     }
 
@@ -64,7 +58,6 @@ public class AsyncGetGroupReceipts extends AsyncTask<String,String, String> {
             // setDoOutput to false as we recieve data from json file
             conn.setDoOutput(false);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return e.toString();
         }
@@ -121,8 +114,9 @@ public class AsyncGetGroupReceipts extends AsyncTask<String,String, String> {
         try {
             JSONArray jArray = new JSONArray(result);
 
+            //if (jArray)
             // Extract data from json and store into ArrayList as class objects
-            for(int i=0;i<jArray.length();i++){
+            for(int i=0; i<jArray.length(); i++){
                 JSONObject json_data = jArray.getJSONObject(i);
                 ReceiptData receiptData = new ReceiptData(
                         json_data.getJSONObject("owner").getString("name"),
@@ -158,14 +152,16 @@ public class AsyncGetGroupReceipts extends AsyncTask<String,String, String> {
                 }
             });
 
-            RecyclerView recyclerViewGroup = receiptListGroup.getView().findViewById(R.id.rv_group_receipt_list);
-            RecyclerView recyclerViewUser = receiptListGroup.getView().findViewById(R.id.rv_group_receipt_list_user);
-            LinearLayout linearLayoutGroup = receiptListGroup.getView().findViewById(R.id.ll_group_receipt_list);
+            receiptListGroup.updateContent(dataGroup, dataUser);
+
+/*            LinearLayout linearLayoutGroup = receiptListGroup.getView().findViewById(R.id.ll_group_receipt_list);
             LinearLayout linearLayoutUser = receiptListGroup.getView().findViewById(R.id.ll_group_receipt_list_user);
+
 
             if (dataUser.isEmpty()) {
                 linearLayoutUser.setVisibility(View.GONE);
             } else {
+                RecyclerView recyclerViewUser = receiptListGroup.getView().findViewById(R.id.rv_group_receipt_list_user);
                 ReceiptAdapter adapterUser = new ReceiptAdapter(receiptListGroup.getContext(), dataUser);
                 recyclerViewUser.setAdapter(adapterUser);
                 recyclerViewUser.setLayoutManager(new LinearLayoutManager(receiptListGroup.getContext()));
@@ -174,10 +170,11 @@ public class AsyncGetGroupReceipts extends AsyncTask<String,String, String> {
             if (dataGroup.isEmpty()) {
                 linearLayoutGroup.setVisibility(View.GONE);
             } else {
+                RecyclerView recyclerViewGroup = receiptListGroup.getView().findViewById(R.id.rv_group_receipt_list);
                 ReceiptAdapter adapterGroup = new ReceiptAdapter(receiptListGroup.getContext(), dataGroup);
                 recyclerViewGroup.setAdapter(adapterGroup);
                 recyclerViewGroup.setLayoutManager(new LinearLayoutManager(receiptListGroup.getContext()));
-            }
+            }*/
 
         } catch (JSONException e) {
             e.printStackTrace();

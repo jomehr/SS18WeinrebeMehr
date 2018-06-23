@@ -27,8 +27,8 @@ import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
 import com.example.jan.kassenzettel_scan.R;
-import com.example.jan.kassenzettel_scan.interfaces.RequestPermissionsTool;
-import com.example.jan.kassenzettel_scan.utils.RequestPermissionsToolImpl;
+import com.example.jan.kassenzettel_scan.utils.interfaces.RequestPermissionInterface;
+import com.example.jan.kassenzettel_scan.utils.RequestPermissionTool;
 import com.googlecode.tesseract.android.TessBaseAPI;
 
 import java.io.File;
@@ -46,7 +46,7 @@ public class ReceiptScan extends AppCompatActivity{
     private static final String TESSDATA = "tessdata";
 
     private TessBaseAPI tessBaseApi;
-    private RequestPermissionsTool requestTool; //for API >=23 only
+    private RequestPermissionInterface requestTool; //for API >=23 only
 
     private DrawerLayout mDrawerLayout;
     private TextView textView;
@@ -321,7 +321,7 @@ public class ReceiptScan extends AppCompatActivity{
 
     private void requestPermissions() {
         String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        requestTool = new RequestPermissionsToolImpl();
+        requestTool = new RequestPermissionTool();
         requestTool.requestPermissions(this, permissions);
     }
 

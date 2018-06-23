@@ -11,15 +11,15 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
-import com.example.jan.kassenzettel_scan.interfaces.RequestPermissionsTool;
+import com.example.jan.kassenzettel_scan.utils.interfaces.RequestPermissionInterface;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RequestPermissionsToolImpl implements RequestPermissionsTool {
+public class RequestPermissionTool implements RequestPermissionInterface {
 
     private static final String CONFIRMATION_DIALOG = "ConfirmationDialog";
-    private static final String TAG = RequestPermissionsToolImpl.class.getSimpleName();
+    private static final String TAG = RequestPermissionTool.class.getSimpleName();
     private Activity activity;
 
 

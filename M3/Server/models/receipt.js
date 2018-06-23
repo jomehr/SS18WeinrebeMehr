@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 const TYPE = ["SOLO", "GROUP"];
-const CURRENCY = ["DOLLAR", "EURO"];
+const CURRENCY = ["$", "€"];
 
 const receiptSchema = new Schema ({
     type:  {type: String, enum: TYPE, required:true},

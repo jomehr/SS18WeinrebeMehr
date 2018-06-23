@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/toolbar_push_messages"
+        android:icon="@drawable/ic_notificationempty_black"
+        android:title="@string/no_alerts"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/toolbar_subscribe"
+        android:title="@string/subscribe"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/toolbar_refresh"
+        android:title="@string/refresh"
+        app:showAsAction="never" />
+
+</menu>
