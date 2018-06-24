@@ -2,27 +2,35 @@ let Receipt = require("../models/receipt");
 let Group = require("../models/group");
 let User = require("../models/user");
 let Adress = require("../models/address");
-let Article = require("../models/article");
+//let Article = require("../models/article");
 //let Category = require("../models/category");
 
 //let users = require("./userController")
 
 exports.receipts_get_all = function (req, res) {
 
-    let query = Receipt.find({});
-    query.select("owner store date paid articles currency").populate("owner", "name");
-    query.exec(function (err, result) {
+    // arr.forEach(function callback(currentValue [, index [, array]]) {
+    //     //your iterator
+    // }[, thisArg]);
+    //     arr.findIndex(callback[, thisArg])//anzahl artikle
+    // query.exec(function (err, result) {
+    //     if (err) console.log(err);
+    //
+    //     res.send(result);
+    // });
+
+    // let result = users;
+    // let userId = { $eq:"5b292adca5e3d02b24ddac11"}; //result
+
+    Receipt.find({/*owner: userId*/})
+    .exec(function (err, result) {
         if (err) console.log(err);
 
         res.send(result);
     });
-
-
 };
 
 exports.receipts_create_receipt = function (req, res) {
-    let articleIDs = [];
-    let receiptID;
 
     let receipt = new Receipt({
         type: req.body.type,
@@ -31,37 +39,20 @@ exports.receipts_create_receipt = function (req, res) {
         store: req.body.store,
         date: req.body.date,
         location: req.body.location,
-        articles: articleIDs,
+        address: req.body.address,
+        articles: req.body.articles,
         total: req.body.total,
         paid: req.body.paid,
         change: req.body.change,
         currency: req.body.currency,
-    });
+        edited: req.body.edited
 
+    });
     console.log(receipt);
     receipt.save(function (err, result) {
         if (err) console.log(err);
-        receiptID = result._id;
-        res.send(receiptID)
+        res.send(result);
     });
-
-    req.body.articles.forEach(function (item, index) {
-        console.log(receiptID);
-        let article = new Article({
-            receipt: receiptID,
-            name: item.name,
-            price: item.price
-        });
-
-        article.save(function (err, result) {
-            if (err) console.log(err);
-            Receipt.findByIdAndUpdate(
-                receiptID, {$addToSet: {articles: result._id}}, {new:true}, function(err, result) {
-                    if (err) console.log(err);
-                })
-        })
-    })
-
 };
 
 exports.receipts_get_single = function (req, res) {
@@ -71,7 +62,7 @@ exports.receipts_get_single = function (req, res) {
         if (err) console.log(err);
 
         console.log(result);
-        res.send(result.toString());
+        res.send(result);
     });
 };
 
