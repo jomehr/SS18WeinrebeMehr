@@ -9,25 +9,19 @@ let Adress = require("../models/address");
 
 exports.receipts_get_all = function (req, res) {
 
-    // arr.forEach(function callback(currentValue [, index [, array]]) {
-    //     //your iterator
-    // }[, thisArg]);
-    //     arr.findIndex(callback[, thisArg])//anzahl artikle
-    // query.exec(function (err, result) {
-    //     if (err) console.log(err);
-    //
-    //     res.send(result);
-    // });
-
-    // let result = users;
-    // let userId = { $eq:"5b292adca5e3d02b24ddac11"}; //result
-
-    Receipt.find({/*owner: userId*/})
-    .exec(function (err, result) {
+    let query = Receipt.find({});
+    query.select("owner store date paid articles currency").populate("owner", "name");
+    query.exec(function (err, result) {
         if (err) console.log(err);
 
         res.send(result);
     });
+/*    Receipt.find({/!*owner: userId*!/})
+    .exec(function (err, result) {
+        if (err) console.log(err);
+
+        res.send(result);
+    });*/
 };
 
 exports.receipts_create_receipt = function (req, res) {

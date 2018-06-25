@@ -1,0 +1,7 @@
+{"_id":{"$oid":"5b2d2000cefeea75c0def8e2"},"participation":[],"edited":false,"name":"Milch","price":{"$numberDouble":"0.8"},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5b2d2000cefeea75c0def8e3"},"participation":[],"edited":false,"name":"Banane","price":{"$numberDouble":"1.5"},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5b2d20574b452394e040afea"},"participation":[],"edited":false,"name":"Milch","price":{"$numberDouble":"0.8"},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5b2d20574b452394e040afeb"},"participation":[],"edited":false,"name":"Banane","price":{"$numberDouble":"1.5"},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5b2d8db3f3e86353542889f3"},"participation":[],"edited":false,"name":"Käse","price":{"$numberDouble":"0.8"},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5b2d8db3f3e86353542889f4"},"participation":[],"edited":false,"name":"Wurst","price":{"$numberDouble":"1.5"},"__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5b2d8db3f3e86353542889f5"},"participation":[],"edited":false,"name":"Bier","price":{"$numberDouble":"3.99"},"__v":{"$numberInt":"0"}}
