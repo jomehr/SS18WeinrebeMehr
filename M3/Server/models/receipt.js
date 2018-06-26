@@ -21,4 +21,3 @@ const receiptSchema = new Schema ({
 });
 
 module.exports = mongoose.model("Receipt", receiptSchema);
-
