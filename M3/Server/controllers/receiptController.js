@@ -2,7 +2,7 @@ let Receipt = require("../models/receipt");
 let Group = require("../models/group");
 let User = require("../models/user");
 let Adress = require("../models/address");
-//let Article = require("../models/article");
+let Article = require("../models/article");
 //let Category = require("../models/category");
 
 //let users = require("./userController")
@@ -15,36 +15,47 @@ exports.receipts_get_all = function (req, res) {
             if (err) console.log(err);
             res.send(result);
         });
-/*    Receipt.find({/!*owner: userId*!/})
-    .exec(function (err, result) {
-        if (err) console.log(err);
-
-        res.send(result);
-    });*/
 };
 
 exports.receipts_create_receipt = function (req, res) {
+    let receiptID;
 
     let receipt = new Receipt({
         type: req.body.type,
         owner: req.body.owner,
-        participants: req.body.participants,
+        group: req.body.group,
+        location: req.body.location,
         store: req.body.store,
         date: req.body.date,
-        location: req.body.location,
-        address: req.body.address,
-        articles: req.body.articles,
         total: req.body.total,
         paid: req.body.paid,
         change: req.body.change,
         currency: req.body.currency,
-        edited: req.body.edited
     });
 
     console.log(receipt);
     receipt.save(function (err, result) {
         if (err) console.log(err);
-        res.send(result);
+
+        receiptID = result._id;
+        res.status(202).end();
+
+        req.body.articles.forEach(function (item) {
+            let article = new Article({
+                receipt: receiptID,
+                name: item.name,
+                price: item.price
+            });
+
+            article.save(function (err, result) {
+                if (err) console.log(err);
+                Receipt.findByIdAndUpdate(
+                    receiptID, {$addToSet: {articles: result._id}}, {new:true},
+                    function(err, result) {
+                        if (err) console.log(err);
+                    })
+            })
+        })
     });
 };
 
@@ -67,12 +78,10 @@ exports.receipts_update_receipt = function (req, res) {
         $set: {
             type: req.body.type,
             owner: req.body.owner,
-            participants: req.body.participants,
+            group: req.body.group,
+            location: req.body.location,
             store: req.body.store,
             date: req.body.date,
-            location: req.body.location,
-            address: req.body.address,
-            articles: req.body.articles,
             total: req.body.total,
             paid: req.body.paid,
             change: req.body.change,

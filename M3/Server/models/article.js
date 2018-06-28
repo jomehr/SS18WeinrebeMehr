@@ -9,7 +9,7 @@ const articleSchema = new Schema ({
     participation: [{type: Schema.Types.ObjectId, ref: "Participation" }],
     receipt: {type: Schema.Types.ObjectId, ref: "Receipt" },
     price: {type: Number, required: true},
-    //category: [{type: Schema.Types.ObjectID, ref: "Category"}],
+    category: [{type: Schema.Types.ObjectId, ref: "Category"}],
     amount: Number,
     total: Number,
     edited: {type: Boolean, default: false}
