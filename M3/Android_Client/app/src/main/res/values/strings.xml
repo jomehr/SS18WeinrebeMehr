@@ -19,6 +19,8 @@
     <string name="profile_picture">Profilbild</string>
     <string name="later_implementation">Dieses Featuer wird später implementiert</string>
     <string name="details">Details</string>
-    <string name="subscribe">Abbonieren</string>
+    <string name="subscribe">Abonnieren</string>
     <string name="refresh">Aktualisieren</string>
+    <string name="serverSide_statusCodeText">Ups, da lief wohl etwas schief! Versuche es bitte später erneut.</string>
+    <string name="noRessource_statusCodeText">404! Es sind noch keine Daten vorhanden.</string>
 </resources>

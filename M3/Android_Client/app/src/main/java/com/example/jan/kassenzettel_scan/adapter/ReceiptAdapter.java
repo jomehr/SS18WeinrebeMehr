@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jan.kassenzettel_scan.R;
@@ -43,19 +42,14 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get current position of item in recyclerview to bind data and assign values from list
         ReceiptData curReceipt = receiptData.get(position);
-        holder.owner.setText(curReceipt.getUser());
+        holder.owner.setText(curReceipt.getUserFirstName());
         holder.name.setText(curReceipt.getStoreName());
-        holder.date.setText(curReceipt.getDate());
+        holder.date.setText(curReceipt.getDateString());
         holder.articleNumber.setText(String.valueOf(curReceipt.getNumberArticles()));
         holder.total.setText(String.valueOf(curReceipt.getTotalAmount()));
         holder.currency.setText(curReceipt.getCurrency());
 
-/*      //changes background colour of uneven items
-        if (position %2 == 1) {
-            holder.itemView.setBackgroundColor(Color.parseColor("#b2fab4"));
-        }*/
     }
-
 
     // return total item from List
     @Override

@@ -1,53 +1,56 @@
 package com.example.jan.kassenzettel_scan.data;
 
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 public class ReceiptData {
 
-    private String user, storeName, currency;
+    private static final String TAG = "ReceiptData";
+
+    private String id, owner, storeName, currency;
     private String date;
+    private Date realDate;
     private int numberArticles;
-    private double totalAmount;
+    private double totalAmount, paidAmount, changeAmount;
+    private ArrayList<String> articleIds;
 
-    private SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+    public ReceiptData(String id, String owner, String storeName, String date, ArrayList<String> articleIds, int numberArticles,
+                       double totalAmount, double paidAmount, double changeAmount, String currency) {
 
-
-    public ReceiptData(String user, String storeName, String date, int numberArticles,
-                       double totalAmount, String currency) {
-        this.user = user;
+        this.id = id;
+        this.owner = owner;
         this.storeName = storeName;
-        Log.d("DATE", date);
         setDate(date);
+        this.articleIds = articleIds;
         this.numberArticles = numberArticles;
         this.totalAmount = totalAmount;
+        this.paidAmount = paidAmount;
+        this.changeAmount = changeAmount;
         this.currency = currency;
     }
 
     //Setter
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
-    }
-
     public void setDate(String date) {
-        Date tmpDate= null;
         try {
-            tmpDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'",Locale.GERMANY).parse(date);
+            this.realDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'",Locale.GERMANY).parse(date);
+            Log.d(TAG, "RealDate: "+realDate.toString());
+            this.date = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY).format(realDate);
+            Log.d(TAG, "StringDate: "+ date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        this.date = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY).format(tmpDate);
+
     }
 
+/*
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
 
     public void setNumberArticles(int numberArticles) {
         this.numberArticles = numberArticles;
@@ -60,18 +63,35 @@ public class ReceiptData {
     public void setCurrency(String currency) {
         this.currency = currency;
     }
+*/
 
     //Getter
-    public String getUser() {
-        return user.split("\\s+")[0];
+    public String getId () {
+        return id;
+    }
+
+    public String getUserFirstName() {
+        return owner.split("\\s+")[0];
+    }
+
+    public String getUserFullName() {
+        return owner;
     }
 
     public String getStoreName() {
         return storeName;
     }
 
-    public String getDate() {
+    public String getDateString() {
         return date.split("T")[0];
+    }
+
+    public Date getRealDate() {
+        return realDate;
+    }
+
+    public ArrayList<String> getArticleIds() {
+        return articleIds;
     }
 
     public int getNumberArticles() {
@@ -80,6 +100,14 @@ public class ReceiptData {
 
     public double getTotalAmount() {
         return totalAmount;
+    }
+
+    public double getPaidAmount() {
+        return paidAmount;
+    }
+
+    public double getChangeAmount() {
+        return changeAmount;
     }
 
     public String getCurrency() {
