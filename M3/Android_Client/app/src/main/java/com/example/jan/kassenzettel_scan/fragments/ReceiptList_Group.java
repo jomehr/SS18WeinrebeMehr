@@ -17,29 +17,54 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.example.jan.kassenzettel_scan.R;
-import com.example.jan.kassenzettel_scan.activities.MainActivity;
 import com.example.jan.kassenzettel_scan.adapter.ReceiptAdapter;
 import com.example.jan.kassenzettel_scan.data.ReceiptData;
-import com.example.jan.kassenzettel_scan.network.AsyncGetGroupReceipts;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.jan.kassenzettel_scan.network.RestClient;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 
 public class ReceiptList_Group extends Fragment {
 
+    private static final String TAG = "ReceiptList_Group";
+
+    private static final String endpoint = "receipt";
+    private static final String currentUser = "Jan";
+
     private Context mContext;
+    private TextView failureText;
     private LinearLayout resultView, linearLayoutGroup, linearLayoutUser;
     private RecyclerView recyclerViewUser, recyclerViewGroup;
     private ProgressBar progress;
     private SwipeRefreshLayout refreshLayout;
-    public MenuItem pushIcon;
+    private MenuItem pushIcon;
+    private RequestParams params;
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+
+        mContext = getActivity();
+    }
 
     @Nullable
     @Override
@@ -47,33 +72,27 @@ public class ReceiptList_Group extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_group_receipt_list, container, false);
 
-        mContext = getActivity();
+        resultView = rootView.findViewById(R.id.receipt_group_recyclerlayout);
+        failureText = rootView.findViewById(R.id.group_receipt_list_text);
+        progress = rootView.findViewById(R.id.receipt_group_pb);
+        linearLayoutGroup = rootView.findViewById(R.id.ll_group_receipt_list);
+        linearLayoutUser = rootView.findViewById(R.id.ll_group_receipt_list_user);
+        recyclerViewGroup = rootView.findViewById(R.id.rv_group_receipt_list);
+        recyclerViewUser = rootView.findViewById(R.id.rv_group_receipt_list_user);
+        refreshLayout = rootView.findViewById(R.id.rv_refresh);
+        pushIcon = rootView.findViewById(R.id.toolbar_push_messages);
 
-        resultView = (LinearLayout) rootView.findViewById(R.id.receipt_group_recyclerlayout);
-        progress = (ProgressBar) rootView.findViewById(R.id.receipt_group_pb);
-        linearLayoutGroup = (LinearLayout) rootView.findViewById(R.id.ll_group_receipt_list);
-        linearLayoutUser = (LinearLayout) rootView.findViewById(R.id.ll_group_receipt_list_user);
-        recyclerViewGroup = (RecyclerView) rootView.findViewById(R.id.rv_group_receipt_list);
-        recyclerViewUser = (RecyclerView) rootView.findViewById(R.id.rv_group_receipt_list_user);
-        refreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.rv_refresh);
+        resultView.setVisibility(View.INVISIBLE);
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new AsyncGetGroupReceipts(ReceiptList_Group.this).execute();
+                getData();
                 refreshLayout.setRefreshing(false);
             }
         });
 
-        if (getActivity().getIntent().getExtras() != null) {
-            changePushIcon();
-            for (String key : getActivity().getIntent().getExtras().keySet()) {
-                Object value = getActivity().getIntent().getExtras().get(key);
-                Log.d("FCM_INTENT", "Key: " + key + " Value: " + value);
-            }
-        }
-
-        Log.d("LIFECYCLE", "ONCREATE");
+        Log.d(TAG, "FragmentLifeCycle: ONCREATEVIEW");
 
         return rootView;
     }
@@ -81,27 +100,130 @@ public class ReceiptList_Group extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("LIFECYCLE", "ONSTART");
+        Log.d(TAG, "FragmentLifeCycle: ONSTART");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        new AsyncGetGroupReceipts(this).execute();
-        Log.d("LIFECYCLE", "ONRESUME");
+        getData();
+        Log.d(TAG, "FragmentLifeCycle: ONRESUME");
     }
 
-    public void showProgressBar() {
+    private void showProgressBar() {
         progress.setVisibility(View.VISIBLE);
     }
 
-    public void dismissProgressBar() {
-        resultView.setVisibility(View.VISIBLE);
+    private void dismissProgressBar() {
         progress.setVisibility(View.GONE);
+
     }
 
-    public void updateContent(List<ReceiptData> dataGroup, List<ReceiptData> dataUser) {
+    private void getData() {
+        showProgressBar();
+        RestClient.get(endpoint, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Log.d(TAG, "Success! Data loaded");
+                loadData(response);
+                dismissProgressBar();
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d(TAG, "Failure1! Data not loaded. Errorcode: "+statusCode);
+                failureText.setVisibility(View.VISIBLE);
+
+                if (statusCode == 404) {
+                    failureText.setText(R.string.noRessource_statusCodeText);
+                } else {
+                    failureText.setText(R.string.serverSide_statusCodeText);
+                }
+
+                resultView.setVisibility(View.GONE);
+                dismissProgressBar();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(TAG, "Failure2! Data not loaded. Errorcode: "+statusCode);
+                failureText.setVisibility(View.VISIBLE);
+
+                if (statusCode == 404) {
+                    failureText.setText(R.string.noRessource_statusCodeText);
+                } else {
+                    failureText.setText(R.string.serverSide_statusCodeText);
+                }
+
+                resultView.setVisibility(View.GONE);
+                dismissProgressBar();
+            }
+        });
+    }
+
+    private void loadData(JSONArray response) {
+        Log.d(TAG, "Data is being loaded");
+        if (resultView.getVisibility() == View.INVISIBLE) resultView.setVisibility(View.VISIBLE);
+
+        ArrayList<ReceiptData> dataGroup = new ArrayList<>();
+        ArrayList<ReceiptData> dataUser = new ArrayList<>();
+        ArrayList<String> receiptIds = new ArrayList<>();
+
+        try {
+            for(int i=0; i<response.length(); i++){
+                JSONObject json_data = response.getJSONObject(i);
+                JSONArray articles = json_data.getJSONArray("articles");
+                for (int j=0; j<articles.length(); j++) {
+                    receiptIds.add(articles.getString(j));
+                }
+                ReceiptData receiptData = new ReceiptData(
+                        json_data.getString("_id"),
+                        json_data.getJSONObject("owner").getString("name"),
+                        json_data.getString("store"),
+                        json_data.getString("date"),
+                        receiptIds,
+                        articles.length(),
+                        json_data.getDouble("total"),
+                        json_data.getDouble("paid"),
+                        json_data.getDouble("change"),
+                        json_data.getString("currency")
+                );
+                Log.d(TAG, receiptData.getUserFirstName());
+                dataGroup.add(receiptData);
+            }
+
+            Iterator<ReceiptData> i = dataGroup.iterator();
+            while (i.hasNext()) {
+                ReceiptData receiptData = i.next();
+                if (receiptData.getUserFirstName().equals(currentUser)) {
+                    dataUser.add(receiptData);
+                    i.remove();
+                }
+            }
+
+            Collections.sort(dataGroup, new Comparator<ReceiptData>() {
+                @Override
+                public int compare(ReceiptData o1, ReceiptData o2) {
+                    return o1.getRealDate().compareTo(o2.getRealDate());
+                }
+            });
+            Collections.sort(dataUser, new Comparator<ReceiptData>() {
+                @Override
+                public int compare(ReceiptData o1, ReceiptData o2) {
+                    return o1.getRealDate().compareTo(o2.getRealDate());
+                }
+            });
+
+            updateContent(dataGroup, dataUser);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(mContext, "JSON konnte nicht formatiert werden", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void updateContent(List<ReceiptData> dataGroup, List<ReceiptData> dataUser) {
+        Log.d(TAG, "View is being updated");
         if (dataUser.isEmpty()) {
             linearLayoutUser.setVisibility(View.GONE);
         } else {
@@ -119,18 +241,16 @@ public class ReceiptList_Group extends Fragment {
         }
     }
 
-    public void subscribeTopic() {
+    private void subscribeTopic() {
+        FirebaseMessaging.getInstance().subscribeToTopic("group_receipts");
+    }
+
+    private void unsubscribeTopic() {
         FirebaseMessaging.getInstance().subscribeToTopic("group_receipts");
     }
 
     public void changePushIcon () {
         pushIcon.setIcon(R.drawable.ic_newnotification_black);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -151,7 +271,7 @@ public class ReceiptList_Group extends Fragment {
                 subscribeTopic();
                 return true;
             case R.id.toolbar_refresh:
-                new AsyncGetGroupReceipts(ReceiptList_Group.this).execute();
+                getData();
                 return true;
             default:
                 break;

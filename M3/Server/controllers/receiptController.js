@@ -9,13 +9,12 @@ let Adress = require("../models/address");
 
 exports.receipts_get_all = function (req, res) {
 
-    let query = Receipt.find({});
-    query.select("owner store date paid articles currency").populate("owner", "name");
-    query.exec(function (err, result) {
-        if (err) console.log(err);
-
-        res.send(result);
-    });
+    Receipt.find({type: "GROUP"})
+        .populate("owner", "name")
+        .exec(function (err, result) {
+            if (err) console.log(err);
+            res.send(result);
+        });
 /*    Receipt.find({/!*owner: userId*!/})
     .exec(function (err, result) {
         if (err) console.log(err);
@@ -40,8 +39,8 @@ exports.receipts_create_receipt = function (req, res) {
         change: req.body.change,
         currency: req.body.currency,
         edited: req.body.edited
-
     });
+
     console.log(receipt);
     receipt.save(function (err, result) {
         if (err) console.log(err);
