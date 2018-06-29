@@ -43,6 +43,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
         return new ViewHolder(view);
     }
 
+
     @Override
     // Bind data
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -78,6 +79,8 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
             total = itemView.findViewById(R.id.receipt_total);
             currency = itemView.findViewById(R.id.receipt_currency);
 
+            //itemView.setOnClickListener(this);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -86,7 +89,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
                     Intent intent = new Intent(context, ReceiptDetails.class);
                     //intent.putExtra("receiptId", receiptId);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("receiptData", curReceipt);
+                    bundle.putSerializable("receiptData", receiptData.get(getLayoutPosition()));
                     intent.putExtras(bundle);
 
                     Log.d(TAG, String.valueOf(curReceipt!=null));

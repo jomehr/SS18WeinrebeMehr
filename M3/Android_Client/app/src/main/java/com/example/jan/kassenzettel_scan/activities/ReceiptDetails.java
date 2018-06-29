@@ -42,13 +42,11 @@ public class ReceiptDetails extends AppCompatActivity {
     private static final String articleEndpoint = "/articles";
 
     private Context mContext;
-    private String receiptId;
     private ReceiptData receiptData;
     private ProgressBar progress;
-    private RelativeLayout top, bottom;
     private SwipeRefreshLayout swipeRefresh_content;
     private RecyclerView recyclerViewArticle;
-    private TextView failureText, storename, date, location, receipttotal, paid, change;
+    private TextView failureText;
     private RequestParams params;
 
     @Override
@@ -61,14 +59,14 @@ public class ReceiptDetails extends AppCompatActivity {
         mContext = this;
 
         progress = findViewById(R.id.pb_ReceiptDetail);
-        top = findViewById(R.id.rl_ReceiptDetail_top);
-        storename = findViewById(R.id.detail_storename);
-        date = findViewById(R.id.detail_date);
-        location = findViewById(R.id.detail_location);
-        bottom = findViewById(R.id.rl_ReceiptDetail_bottom);
-        receipttotal = findViewById(R.id.detail_total);
-        paid = findViewById(R.id.detail_paid);
-        change = findViewById(R.id.detail_change);
+        RelativeLayout top = findViewById(R.id.rl_ReceiptDetail_top);
+        TextView storename = findViewById(R.id.detail_storename);
+        TextView date = findViewById(R.id.detail_date);
+        TextView location = findViewById(R.id.detail_location);
+        RelativeLayout bottom = findViewById(R.id.rl_ReceiptDetail_bottom);
+        TextView receipttotal = findViewById(R.id.detail_total);
+        TextView paid = findViewById(R.id.detail_paid);
+        TextView change = findViewById(R.id.detail_change);
         swipeRefresh_content = findViewById(R.id.swipeRefresh_ReceiptDetail);
         recyclerViewArticle = findViewById(R.id.rv_ReceiptDetail_articleList);
         failureText = findViewById(R.id.noDataText_ReceiptDetails);
@@ -128,8 +126,9 @@ public class ReceiptDetails extends AppCompatActivity {
     }
 
     private void getData() {
+        //TODO update receiptData in case it changed too
         showProgressBar();
-        receiptId = receiptData.getId();
+        String receiptId = receiptData.getId();
         Log.d(TAG, receiptId);
         String endpointURL = receiptEndpoint + receiptId + articleEndpoint;
         Log.d(TAG, endpointURL);

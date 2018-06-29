@@ -5,7 +5,8 @@ let Adress = require("../models/address");
 let Article = require("../models/article");
 //let Category = require("../models/category");
 
-//let users = require("./userController")
+
+let admin = require("firebase-admin");
 
 exports.receipts_get_all = function (req, res) {
 

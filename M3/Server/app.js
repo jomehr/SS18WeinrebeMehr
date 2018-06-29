@@ -10,6 +10,13 @@ let user = require("./routes/user");
 let group = require("./routes/group");
 let receipt = require("./routes/receipt");
 let settlement = require("./routes/settlement");
+let admin = require("firebase-admin");
+
+let serviceAccount = require("./serviceAccountKey.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
