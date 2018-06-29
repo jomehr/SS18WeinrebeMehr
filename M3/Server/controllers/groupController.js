@@ -2,6 +2,8 @@ let Group = require("../models/group");
 let User = require("../models/user");
 let Settlement = require("../models/settlement");
 
+let settlementController = require("./settlementController");
+
 exports.groups_get_all = function (req, res) {
     Group.find({}, function (err, result) {
         if (err) console.log(err);
@@ -20,6 +22,12 @@ exports.groups_get_all = function (req, res) {
 };
 
 exports.groups_create_group = function (req, res) {
+
+  let settlement = new Settlement({
+  });
+  settlement.save(function (err) {
+      if (err) console.log(err);
+    });
 
     let group = new Group({
         name: req.body.name,

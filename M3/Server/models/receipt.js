@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+let Receiptdebt = require("./receiptdebt");
 
 const Schema = mongoose.Schema;
 const TYPE = ["SOLO", "GROUP"];
@@ -20,5 +21,7 @@ const receiptSchema = new Schema ({
     edited: {type: Boolean, default: false}
 });
 
-module.exports = mongoose.model("Receipt", receiptSchema);
 
+
+
+module.exports = mongoose.model("Receipt", receiptSchema);
