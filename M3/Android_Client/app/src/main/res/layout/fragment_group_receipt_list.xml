@@ -7,18 +7,18 @@
     android:background="@color/colorSecondaryLight">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/rv_refresh"
+        android:id="@+id/swipeRefresh_ReceiptListGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/receipt_group_recyclerlayout"
+            android:id="@+id/ll_ReceiptListGroupContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/ll_group_receipt_list_user"
+                android:id="@+id/ll_ReceiptListGroup_User"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -34,7 +34,7 @@
                     android:textSize="15sp"/>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_group_receipt_list_user"
+                    android:id="@+id/rv_ReceiptListGroup_User"
                     android:layout_width="match_parent"
                     android:layout_height="180dp" />
 
@@ -45,7 +45,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_group_receipt_list"
+                android:id="@+id/ll_ReceiptListGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -60,7 +60,7 @@
                     android:textSize="15sp"/>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_group_receipt_list"
+                    android:id="@+id/rv_ReceiptListGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="55dp"/>
@@ -71,7 +71,7 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <ProgressBar
-        android:id="@+id/receipt_group_pb"
+        android:id="@+id/pb_ReceiptListGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
@@ -83,7 +83,7 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/group_receipt_list_text"
+        android:id="@+id/noDataText_ReceiptListGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="40dp"

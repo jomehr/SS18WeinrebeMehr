@@ -1,31 +1,222 @@
 package com.example.jan.kassenzettel_scan.activities;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jan.kassenzettel_scan.R;
+import com.example.jan.kassenzettel_scan.adapter.ArticleAdapter;
+import com.example.jan.kassenzettel_scan.data.ArticleData;
+import com.example.jan.kassenzettel_scan.data.ReceiptData;
+import com.example.jan.kassenzettel_scan.network.RestClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Objects;
+
+import cz.msebera.android.httpclient.Header;
 
 public class ReceiptDetails extends AppCompatActivity {
 
+    private static final String TAG = "ReceiptDetails";
+
+    private static final String receiptEndpoint = "receipt/";
+    private static final String articleEndpoint = "/articles";
+
+    private Context mContext;
+    private String receiptId;
+    private ReceiptData receiptData;
+    private ProgressBar progress;
+    private RelativeLayout top, bottom;
+    private SwipeRefreshLayout swipeRefresh_content;
+    private RecyclerView recyclerViewArticle;
+    private TextView failureText, storename, date, location, receipttotal, paid, change;
+    private RequestParams params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt_details);
 
+        Log.d(TAG, "ActivityLifeCycle: ONCREATE");
+
+        mContext = this;
+
+        progress = findViewById(R.id.pb_ReceiptDetail);
+        top = findViewById(R.id.rl_ReceiptDetail_top);
+        storename = findViewById(R.id.detail_storename);
+        date = findViewById(R.id.detail_date);
+        location = findViewById(R.id.detail_location);
+        bottom = findViewById(R.id.rl_ReceiptDetail_bottom);
+        receipttotal = findViewById(R.id.detail_total);
+        paid = findViewById(R.id.detail_paid);
+        change = findViewById(R.id.detail_change);
+        swipeRefresh_content = findViewById(R.id.swipeRefresh_ReceiptDetail);
+        recyclerViewArticle = findViewById(R.id.rv_ReceiptDetail_articleList);
+        failureText = findViewById(R.id.noDataText_ReceiptDetails);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         setTitle(getString(R.string.details));
 
+        if (getIntent().getExtras() != null) {
+            Log.d(TAG, getIntent().getExtras().toString());
+            Bundle bundle = getIntent().getExtras();
+            receiptData = (ReceiptData) bundle.getSerializable("receiptData");
+
+            if (receiptData != null) {
+                Log.d(TAG, receiptData.getId());
+                storename.setText(receiptData.getStoreName());
+                date.setText(receiptData.getDateString());
+                location.setText("Feature folgt");
+                receipttotal.setText(String.valueOf(receiptData.getTotalAmount()));
+                paid.setText(String.valueOf(receiptData.getPaidAmount()));
+                change.setText(String.valueOf(receiptData.getChangeAmount()));
+            } else {
+                top.setVisibility(View.GONE);
+                bottom.setVisibility(View.GONE);
+            }
+        }
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+        swipeRefresh_content.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+                swipeRefresh_content.setRefreshing(false);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "ActivityLifeCycle: ONRESUME");
+        getData();
+
+    }
+
+    private void showProgressBar() {
+        progress.setVisibility(View.VISIBLE);
+    }
+
+    private void dismissProgressBar() {
+        progress.setVisibility(View.GONE);
+    }
+
+    private void getData() {
+        showProgressBar();
+        receiptId = receiptData.getId();
+        Log.d(TAG, receiptId);
+        String endpointURL = receiptEndpoint + receiptId + articleEndpoint;
+        Log.d(TAG, endpointURL);
+        RestClient.get(endpointURL, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Log.d(TAG, "Success! Data loaded");
+                loadData(response);
+                dismissProgressBar();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d(TAG, "Failure1! Data not loaded. Errorcode: " + statusCode);
+                failureText.setVisibility(View.VISIBLE);
+
+                if (statusCode == 404) {
+                    failureText.setText(R.string.noRessource_statusCodeText);
+                } else {
+                    failureText.setText(R.string.serverSide_statusCodeText);
+                }
+
+                swipeRefresh_content.setVisibility(View.INVISIBLE);
+                dismissProgressBar();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(TAG, "Failure2! Data not loaded. Errorcode: " + statusCode);
+                failureText.setVisibility(View.VISIBLE);
+
+                if (statusCode == 404) {
+                    failureText.setText(R.string.noRessource_statusCodeText);
+                } else {
+                    failureText.setText(R.string.serverSide_statusCodeText);
+                }
+
+                swipeRefresh_content.setVisibility(View.INVISIBLE);
+                dismissProgressBar();
+            }
+        });
+    }
+
+    private void loadData(JSONArray response) {
+        Log.d(TAG, "Data is being loaded");
+
+        ArrayList<ArticleData> dataArticle = new ArrayList<>();
+        ArrayList<String> participationIds = new ArrayList<>();
+
+        try {
+            for (int i = 0; i < response.length(); i++) {
+                JSONObject json_data = response.getJSONObject(i);
+                JSONArray participations = json_data.getJSONArray("participation");
+                for (int j=0; j<participations.length(); j++) {
+                    participationIds.add(participations.get(j).toString());
+                }
+
+                ArticleData articleData = new ArticleData(
+                        json_data.getString("_id"),
+                        json_data.getString("name"),
+                        receiptData.getCurrency(),
+                        json_data.getDouble("priceTotal"),
+                        json_data.getDouble("priceSingle"),
+                        json_data.getInt("amount"),
+                        participations.length(),
+                        participationIds
+                );
+                dataArticle.add(articleData);
+            }
+
+            updateContent(dataArticle);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(mContext, "JSON konnte nicht formatiert werden", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void updateContent(ArrayList<ArticleData> dataArticle) {
+        Log.d(TAG, "Updating UI with data");
+        if (dataArticle.isEmpty()) {
+            Log.d(TAG, "Article data is empty");
+            recyclerViewArticle.setVisibility(View.GONE);
+        } else {
+            recyclerViewArticle.setVisibility(View.VISIBLE);
+            ArticleAdapter articleAdapter = new ArticleAdapter(mContext, dataArticle);
+            recyclerViewArticle.setAdapter(articleAdapter);
+            recyclerViewArticle.setLayoutManager(new LinearLayoutManager(mContext));
         }
     }
 

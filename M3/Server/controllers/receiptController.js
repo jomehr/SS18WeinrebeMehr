@@ -109,7 +109,7 @@ exports.receipts_delete_receipt = function (req, res) {
 
 exports.receipts_get_all_article = function (req, res) {
     let id = req.params.receiptId;
-
+    console.log(id);
     // Article.find({})
     // .exec( function(err, result){
     // if (err) console.log(err);
@@ -117,17 +117,17 @@ exports.receipts_get_all_article = function (req, res) {
     // res.send(result);
     // });
 
-//Kann leider nur über eine ID querien: receiptId. ArticleDetails sind in einer eigenen Entity
     Receipt.findById(id)
         .select("articles")
-        //.populate("articles", "name")  //nur ein populate möglich
+        .populate("articles")
         // .populate("articles", "total")
         // .populate("articles", "price")
         .exec(function (err, receipt) {
             if (err) return console.log(err);
 
-            console.log(receipt.article);
-            res.send(receipt);
+            console.log(receipt);
+            console.log(receipt === JSON);
+            res.send(receipt.articles);
         });
 };
 

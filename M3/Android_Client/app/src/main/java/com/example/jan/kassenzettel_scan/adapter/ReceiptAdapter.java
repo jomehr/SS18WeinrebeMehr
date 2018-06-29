@@ -2,8 +2,10 @@ package com.example.jan.kassenzettel_scan.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +19,12 @@ import java.util.List;
 
 public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHolder> {
 
+    private static final String TAG = "ReceiptAdapter";
+
     private LayoutInflater layoutInflater;
     private List<ReceiptData> receiptData;
+    private String receiptId;
+    private ReceiptData curReceipt;
 
     // create constructor to initialize context and data sent from MainActivity
     public ReceiptAdapter(Context context, List<ReceiptData> data) {
@@ -41,7 +47,8 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
     // Bind data
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get current position of item in recyclerview to bind data and assign values from list
-        ReceiptData curReceipt = receiptData.get(position);
+        curReceipt = receiptData.get(position);
+        receiptId = curReceipt.getId();
         holder.owner.setText(curReceipt.getUserFirstName());
         holder.name.setText(curReceipt.getStoreName());
         holder.date.setText(curReceipt.getDateString());
@@ -64,10 +71,10 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
         // create constructor to get widget reference
         ViewHolder(View itemView) {
             super(itemView);
-            owner = itemView.findViewById(R.id.receipt_owner_name);
-            name = itemView.findViewById(R.id.receipt_storename);
+            owner = itemView.findViewById(R.id.receipt_owner);
+            name = itemView.findViewById(R.id.receipt_store_name);
             date = itemView.findViewById(R.id.receipt_date);
-            articleNumber = itemView.findViewById(R.id.receipt_numberarticles);
+            articleNumber = itemView.findViewById(R.id.receipt_amountArticle);
             total = itemView.findViewById(R.id.receipt_total);
             currency = itemView.findViewById(R.id.receipt_currency);
 
@@ -75,7 +82,15 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
                 @Override
                 public void onClick(View v) {
                     Context context = v.getContext();
+
                     Intent intent = new Intent(context, ReceiptDetails.class);
+                    //intent.putExtra("receiptId", receiptId);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("receiptData", curReceipt);
+                    intent.putExtras(bundle);
+
+                    Log.d(TAG, String.valueOf(curReceipt!=null));
+
                     context.startActivity(intent);
                 }
             });
