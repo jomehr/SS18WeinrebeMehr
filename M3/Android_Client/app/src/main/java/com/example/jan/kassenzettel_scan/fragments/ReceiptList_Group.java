@@ -72,14 +72,14 @@ public class ReceiptList_Group extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_group_receipt_list, container, false);
 
-        resultView = rootView.findViewById(R.id.receipt_group_recyclerlayout);
-        failureText = rootView.findViewById(R.id.group_receipt_list_text);
-        progress = rootView.findViewById(R.id.receipt_group_pb);
-        linearLayoutGroup = rootView.findViewById(R.id.ll_group_receipt_list);
-        linearLayoutUser = rootView.findViewById(R.id.ll_group_receipt_list_user);
-        recyclerViewGroup = rootView.findViewById(R.id.rv_group_receipt_list);
-        recyclerViewUser = rootView.findViewById(R.id.rv_group_receipt_list_user);
-        refreshLayout = rootView.findViewById(R.id.rv_refresh);
+        resultView = rootView.findViewById(R.id.ll_ReceiptListGroupContainer);
+        failureText = rootView.findViewById(R.id.noDataText_ReceiptListGroup);
+        progress = rootView.findViewById(R.id.pb_ReceiptListGroup);
+        linearLayoutGroup = rootView.findViewById(R.id.ll_ReceiptListGroup);
+        linearLayoutUser = rootView.findViewById(R.id.ll_ReceiptListGroup_User);
+        recyclerViewGroup = rootView.findViewById(R.id.rv_ReceiptListGroup);
+        recyclerViewUser = rootView.findViewById(R.id.rv_ReceiptListGroup_User);
+        refreshLayout = rootView.findViewById(R.id.swipeRefresh_ReceiptListGroup);
         pushIcon = rootView.findViewById(R.id.toolbar_push_messages);
 
         resultView.setVisibility(View.INVISIBLE);
@@ -116,7 +116,6 @@ public class ReceiptList_Group extends Fragment {
 
     private void dismissProgressBar() {
         progress.setVisibility(View.GONE);
-
     }
 
     private void getData() {
@@ -174,15 +173,16 @@ public class ReceiptList_Group extends Fragment {
                 JSONObject json_data = response.getJSONObject(i);
                 JSONArray articles = json_data.getJSONArray("articles");
                 for (int j=0; j<articles.length(); j++) {
-                    receiptIds.add(articles.getString(j));
+                    receiptIds.add(articles.get(j).toString());
                 }
+
                 ReceiptData receiptData = new ReceiptData(
                         json_data.getString("_id"),
                         json_data.getJSONObject("owner").getString("name"),
                         json_data.getString("store"),
                         json_data.getString("date"),
-                        receiptIds,
                         articles.length(),
+                        receiptIds,
                         json_data.getDouble("total"),
                         json_data.getDouble("paid"),
                         json_data.getDouble("change"),
@@ -219,14 +219,14 @@ public class ReceiptList_Group extends Fragment {
             e.printStackTrace();
             Toast.makeText(mContext, "JSON konnte nicht formatiert werden", Toast.LENGTH_LONG).show();
         }
-
     }
 
-    private void updateContent(List<ReceiptData> dataGroup, List<ReceiptData> dataUser) {
+    private void updateContent(ArrayList<ReceiptData> dataGroup, ArrayList<ReceiptData> dataUser) {
         Log.d(TAG, "View is being updated");
         if (dataUser.isEmpty()) {
             linearLayoutUser.setVisibility(View.GONE);
         } else {
+            linearLayoutUser.setVisibility(View.VISIBLE);
             ReceiptAdapter adapterUser = new ReceiptAdapter(mContext, dataUser);
             recyclerViewUser.setAdapter(adapterUser);
             recyclerViewUser.setLayoutManager(new LinearLayoutManager(mContext));
@@ -235,6 +235,7 @@ public class ReceiptList_Group extends Fragment {
         if (dataGroup.isEmpty()) {
             linearLayoutGroup.setVisibility(View.GONE);
         } else {
+            linearLayoutGroup.setVisibility(View.VISIBLE);
             ReceiptAdapter adapterGroup = new ReceiptAdapter(mContext, dataGroup);
             recyclerViewGroup.setAdapter(adapterGroup);
             recyclerViewGroup.setLayoutManager(new LinearLayoutManager(mContext));

@@ -2,13 +2,14 @@ package com.example.jan.kassenzettel_scan.data;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class ReceiptData {
+public class ReceiptData implements Serializable{
 
     private static final String TAG = "ReceiptData";
 
@@ -19,15 +20,15 @@ public class ReceiptData {
     private double totalAmount, paidAmount, changeAmount;
     private ArrayList<String> articleIds;
 
-    public ReceiptData(String id, String owner, String storeName, String date, ArrayList<String> articleIds, int numberArticles,
+    public ReceiptData(String id, String owner, String storeName, String date, int numberArticles, ArrayList<String> articleIds,
                        double totalAmount, double paidAmount, double changeAmount, String currency) {
 
         this.id = id;
         this.owner = owner;
         this.storeName = storeName;
         setDate(date);
-        this.articleIds = articleIds;
         this.numberArticles = numberArticles;
+        this.articleIds = articleIds;
         this.totalAmount = totalAmount;
         this.paidAmount = paidAmount;
         this.changeAmount = changeAmount;
@@ -90,12 +91,12 @@ public class ReceiptData {
         return realDate;
     }
 
-    public ArrayList<String> getArticleIds() {
-        return articleIds;
-    }
-
     public int getNumberArticles() {
         return numberArticles;
+    }
+
+    public ArrayList<String> getArticleIds() {
+        return articleIds;
     }
 
     public double getTotalAmount() {

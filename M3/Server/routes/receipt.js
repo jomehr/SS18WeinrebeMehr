@@ -6,23 +6,17 @@ let receiptController = require("../controllers/receiptController");
 
 router.get("/", receiptController.receipts_get_all);
 router.get("/:receiptId/", receiptController.receipts_get_single);
-router.post("/", receiptController.receipts_create_receipt/*, settlementController.settlements_create_settlement*/);
+router.post("/", receiptController.receipts_create_receipt);
 router.patch("/:receiptId", receiptController.receipts_update_receipt);
 router.delete("/:receiptId", receiptController.receipts_delete_receipt);
 //----------------------------------------------------------------------
 //TODO: add get image
 //----------------------------------------------------------------------
-/*
-router.get("/:receiptId/articles", receiptController.receipts_get_all_article,
-receiptController.receipts_get_single_article);
+router.get("/:receiptId/articles", receiptController.receipts_get_all_article);
 router.post("/:receiptId/articles", receiptController.receipts_create_article);
-router.get("/:receiptId/articles/:articleId",
-receiptController.receipts_get_single_article);
-router.patch("/:receiptId/articles/:articleId",
-receiptController.receipt_update_article);
-router.delete("/:receiptId/articles/:articleId",
-receiptController.receipts_delete_article);
-*/
+router.get("/:receiptId/articles/:articleId", receiptController.receipts_get_single_article);
+router.patch("/:receiptId/articles/:articleId", receiptController.receipt_update_article);
+router.delete("/:receiptId/articles/:articleId", receiptController.receipts_delete_article);
 //-----------------------------------------------------------------------
 /*router.get("/:receiptId/articles/:articleId/participations",
 receiptController.receipts_get_all_participant);
