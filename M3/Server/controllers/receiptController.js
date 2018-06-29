@@ -8,7 +8,6 @@ let Settlement = require("../models/settlement");
 //let Category = require("../models/category");
 logic = require("./logic");
 
-
 let admin = require("firebase-admin");
 
 exports.receipts_get_all = function (req, res) {
@@ -96,6 +95,29 @@ exports.receipts_create_receipt = function (req, res) {
                                 if (err) console.log(err);
                                 receiptData = result;
                                 console.log(receiptData);
+
+                                let message = {
+                                    //data payload, used to trigger changes in app
+                                    data: {
+                                        activity: '1',
+                                        data: receiptID
+                                    },
+                                    //notification data for statusbar
+                                    notification: {
+                                      title: "Neuer Kassenzettel",
+                                      body: "Ein neuer Kassenzzettel wurde in der Gruppe verlinkt"
+                                    },
+                                    topic: "group_receipts"
+                                };
+
+                                admin.messaging().send(message)
+                                    .then((response) => {
+                                        // Response is a message ID string.
+                                        console.log('Successfully sent message:', response);
+                                    })
+                                    .catch((error) => {
+                                        console.log('Error sending message:', error);
+                                    });
                             }
                         );
                         logic.distribute_debts(receiptData, articleData, participationData);

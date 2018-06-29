@@ -10,8 +10,8 @@ let user = require("./routes/user");
 let group = require("./routes/group");
 let receipt = require("./routes/receipt");
 let settlement = require("./routes/settlement");
-let admin = require("firebase-admin");
 
+let admin = require("firebase-admin");
 let serviceAccount = require("./serviceAccountKey.json");
 
 admin.initializeApp({
