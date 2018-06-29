@@ -19,15 +19,15 @@ router.patch("/:receiptId/articles/:articleId", receiptController.receipt_update
 router.delete("/:receiptId/articles/:articleId", receiptController.receipts_delete_article);
 //-----------------------------------------------------------------------
 /*router.get("/:receiptId/articles/:articleId/participations",
-receiptController.receipts_get_all_participant);
+receiptController.receipts_get_all_participation);
 router.post("/:receiptId/articles/:articleId/participations",
-receiptController.receipts_create_participant);
+receiptController.receipts_create_participation);
 router.get("/:receiptId/articles/:articleId/participations/:participantId",
-receiptController.receipts_get_single_participant);
+receiptController.receipts_get_single_participation);
 router.patch("/:receiptId/articles/:articleId/participations/:participantId",
-receiptController.receipt_update_participant);
+receiptController.receipt_update_participation);
 router.delete("/:receiptId/articles/:articleId/participations/:participantId",
-receiptController.receipts_delete_participant);
+receiptController.receipts_delete_participation);
 //--------------------------------------------------------------------------
 router.get("/:receiptId/articles/:articleId/participations/:participantId/suggestion",
 receiptController.receipt_get_suggestion);
@@ -36,6 +36,6 @@ receiptController.receipts_create_suggestion);
 router.patch("/:receiptId/articles/:articleId/participations/:participantId/suggestion",
 receiptController.receipts_update_suggestion);
 router.delete("/:receiptId/articles/:articleId/participations/:participantId/suggestion",
-receiptController.receipts_delete_suggestion);
-*/
+receiptController.receipts_delete_suggestion);*/
+
 module.exports = router;

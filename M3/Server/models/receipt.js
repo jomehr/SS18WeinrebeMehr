@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+let Receiptdebt = require("./receiptdebt");
 
 const Schema = mongoose.Schema;
 const TYPE = ["SOLO", "GROUP"];
@@ -19,5 +20,8 @@ const receiptSchema = new Schema ({
     currency: {type: String, enum: CURRENCY, required:true},
     edited: {type: Boolean, default: false}
 });
+
+
+
 
 module.exports = mongoose.model("Receipt", receiptSchema);

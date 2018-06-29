@@ -120,33 +120,7 @@ exports.settlements_delete_debt = function (req, res){
 
 //----------------------------------------------------------------
 
-// exports.settlements_update_settlement_calc = function(req, result) {
 
-
-  // let id = req.params.settlementId;
-  //
-  // Settlement.findById(id, function (err, settlement) {
-  //     if (err) return console.log(err);
-  //      settlement.receipts.forEach(function (receiptId) {
-  //          Receipt.findById(receiptId, "participants", function (err, receipt) {
-  //              if (err) return console.log(err);
-  //                receipts.participants.forEach(function(receiptId){
-  //                 if(settlement.totaldebts != null);
-  //                  settlement.totaldebts.forEach(function(totaldebt){
-  //                    if(totaldebt.debtor === receipt.participants){
-  //                      console.log("Neue Kassenzettelschuld");
-  //
-  //
-  //
-  //                    };
-  //                  });
-  //                });
-  //               });
-  //             res.status(202).send(settlement);
-  //           });
-  //         });
-// };
-//----------------------------------------------------------------
 
 exports.settlements_get_receipts = function (req, res){
 
