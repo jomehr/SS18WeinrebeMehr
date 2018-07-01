@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const participationSchema = new Schema ({
 
-    //_id: new mongoose.Types.ObjectId,
+
     participant: {type: Schema.Types.ObjectId, ref: "User", required: true},
     receipt: {type: Schema.Types.ObjectId, ref: "Receipt", required: true},
     article: {type: Schema.Types.ObjectId, ref: "Article", required: true},

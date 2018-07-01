@@ -10,7 +10,7 @@ const settlementSchema = new Schema ({
     endDate:   {type: Date, valid: Boolean, required: true},
     creditor:  {type: Schema.Types.ObjectId, ref: "User", required: true},
     group: {type: Schema.Types.ObjectId, ref: "Group"},
-    totaldebts:[{type: Schema.Types.ObjectId, ref:"Totaldebt"}],
+    totalDebts:[{type: Schema.Types.ObjectId, ref:"TotalDebt"}],
     receipts: [{type: Schema.Types.ObjectId, ref: "Receipt"}],
     total: Number,
     finished: {type: Boolean, default: false}
