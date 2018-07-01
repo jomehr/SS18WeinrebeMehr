@@ -16,7 +16,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorAccent"
+        android:background="@color/colorSecondaryDark"
         android:contentDescription="@string/profile_picture" />
 
     <!-- Container for user data summary -->

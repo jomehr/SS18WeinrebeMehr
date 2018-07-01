@@ -21,10 +21,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.jan.kassenzettel_scan.R;
+import com.example.jan.kassenzettel_scan.fragments.CreateReceipt;
 import com.example.jan.kassenzettel_scan.fragments.MemberList;
 import com.example.jan.kassenzettel_scan.fragments.ReceiptList_Group;
 import com.example.jan.kassenzettel_scan.fragments.ReceiptList_Solo;
-import com.example.jan.kassenzettel_scan.fragments.Scan;
 import com.example.jan.kassenzettel_scan.fragments.SettlementList;
 import com.example.jan.kassenzettel_scan.fragments.ShoppingList;
 import com.example.jan.kassenzettel_scan.fragments.Statistic;
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create channel to show notifications.
             Log.d(TAG, "Setting up notification channel");
-            String channelId  = "receiplist_group";
+            String channelId  = "ReceiptScan";
             String channelName = "receiplist_group";
             NotificationManager notificationManager =
                     getSystemService(NotificationManager.class);
@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity
 
         switch (id) {
             case (R.id.nav_scan) :
-                fragmentClass = Scan.class;
+                fragmentClass = CreateReceipt.class;
                 bottomNavigationView.setVisibility(View.GONE);
                 break;
             case (R.id.nav_receipt_list) :

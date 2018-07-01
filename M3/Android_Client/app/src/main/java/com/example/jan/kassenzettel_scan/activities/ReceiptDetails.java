@@ -42,11 +42,12 @@ public class ReceiptDetails extends AppCompatActivity {
     private static final String articleEndpoint = "/articles";
 
     private Context mContext;
+    private RelativeLayout top, bottom;
     private ReceiptData receiptData;
     private ProgressBar progress;
     private SwipeRefreshLayout swipeRefresh_content;
     private RecyclerView recyclerViewArticle;
-    private TextView failureText;
+    private TextView failureText, storename, date, location, receipttotal, paid, change;
     private RequestParams params;
 
     @Override
@@ -59,14 +60,14 @@ public class ReceiptDetails extends AppCompatActivity {
         mContext = this;
 
         progress = findViewById(R.id.pb_ReceiptDetail);
-        RelativeLayout top = findViewById(R.id.rl_ReceiptDetail_top);
-        TextView storename = findViewById(R.id.detail_storename);
-        TextView date = findViewById(R.id.detail_date);
-        TextView location = findViewById(R.id.detail_location);
-        RelativeLayout bottom = findViewById(R.id.rl_ReceiptDetail_bottom);
-        TextView receipttotal = findViewById(R.id.detail_total);
-        TextView paid = findViewById(R.id.detail_paid);
-        TextView change = findViewById(R.id.detail_change);
+        top = findViewById(R.id.rl_ReceiptDetail_top);
+        storename = findViewById(R.id.detail_storename);
+        date = findViewById(R.id.detail_date);
+        location = findViewById(R.id.detail_location);
+        bottom = findViewById(R.id.rl_ReceiptDetail_bottom);
+        receipttotal = findViewById(R.id.detail_total);
+        paid = findViewById(R.id.detail_paid);
+        change = findViewById(R.id.detail_change);
         swipeRefresh_content = findViewById(R.id.swipeRefresh_ReceiptDetail);
         recyclerViewArticle = findViewById(R.id.rv_ReceiptDetail_articleList);
         failureText = findViewById(R.id.noDataText_ReceiptDetails);
@@ -78,20 +79,22 @@ public class ReceiptDetails extends AppCompatActivity {
 
         if (getIntent().getExtras() != null) {
             Log.d(TAG, getIntent().getExtras().toString());
-            Bundle bundle = getIntent().getExtras();
-            receiptData = (ReceiptData) bundle.getSerializable("receiptData");
 
-            if (receiptData != null) {
-                Log.d(TAG, receiptData.getId());
-                storename.setText(receiptData.getStoreName());
-                date.setText(receiptData.getDateString());
-                location.setText("Feature folgt");
-                receipttotal.setText(String.valueOf(receiptData.getTotalAmount()));
-                paid.setText(String.valueOf(receiptData.getPaidAmount()));
-                change.setText(String.valueOf(receiptData.getChangeAmount()));
+            if (getIntent().getExtras().containsKey("dataId")) {
+                Log.d(TAG, "Coming from notification");
+                getReceiptData(getIntent().getExtras().get("dataId").toString());
+                
             } else {
-                top.setVisibility(View.GONE);
-                bottom.setVisibility(View.GONE);
+                Log.d(TAG, "Coming from list-activity");
+                Bundle bundle = getIntent().getExtras();
+                receiptData = (ReceiptData) bundle.getSerializable("receiptData");
+
+                if (receiptData != null) {
+                    updateReceiptContent(receiptData);
+                } else {
+                    top.setVisibility(View.GONE);
+                    bottom.setVisibility(View.GONE);
+                }
             }
         }
 
@@ -103,7 +106,7 @@ public class ReceiptDetails extends AppCompatActivity {
         swipeRefresh_content.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getData();
+                getArticleData();
                 swipeRefresh_content.setRefreshing(false);
             }
         });
@@ -113,8 +116,10 @@ public class ReceiptDetails extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         Log.d(TAG, "ActivityLifeCycle: ONRESUME");
-        getData();
 
+        if (receiptData != null) {
+            getArticleData();
+        }
     }
 
     private void showProgressBar() {
@@ -125,7 +130,7 @@ public class ReceiptDetails extends AppCompatActivity {
         progress.setVisibility(View.GONE);
     }
 
-    private void getData() {
+    private void getArticleData() {
         //TODO update receiptData in case it changed too
         showProgressBar();
         String receiptId = receiptData.getId();
@@ -136,7 +141,7 @@ public class ReceiptDetails extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 Log.d(TAG, "Success! Data loaded");
-                loadData(response);
+                loadArticleData(response);
                 dismissProgressBar();
             }
 
@@ -172,7 +177,52 @@ public class ReceiptDetails extends AppCompatActivity {
         });
     }
 
-    private void loadData(JSONArray response) {
+    private void getReceiptData(String id) {
+        showProgressBar();
+        String endpoint  = receiptEndpoint + id;
+        RestClient.get(endpoint, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d(TAG, "Success! Data loaded");
+                loadReceiptData(response);
+                dismissProgressBar();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d(TAG, "Failure1! Data not loaded. Errorcode: "+statusCode);
+                failureText.setVisibility(View.VISIBLE);
+
+                if (statusCode == 404) {
+                    failureText.setText(R.string.noRessource_statusCodeText);
+                } else {
+                    failureText.setText(R.string.serverSide_statusCodeText);
+                }
+
+                top.setVisibility(View.GONE);
+                bottom.setVisibility(View.GONE);
+                dismissProgressBar();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(TAG, "Failure2! Data not loaded. Errorcode: "+statusCode);
+                failureText.setVisibility(View.VISIBLE);
+
+                if (statusCode == 404) {
+                    failureText.setText(R.string.noRessource_statusCodeText);
+                } else {
+                    failureText.setText(R.string.serverSide_statusCodeText);
+                }
+
+                top.setVisibility(View.GONE);
+                bottom.setVisibility(View.GONE);
+                dismissProgressBar();
+            }
+        });
+    }
+
+    private void loadArticleData(JSONArray response) {
         Log.d(TAG, "Data is being loaded");
 
         ArrayList<ArticleData> dataArticle = new ArrayList<>();
@@ -199,14 +249,37 @@ public class ReceiptDetails extends AppCompatActivity {
                 dataArticle.add(articleData);
             }
 
-            updateContent(dataArticle);
+            updateArticleContent(dataArticle);
         } catch (JSONException e) {
             e.printStackTrace();
             Toast.makeText(mContext, "JSON konnte nicht formatiert werden", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void updateContent(ArrayList<ArticleData> dataArticle) {
+    private void loadReceiptData(JSONObject response) {
+
+        try {
+            receiptData = new ReceiptData(
+                    response.getString("_id"),
+                    null,
+                    response.getString("store"),
+                    response.getString("date"),
+                    0,
+                    null,
+                    response.getDouble("total"),
+                    response.getDouble("paid"),
+                    response.getDouble("change"),
+                    response.getString("currency")
+            );
+            updateReceiptContent(receiptData);
+            getArticleData();
+        }catch (JSONException e) {
+            e.printStackTrace();
+            Toast.makeText(mContext, "JSON konnte nicht formatiert werden", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void updateArticleContent(ArrayList<ArticleData> dataArticle) {
         Log.d(TAG, "Updating UI with data");
         if (dataArticle.isEmpty()) {
             Log.d(TAG, "Article data is empty");
@@ -217,6 +290,16 @@ public class ReceiptDetails extends AppCompatActivity {
             recyclerViewArticle.setAdapter(articleAdapter);
             recyclerViewArticle.setLayoutManager(new LinearLayoutManager(mContext));
         }
+    }
+
+    private  void updateReceiptContent(ReceiptData receiptData) {
+        Log.d(TAG, receiptData.getId());
+        storename.setText(receiptData.getStoreName());
+        date.setText(receiptData.getDateString());
+        location.setText("Feature folgt");
+        receipttotal.setText(String.valueOf(receiptData.getTotalAmount()));
+        paid.setText(String.valueOf(receiptData.getPaidAmount()));
+        change.setText(String.valueOf(receiptData.getChangeAmount()));
     }
 
     @Override

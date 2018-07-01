@@ -53,7 +53,9 @@ exports.receipts_create_receipt = function (req, res) {
             let article = new Article({
                 receipt: receiptID,
                 name: item.name,
-                price: item.price
+                priceTotal: item.priceTotal,
+                priceSingle: item.priceSingle,
+                amount: item.amount
             });
 
             article.save(function (err, result) {
@@ -96,11 +98,13 @@ exports.receipts_create_receipt = function (req, res) {
                                 receiptData = result;
                                 console.log(receiptData);
 
+                                console.log(receiptID === String);
+                                console.log(receiptData._id ===String);
                                 let message = {
                                     //data payload, used to trigger changes in app
                                     data: {
-                                        activity: '1',
-                                        data: receiptID
+                                        activity: "3",
+                                        dataId: receiptID.toString()
                                     },
                                     //notification data for statusbar
                                     notification: {
@@ -120,7 +124,7 @@ exports.receipts_create_receipt = function (req, res) {
                                     });
                             }
                         );
-                        logic.distribute_debts(receiptData, articleData, participationData);
+                        //logic.distribute_debts(receiptData, articleData, participationData);
                     });
 
                 });

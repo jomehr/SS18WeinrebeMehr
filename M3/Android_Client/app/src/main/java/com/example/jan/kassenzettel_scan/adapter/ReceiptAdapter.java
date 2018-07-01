@@ -87,7 +87,6 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
                     Context context = v.getContext();
 
                     Intent intent = new Intent(context, ReceiptDetails.class);
-                    //intent.putExtra("receiptId", receiptId);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("receiptData", receiptData.get(getLayoutPosition()));
                     intent.putExtras(bundle);

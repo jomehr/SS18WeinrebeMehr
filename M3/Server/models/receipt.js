@@ -21,7 +21,4 @@ const receiptSchema = new Schema ({
     edited: {type: Boolean, default: false}
 });
 
-
-
-
 module.exports = mongoose.model("Receipt", receiptSchema);

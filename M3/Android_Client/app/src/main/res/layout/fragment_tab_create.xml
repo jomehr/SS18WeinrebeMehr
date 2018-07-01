@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:textAlignment="center"
         android:padding="40dp"
-        android:text="Hier erscheint das Scan Funktion"
+        android:text="Hier erscheint Funktion zum manuellen erstellen eines Kassenzettels"
         android:textSize="30sp"/>
 
 </android.support.constraint.ConstraintLayout>

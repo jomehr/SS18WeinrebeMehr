@@ -9,15 +9,12 @@ import android.view.ViewGroup;
 
 import com.example.jan.kassenzettel_scan.R;
 
-public class Scan extends Fragment {
+public class TabCreate extends Fragment {
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        /* Define Your Functionality Here
-           Find any view  => v.findViewById()
-          Specifying Application Context in Fragment => getActivity() */
-
-        return inflater.inflate(R.layout.fragment_scan,container,false);
+        return inflater.inflate(R.layout.fragment_tab_create, container,false);
     }
 }

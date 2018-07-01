@@ -1,4 +1,4 @@
-package com.example.jan.kassenzettel_scan.utils;
+package com.example.jan.kassenzettel_scan.network;
 
 import android.util.Log;
 
