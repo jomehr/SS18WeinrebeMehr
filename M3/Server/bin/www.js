@@ -9,8 +9,8 @@ const app  = require("../app"),
     //faye = require("faye");
 
 //TODO implementiere eine andere ip, so dass sich echte Clients direkt verbinden können. Zurzeit funktioniert nur ein Emulator mit localhost-ip.
-const hostname = "127.0.0.1";
-const port = process.env.PORT || 8081;
+const hostname = "192.168.0.172";
+const port = /*process.env.PORT || */1337;
 
 let server = http.createServer(app);
 

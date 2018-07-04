@@ -19,9 +19,6 @@ public class CreateReceipt extends Fragment {
     private FragmentTabHost tabHost;
     private float lastX;
 
-    //Mandatory Constructor
-    public CreateReceipt() {
-    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +94,7 @@ public class CreateReceipt extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.d(TAG, "Destroying tab data");
         tabHost = null;
     }
 

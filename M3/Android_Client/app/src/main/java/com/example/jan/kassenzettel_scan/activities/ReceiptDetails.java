@@ -133,7 +133,7 @@ public class ReceiptDetails extends AppCompatActivity {
     private void getArticleData() {
         //TODO update receiptData in case it changed too
         showProgressBar();
-        String receiptId = receiptData.getId();
+        String receiptId = receiptData.getReceiptId();
         Log.d(TAG, receiptId);
         String endpointURL = receiptEndpoint + receiptId + articleEndpoint;
         Log.d(TAG, endpointURL);
@@ -243,8 +243,7 @@ public class ReceiptDetails extends AppCompatActivity {
                         json_data.getDouble("priceTotal"),
                         json_data.getDouble("priceSingle"),
                         json_data.getInt("amount"),
-                        participations.length(),
-                        participationIds
+                        participations.length()
                 );
                 dataArticle.add(articleData);
             }
@@ -261,11 +260,10 @@ public class ReceiptDetails extends AppCompatActivity {
         try {
             receiptData = new ReceiptData(
                     response.getString("_id"),
-                    null,
+                    response.getJSONObject("owner").getString("_id"),
                     response.getString("store"),
                     response.getString("date"),
                     0,
-                    null,
                     response.getDouble("total"),
                     response.getDouble("paid"),
                     response.getDouble("change"),
@@ -293,7 +291,7 @@ public class ReceiptDetails extends AppCompatActivity {
     }
 
     private  void updateReceiptContent(ReceiptData receiptData) {
-        Log.d(TAG, receiptData.getId());
+        Log.d(TAG, receiptData.getReceiptId());
         storename.setText(receiptData.getStoreName());
         date.setText(receiptData.getDateString());
         location.setText("Feature folgt");

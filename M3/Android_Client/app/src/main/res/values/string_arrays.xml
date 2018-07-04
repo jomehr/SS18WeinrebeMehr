@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="store_names">
+        <item>Kaufland</item>
+        <item>REWE</item>
+        <item>Nahkauf</item>
+        <item>Edeka</item>
+        <item>Aldi</item>
+        <item>Lidl</item>
+    </string-array>
+    <string-array name="currency_list">
+        <item>€</item>
+        <item>$</item>
+    </string-array>
+    <string-array name="article_names">
+        <item>Wurst</item>
+        <item>Käse</item>
+        <item>Wasser</item>
+        <item>Milch</item>
+        <item>Bier</item>
+        <item>Fisch</item>
+        <item>Salat</item>
+    </string-array>
+</resources>

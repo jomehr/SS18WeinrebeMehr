@@ -49,7 +49,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get current position of item in recyclerview to bind data and assign values from list
         curReceipt = receiptData.get(position);
-        receiptId = curReceipt.getId();
+        receiptId = curReceipt.getReceiptId();
         holder.owner.setText(curReceipt.getUserFirstName());
         holder.name.setText(curReceipt.getStoreName());
         holder.date.setText(curReceipt.getDateString());
@@ -70,7 +70,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
         TextView owner, name, date, articleNumber, total, currency;
 
         // create constructor to get widget reference
-        ViewHolder(View itemView) {
+        ViewHolder(final View itemView) {
             super(itemView);
             owner = itemView.findViewById(R.id.receipt_owner);
             name = itemView.findViewById(R.id.receipt_store_name);
@@ -94,6 +94,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
                     Log.d(TAG, String.valueOf(curReceipt!=null));
 
                     context.startActivity(intent);
+
                 }
             });
         }

@@ -1,7 +1,6 @@
 package com.example.jan.kassenzettel_scan.data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class ArticleData implements Serializable{
 
@@ -10,11 +9,9 @@ public class ArticleData implements Serializable{
     private String id, name, currency;
     private double priceTotal, priceSingle;
     private int amount, participants;
-    private ArrayList<String> participationIds;
 
     public ArticleData(String id, String name, String currency,  double priceTotal, double priceSingle, int amount,
-                       int participants, ArrayList<String> participationIds) {
-
+                       int participants) {
         this.id = id;
         this.name = name;
         this.currency = currency;
@@ -22,7 +19,31 @@ public class ArticleData implements Serializable{
         this.priceSingle = priceSingle;
         this.amount = amount;
         this.participants = participants;
-        this.participationIds = participationIds;
+    }
+
+    public ArticleData (String currency, int participants) {
+        this.currency = currency;
+        this.participants = participants;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNumberArticles(int amount) {
+        this.amount = amount;
+    }
+
+    public void setPriceTotal(double priceTotal) {
+        this.priceTotal = priceTotal;
+    }
+
+    public void setPriceSingle(double priceSingle) {
+        this.priceSingle = priceSingle;
+    }
+
+    public void setNumberParticipants(int participants) {
+        this.participants = participants;
     }
 
     public int getNumberArticles() {
@@ -47,10 +68,6 @@ public class ArticleData implements Serializable{
 
     public int getParticipants() {
         return participants;
-    }
-
-    public ArrayList<String> getParticipationIds() {
-        return participationIds;
     }
 
     public String getCurrency() {

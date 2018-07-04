@@ -13,22 +13,20 @@ public class ReceiptData implements Serializable{
 
     private static final String TAG = "ReceiptData";
 
-    private String id, owner, storeName, currency;
+    private String receiptId, owner, storeName, currency;
     private String date;
     private Date realDate;
     private int numberArticles;
     private double totalAmount, paidAmount, changeAmount;
-    private ArrayList<String> articleIds;
 
-    public ReceiptData(String id, String owner, String storeName, String date, int numberArticles, ArrayList<String> articleIds,
+    public ReceiptData(String receiptId, String owner, String storeName, String date, int numberArticles,
                        double totalAmount, double paidAmount, double changeAmount, String currency) {
 
-        this.id = id;
+        this.receiptId = receiptId;
         this.owner = owner;
         this.storeName = storeName;
         setDate(date);
         this.numberArticles = numberArticles;
-        this.articleIds = articleIds;
         this.totalAmount = totalAmount;
         this.paidAmount = paidAmount;
         this.changeAmount = changeAmount;
@@ -37,18 +35,21 @@ public class ReceiptData implements Serializable{
 
     //Setter
     public void setDate(String date) {
-        try {
-            this.realDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'",Locale.GERMANY).parse(date);
-            Log.d(TAG, "RealDate: "+realDate.toString());
-            this.date = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY).format(realDate);
-            Log.d(TAG, "StringDate: "+ date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (date == null) {
+            this.date = null;
+        } else{
+            try {
+                this.realDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'",Locale.GERMANY).parse(date);
+                Log.d(TAG, "RealDate: "+realDate.toString());
+                this.date = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY).format(realDate);
+                Log.d(TAG, "StringDate: "+ date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
-
     }
 
-/*
+
     public void setStoreName(String storeName) {
         this.storeName = storeName;
     }
@@ -64,11 +65,15 @@ public class ReceiptData implements Serializable{
     public void setCurrency(String currency) {
         this.currency = currency;
     }
-*/
+
 
     //Getter
-    public String getId () {
-        return id;
+    public String getReceiptId() {
+        return receiptId;
+    }
+
+    public String getOwnerId() {
+        return owner;
     }
 
     public String getUserFirstName() {
@@ -93,10 +98,6 @@ public class ReceiptData implements Serializable{
 
     public int getNumberArticles() {
         return numberArticles;
-    }
-
-    public ArrayList<String> getArticleIds() {
-        return articleIds;
     }
 
     public double getTotalAmount() {

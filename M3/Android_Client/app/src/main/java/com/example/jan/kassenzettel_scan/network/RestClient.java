@@ -1,11 +1,17 @@
 package com.example.jan.kassenzettel_scan.network;
 
+import android.content.Context;
+
 import com.loopj.android.http.*;
+
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.entity.ByteArrayEntity;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 
 public class RestClient {
 
-    private static final String BASE_URL = "http://192.168.0.172:8081/";
+    private static final String BASE_URL = "http://192.168.0.172:1337/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
@@ -13,8 +19,8 @@ public class RestClient {
         client.get(getAbsoluteUrl(urlEndpoint), params, responseHandler);
     }
 
-    public static void post(String urlEndpoint, RequestParams params, AsyncHttpResponseHandler responseHandler) {
-        client.post(getAbsoluteUrl(urlEndpoint), params, responseHandler);
+    public static void post(Context context, String urlEndpoint, HttpEntity entity, AsyncHttpResponseHandler responseHandler) {
+        client.post(context, getAbsoluteUrl(urlEndpoint), entity, null, responseHandler);
     }
 
     public static void patch(String urlEndpoint, RequestParams params, AsyncHttpResponseHandler responseHandler) {

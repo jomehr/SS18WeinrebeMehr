@@ -1,7 +1,6 @@
 package com.example.jan.kassenzettel_scan.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,17 +9,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.jan.kassenzettel_scan.R;
-import com.example.jan.kassenzettel_scan.activities.ReceiptDetails;
 import com.example.jan.kassenzettel_scan.data.ArticleData;
 
 import java.util.List;
 
+/*
+
+*/
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
 
     private LayoutInflater layoutInflater;
     private List<ArticleData> articleData;
 
-    // create constructor to initialize context and data sent from MainActivity
+    // create constructor to initialize context and data sent from Activity
     public ArticleAdapter(Context context, List<ArticleData> data) {
         layoutInflater = LayoutInflater.from(context);
         this.articleData = data;
@@ -29,8 +30,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     @NonNull
     @Override
     // Inflate the layout when ViewHolder created
-    public ArticleAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
-                                                        int viewType) {
+    public ArticleAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // create a new view
         View view = layoutInflater.inflate(R.layout.container_receipt_article_collapsed, parent, false);
 

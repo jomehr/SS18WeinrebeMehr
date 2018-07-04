@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/receipt_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:background="@android:drawable/dialog_holo_light_frame"
+    android:padding="10dp">
+
+    <Button
+        android:id="@+id/create_delete_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@color/colorAccent"
+        android:drawableStart="@drawable/ic_remove_black" />
+
+    <EditText
+        android:id="@+id/create_article_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:hint="Artikelname"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/create_article_priceTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_toStartOf="@+id/create_article_currencyTotal"
+        android:fontFamily="serif-monospace"
+        android:text="0.0"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/create_article_currencyTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_toStartOf="@+id/create_delete_button"
+        android:fontFamily="serif-monospace"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/create_article_participantNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/create_article_name"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_toStartOf="@+id/create_delete_button"
+        android:fontFamily="serif-monospace"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/create_article_participantIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/create_article_name"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toStartOf="@+id/create_article_participantNumber"
+        android:src="@drawable/ic_group_black" />
+
+    <TextView
+        android:id="@+id/create_article_numberIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/create_article_name"
+        android:layout_marginTop="10dp"
+        android:fontFamily="serif-monospace"
+        android:paddingEnd="5dp"
+        android:paddingStart="10dp"
+        android:text="#"
+        android:textColor="@color/black"
+        android:textSize="25sp" />
+
+    <EditText
+        android:id="@+id/create_article_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/create_article_name"
+        android:layout_toEndOf="@+id/create_article_numberIcon"
+        android:fontFamily="serif-monospace"
+        android:inputType="number"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="normal" />
+
+    <EditText
+        android:id="@+id/create_article_priceSingle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/create_article_name"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/create_article_amount"
+        android:fontFamily="serif-monospace"
+        android:inputType="numberDecimal"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/create_article_currencySingle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/create_article_name"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/create_article_priceSingle"
+        android:fontFamily="serif-monospace"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="normal" />
+
+    <ListView
+        android:id="@+id/create_article_participant_layout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/create_article_numberIcon"/>
+
+
+</RelativeLayout>

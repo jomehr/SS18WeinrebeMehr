@@ -39,8 +39,6 @@ exports.receipts_create_receipt = function (req, res) {
         currency: req.body.currency,
     });
 
-
-
     console.log(receipt);
     receipt.save(function (err, result) {
         if (err) console.log(err);

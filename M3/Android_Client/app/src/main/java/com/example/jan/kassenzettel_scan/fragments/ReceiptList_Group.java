@@ -166,15 +166,11 @@ public class ReceiptList_Group extends Fragment {
 
         ArrayList<ReceiptData> dataGroup = new ArrayList<>();
         ArrayList<ReceiptData> dataUser = new ArrayList<>();
-        ArrayList<String> receiptIds = new ArrayList<>();
 
         try {
             for(int i=0; i<response.length(); i++){
                 JSONObject json_data = response.getJSONObject(i);
                 JSONArray articles = json_data.getJSONArray("articles");
-                for (int j=0; j<articles.length(); j++) {
-                    receiptIds.add(articles.get(j).toString());
-                }
 
                 ReceiptData receiptData = new ReceiptData(
                         json_data.getString("_id"),
@@ -182,7 +178,6 @@ public class ReceiptList_Group extends Fragment {
                         json_data.getString("store"),
                         json_data.getString("date"),
                         articles.length(),
-                        receiptIds,
                         json_data.getDouble("total"),
                         json_data.getDouble("paid"),
                         json_data.getDouble("change"),
