@@ -24,6 +24,7 @@ exports.groups_get_all = function (req, res) {
 exports.groups_create_group = function (req, res) {
 
   let settlement = new Settlement({
+
   });
   settlement.save(function (err) {
       if (err) console.log(err);

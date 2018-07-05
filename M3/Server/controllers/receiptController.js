@@ -98,8 +98,6 @@ exports.receipts_create_receipt = function (req, res) {
                                 receiptData = result;
                                 console.log(receiptData);
 
-                                console.log(receiptID === String);
-                                console.log(receiptData._id ===String);
                                 let message = {
                                     //data payload, used to trigger changes in app
                                     data: {
@@ -111,7 +109,7 @@ exports.receipts_create_receipt = function (req, res) {
                                       title: "Neuer Kassenzettel",
                                       body: "Ein neuer Kassenzzettel wurde in der Gruppe verlinkt"
                                     },
-                                    topic: "group_receipts"
+                                    topic: "group_articles" //test statt "group_receipts"
                                 };
 
                                 admin.messaging().send(message)
@@ -124,7 +122,7 @@ exports.receipts_create_receipt = function (req, res) {
                                     });
                             }
                         );
-                        //logic.distribute_debts(receiptData, articleData, participationData);
+                        logic.distribute_debts("post", receiptData, articleData, participationData);
                     });
 
                 });
