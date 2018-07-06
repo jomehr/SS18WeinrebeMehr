@@ -1,9 +1,0 @@
-{"_id":{"$oid":"5aee1cdd2a47720b64b13c31"},"name":"egon","email":"janmehr93@gmx.de","password":"$2b$10$qTCTfgi/FYTyz8I7KR4pCOYkGfR7i4PI5/KFOPpgLv47/465nI30W","__v":{"$numberInt":"0"}}
-{"_id":{"$oid":"5aee3db751bfa727f804afca"},"name":"Jan Weniger","email":"janweniger93@gmx.de","password":"$2b$10$Hg6KAV70lYkno7Mycn3KWuFAXQULrMx/OcoLeS0cZb9d0Yhsi3zJO","__v":{"$numberInt":"0"}}
-{"_id":{"$oid":"5aee3f1708bfb6240cdde9ee"},"name":"Jan Mittendrin","email":"janmitte93@gmx.de","password":"$2b$10$wRJ4VJuZrNe3Ib3Z9RwdQuy0idc8LfC8uvtK/OGjrTK5Tzzefq.5C","__v":{"$numberInt":"0"}}
-{"_id":{"$oid":"5aee3fbc3316e20770b7e757"},"name":"Herr Tester","email":"test@test.de","password":"$2b$10$FzrbEwHyQJEJojJLIqrJeuVBzBMpL1.3eR//Ud//ylP8iFJSf878e","__v":{"$numberInt":"0"}}
-{"_id":{"$oid":"5aef13ec0ce6cd04cc6935eb"},"name":"EIS-Tester","email":"test@eis.de","password":"$2b$10$zDZTV/F1SDuFvMwLlX3nYeYLRcT0nagezfvD/7F6DnYqTOVInHKne","__v":{"$numberInt":"0"}}
-{"_id":{"$oid":"5aef1438538d242004cfa306"},"name":"EIS-Tester2","email":"test2@eis.de","password":"$2b$10$Gq3O4PExSguPvUtel52vfuilrEmpzjIFKVVoweLSo9pf9YamTuBeS","__v":{"$numberInt":"0"}}
-{"_id":{"$oid":"5aef14d6538d242004cfa307"},"name":"EIS-Tester3","email":"test3@eis.de","password":"$2b$10$9WdqHQiQjFINyAiN5XyXEebsh3q.6e/Ygf0grX.yk.DWVSsEkMrZi","__v":{"$numberInt":"0"}}
-{"_id":{"$oid":"5aef14e8ad03c72a307fa672"},"name":"EIS-Tester4","email":"test4@eis.de","password":"$2b$10$QzcVF6hJnzQyZTa.WXYx.OqqBcEdF43C./eUnVmGiqyj.dkBONAIS","__v":{"$numberInt":"0"}}
-{"_id":{"$oid":"5aef18726e8b491228866cf8"},"name":"EIS-Tester5","address":{"street":{"streetName":"Nordstraße","streetNumber":{"$numberInt":"33"}},"location":{"zipCode":{"$numberInt":"51643"},"city":"Gummersbach","state":"NRW"},"_id":{"$oid":"5aef18726e8b491228866cf9"},"country":"Germany"},"email":"test5@eis.de","password":"$2b$10$UyIa6wDTdaq59RJjS153AOj7.tiNg7gLNiLezxrO1TSPIBo/kvABe","__v":{"$numberInt":"0"}}

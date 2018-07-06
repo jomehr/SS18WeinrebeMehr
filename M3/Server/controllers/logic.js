@@ -3,75 +3,62 @@ let TotalDebt = require("../models/totaldebt");
 let ReceiptDebt = require("../models/receiptdebt");
 
 
-
-exports.distribute_debts = function (method, receiptData, articleData, participationData ) {
-
+exports.distribute_debts = function (method, receiptData, articleData, participationData) {
+//TODO: implement async module to better control order of function calls and avoid "callback hell"
 
     switch (method) {
-        case "post":
+        case "POST":
 
             let group = receiptData.group;
             let settlement;
 
-            Settlement.findOne({group: group})
+            Settlement
+                .findOne({group: group})
                 .exec(function (err, result) {
                     if (err) console.log(err);
                     settlement = result;
                     let settlementId = result._id;
-                    receiptData.participants.forEach(function (participantID) {
-                        if (settlement.totalDebts.length !== 0) {
-                            settlement.totalDebts.forEach(function (totalDebt) {
-                                if (totalDebt.debtor === participantID) {
-                                    console.log("Erstelle Kassenzettelschuld");
-                                    let receiptDebt = new ReceiptDebt({
 
-                                        creditor: receiptData.owner,
-                                        receipt: receiptData
-
-                                    });
-                                    receiptDebt.save(function (err, result) {
-                                        if (err) console.log(err);
-                                        console.log(result);
-                                    });
+                    if (settlement.totalDebts.length > 0) {
+                        console.log("TotalDebts already exist in Settlement " + settlementId);
+                        TotalDebt
+                            .findOne({settlement: settlementId, debtor: participationData.participant})
+                            .select("_id", "totalDebt", "receiptDebt")
+                            .exec(function (err, result) {
+                                if (err) console.log(err);
+                                if (!result) {
+                                    console.log("TotalDebt of Participant " + participationData.participant + " doesn't exist!");
+                                    createTotalDebt(settlementId, receiptData, articleData, participationData);
                                 } else {
-                                    console.log("Erstelle Totale Schuld");
-
-                                    let totalDebt = new TotalDebt({
-
-                                        debtor: receiptData.participants,
-                                        settlement: group.settlement
-
-                                    });
-                                    totalDebt.save(function (err) {
-                                        if (err) console.log(err);
-                                    });
+                                    let totalDebtResult = result;
+                                    console.log("TotalDebt of Participant " + participationData.participant + " already exists!");
+                                    if (totalDebtResult.receiptDebt > 0) {
+                                        console.log("ReceiptDebt already exists in TotalDebt");
+                                        ReceiptDebt
+                                            .findOne({totalDebt: totalDebtResult._id, receipt: receiptData._id})
+                                            .select("_id", "articles", "debt")
+                                            .exec(function (err, result) {
+                                                if (err) console.log(err);
+                                                if (!result) {
+                                                    console.log("ReceiptDebt of current receipt doesn't exist");
+                                                    createReceiptDebt(totalDebtResult, receiptData, articleData, participationData);
+                                                } else {
+                                                    console.log("ReceiptDebt of current receipt already exists");
+                                                    updateReceiptDebt(result, articleData, participationData);
+                                                }
+                                            });
+                                    } else {
+                                        createReceiptDebt(totalDebtResult, receiptData, articleData, participationData);
+                                    }
                                 }
                             });
-                        } else {
-                            console.log("Erstelle Totale Schuld");
-
-                            let totalDebt = new TotalDebt({
-
-                                debtor: participantID,
-                                settlement: group.settlement
-
-                            });
-                            totalDebt.save(function (err, result) {
-                                if (err) console.log(err);
-                                let totalDebtId = result._id;
-
-                                Settlement.findByIdAndUpdate(
-                                    settlementId, {$addToSet: {totalDebts: totalDebtId}}, {new: true},
-                                    function (err) {
-                                        if (err) console.log(err);
-                                    });
-                            });
-                        }
-                    });
-
+                    } else {
+                        console.log("There are no TotalDebts in Settlement " + settlementId + " yet");
+                        createTotalDebt(settlementId, receiptData, articleData, participationData);
+                    }
                 });
             break;
-        case "patch":
+        case "PATCH":
 
             Settlement.findOne({group: group})
                 .exec(function (err, result) {
@@ -139,7 +126,7 @@ exports.distribute_debts = function (method, receiptData, articleData, participa
                 });
             break;
 
-        case "delete":
+        case "DELETE":
 
             Settlement.findOne({group: group})
                 .exec(function (err, result) {
@@ -160,18 +147,95 @@ exports.distribute_debts = function (method, receiptData, articleData, participa
                 });
             break;
         default:
-            console.log("Erstelle totale Schuld");
-
-            let totalDebt = new TotalDebt({
-
-                debtor: receiptData.participants,
-                settlement: group.settlement
-
-            });
-            totalDebt.save(function (err) {
-                if (err) console.log(err);
-            });
+            console.log("NANI?? Das sollte nie erscheinen...");
     }
 };
 
+calculateDebt = function (articleData, participationData) {
+    return articleData.priceTotal * (participationData.percentage / 100)
+};
 
+updateReceiptDebt = function (oldReceiptDebt, articleData, participationData) {
+    console.log("Updating ReceiptDebt...");
+
+    let newArticleArray = oldReceiptDebt.articles.push(articleData._id);
+    let newDebt = oldReceiptDebt.debt += calculateDebt(articleData, participationData);
+
+    let update = {
+        debt: newDebt,
+        articles: newArticleArray
+    };
+
+    ReceiptDebt
+        .findByIdAndUpdate(oldReceiptDebt._id, update, {new: true})
+        .exec(function (err, result) {
+            if (err) console.log(err);
+            console.log(result)
+        });
+};
+
+createReceiptDebt = function (totalDebtId, receiptData, articleData, participationData) {
+    console.log("Creating ReceiptDebt...");
+
+    let articleArray = [];
+    articleArray.push(articleData._id);
+
+    let receiptDebt = new ReceiptDebt({
+        creditor: receiptData.owner,
+        debtor: participationData.participant,
+        receipt: receiptData._id,
+        articles: articleArray,
+        totalDebt: totalDebtId,
+        debt: calculateDebt(articleData, participationData)
+    });
+
+    receiptDebt.save(function (err, result) {
+        if (err) console.log(err);
+        console.log(result);
+
+        let message = {
+            //data payload, used to trigger changes in app
+            data: {
+                activity: "4",
+                dataId: result._id.toString()
+            },
+            //notification data for statusbar
+            notification: {
+                title: "Neue Abrechnung",
+                body: "Es wurde eine Abrechnung eines neuen Kassenzettels erstellt"
+            },
+            topic: "settlement"
+        };
+
+        TotalDebt.findByIdAndUpdate(
+            totalDebtId,
+            {$addToSet: {receiptDebt: result._id}, $inc: {totalDebt: result.debt}},
+            {new: true},
+            function (err, result) {
+                if (err) console.log(err);
+                console.log("Success" + result);
+            });
+    });
+};
+
+createTotalDebt = function (settlementId, receiptData, articleData, participationData) {
+    console.log("Creating TotalDebt...");
+
+    let totalDebt = new TotalDebt({
+        debtor: participationData.participant,
+        settlement: settlementId,
+    });
+
+    totalDebt.save(function (err, result) {
+        if (err) console.log(err);
+        let totalDebt = result;
+
+        createReceiptDebt(totalDebt._id, receiptData, articleData, participationData);
+
+        Settlement.findByIdAndUpdate(
+            settlementId, {$addToSet: {totalDebts: totalDebt._id}}, {new: true},
+            function (err) {
+                if (err) console.log(err);
+            });
+    });
+};

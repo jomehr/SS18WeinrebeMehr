@@ -5,6 +5,11 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+/*
+Token generator for firebase messaging service. With this FCM can send push messages directly to the client.
+https://firebase.google.com/docs/cloud-messaging/android/first-message
+*/
+
 public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     @Override
@@ -20,6 +25,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     }
 
     private void sendRegistrationToServer(String token) {
+        // Currently not needed because app-server doesn't handle client tokens, only subscription topics
         // TODO: Implement this method to send token to your app server.
     }
 }

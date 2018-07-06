@@ -39,13 +39,14 @@ exports.receipts_create_receipt = function (req, res) {
         currency: req.body.currency,
     });
 
+    //TODO: implement async module to better control order of function calls and avoid "callback hell"
     console.log(receipt);
     receipt.save(function (err, result) {
         if (err) console.log(err);
         receiptData = result;
 
         receiptID = result._id;
-        res.status(202).end();
+        res.status(201).send("Kassenzettel wird gespeichert");
 
         req.body.articles.forEach(function (item, index) {
             let article = new Article({
@@ -82,6 +83,10 @@ exports.receipts_create_receipt = function (req, res) {
                         if (err) console.log(err);
                         participationData = result;
 
+                        let method = req.method;
+                        console.log(method);
+                        logic.distribute_debts(method, receiptData, articleData, participationData);
+
                         Article.findByIdAndUpdate(
                             articleId, {$addToSet: {participation: result._id}}, {new: true},
                             function (err, result) {
@@ -96,8 +101,6 @@ exports.receipts_create_receipt = function (req, res) {
                                 receiptData = result;
                                 console.log(receiptData);
 
-                                console.log(receiptID === String);
-                                console.log(receiptData._id ===String);
                                 let message = {
                                     //data payload, used to trigger changes in app
                                     data: {
@@ -122,9 +125,7 @@ exports.receipts_create_receipt = function (req, res) {
                                     });
                             }
                         );
-                        //logic.distribute_debts(receiptData, articleData, participationData);
                     });
-
                 });
             });
         });

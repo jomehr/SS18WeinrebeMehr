@@ -13,8 +13,18 @@ import com.example.jan.kassenzettel_scan.R;
 import com.example.jan.kassenzettel_scan.activities.MainActivity;
 import com.example.jan.kassenzettel_scan.activities.ReceiptDetails;
 import com.example.jan.kassenzettel_scan.fragments.ReceiptList_Group;
+import com.example.jan.kassenzettel_scan.fragments.SettlementList;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+/*
+Firebase messaging service that listens to incoming push messages from firebase
+and builds notification according to data in message.
+
+The official documentation was consulted to implement this feature:
+https://firebase.google.com/docs/cloud-messaging/android/client
+https://firebase.google.com/docs/cloud-messaging/android/receive
+*/
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -39,7 +49,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             if (requestCode == RECEIPTLISTGROUP || requestCode ==RECEIPTLISTSOLO) intent = new Intent(this, MainActivity.class);
             if (requestCode == RECEIPTDETAIL) intent = new Intent(this, ReceiptDetails.class);
-            //if (requestCode == SETTLEMENTDETAIL) intent = new Intent(this, SettlementDetails.class);
+            if (requestCode == SETTLEMENTDETAIL) intent = new Intent(this, SettlementList.class);
 
             intent.putExtra("dataId", remoteMessage.getData().get("data"));
             intent.putExtra("activity", Integer.parseInt(remoteMessage.getData().get("activity")));

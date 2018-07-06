@@ -17,13 +17,21 @@ import com.example.jan.kassenzettel_scan.activities.ReceiptDetails;
 
 import java.util.List;
 
+/*
+Custom adapter to display a list of receipts in a custom xml container.
+To implement this the following sources were used:
+Tutorial displaying json data in recycler view: http://androidcss.com/android/fetch-json-data-android/
+The official android documentation:
+https://developer.android.com/guide/topics/ui/layout/recyclerview,
+https://developer.android.com/reference/android/support/v7/widget/RecyclerView
+*/
+
 public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHolder> {
 
     private static final String TAG = "ReceiptAdapter";
 
     private LayoutInflater layoutInflater;
     private List<ReceiptData> receiptData;
-    private String receiptId;
     private ReceiptData curReceipt;
 
     // create constructor to initialize context and data sent from MainActivity
@@ -49,7 +57,6 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Get current position of item in recyclerview to bind data and assign values from list
         curReceipt = receiptData.get(position);
-        receiptId = curReceipt.getReceiptId();
         holder.owner.setText(curReceipt.getUserFirstName());
         holder.name.setText(curReceipt.getStoreName());
         holder.date.setText(curReceipt.getDateString());

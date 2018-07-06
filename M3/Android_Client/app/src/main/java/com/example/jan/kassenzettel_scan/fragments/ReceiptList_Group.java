@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -241,10 +240,12 @@ public class ReceiptList_Group extends Fragment {
         FirebaseMessaging.getInstance().subscribeToTopic("group_receipts");
     }
 
+    //TODO implement shared preferences to save subscription status. if already subscribes change menu entry to this
     private void unsubscribeTopic() {
-        FirebaseMessaging.getInstance().subscribeToTopic("group_receipts");
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("group_receipts");
     }
 
+    //TODO implement changing icon in incoming notifications and separate activity to hold all notifications
     public void changePushIcon () {
         pushIcon.setIcon(R.drawable.ic_newnotification_black);
     }

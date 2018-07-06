@@ -1,7 +1,6 @@
 const express = require("express");
-let router = express.Router();
-let groupController = require("../controllers/groupController");
-let settlementController = require("../controllers/settlementController")
+const router = express.Router();
+const groupController = require("../controllers/groupController");
 
 router.get("/", groupController.groups_get_all);
 router.post("/", groupController.groups_create_group);

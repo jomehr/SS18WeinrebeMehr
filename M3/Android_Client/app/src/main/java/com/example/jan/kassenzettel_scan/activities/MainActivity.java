@@ -29,6 +29,16 @@ import com.example.jan.kassenzettel_scan.fragments.SettlementList;
 import com.example.jan.kassenzettel_scan.fragments.ShoppingList;
 import com.example.jan.kassenzettel_scan.fragments.Statistic;
 
+/*
+Main activity that holds various fragments and the navigation features.
+To implement the fragments and navigation the official documentation and the material guide was consulted:
+https://developer.android.com/training/implementing-navigation/nav-drawer
+https://material.io/design/components/navigation-drawer.html#usage
+https://developer.android.com/reference/android/support/design/widget/BottomNavigationView
+https://material.io/design/components/bottom-navigation.html
+https://developer.android.com/guide/components/fragments
+*/
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

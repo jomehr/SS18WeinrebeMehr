@@ -35,103 +35,92 @@ exports.settlements_get_single = function (req, res) {
     });
 };
 
-exports.settlements_create_settlement = function (req, res){
-  let id = req.params.receiptId;
+exports.settlements_create_settlement = function (req, res) {
+    let id = req.params.receiptId;
 
-  let settlement = new Settlement({
-
-
-  });
+    let settlement = new Settlement({});
 
 
-  console.log(settlement);
-  settlement.save(function (err, result) {
-      if (err) console.log(err);
-      res.send(result);
-  });
+    console.log(settlement);
+    settlement.save(function (err, result) {
+        if (err) console.log(err);
+        res.send(result);
+    });
 };
 
 exports.settlements_update_settlement = function (req, res) {
-  let id = req.params.settlementId;
+    let id = req.params.settlementId;
 
-  Settlement.findById(id, {
+    Settlement.findById(id, {
 
-    $set: {
-      startDate: req.body.startDate,
-      endDate:   req.body.endDate,
-      creditor:  req.body.creditor,
-      totaldebts: req.body.totaldebts,
-      receipts: req.body.receipts,
-      total: req.body.total,
-      finished: req.body.finished
-    }
-  }, function (err, result) {
-    if (err) console.log(err);
+        $set: {
+            startDate: req.body.startDate,
+            endDate: req.body.endDate,
+            creditor: req.body.creditor,
+            totaldebts: req.body.totaldebts,
+            receipts: req.body.receipts,
+            total: req.body.total,
+            finished: req.body.finished
+        }
+    }, function (err, result) {
+        if (err) console.log(err);
 
-    console.log(result);
-    res.send(result);
-  });
-};
-
-
-
-exports.settlements_get_totaldebt = function (req,res){
-
-
-
-
-
-};
-
-exports.settlements_get_debt = function (req, res){
-
-
-
-
-Receiptdebt.find({})
-
-  .distinct("debt",
-    function(err, result){
-      if (err) console.log(err);
-
-      console.log(result);
-      res.send(result);
-
+        console.log(result);
+        res.send(result);
     });
-
-};
-
-exports.settlements_update_debt = function (req, res){
-
-
 };
 
 
-exports.settlements_delete_debt = function (req, res){
-  let id = req.params.receiptdId;
+exports.settlements_get_totaldebt = function (req, res) {
 
-  Receiptdebt.findByIdAndRemove(id, function (err, result) {
-      if (err) console.log(err);
 
-      console.log(result);
-      res.send(result);
-  });
+};
+
+exports.settlements_get_debt = function (req, res) {
+
+    Receiptdebt.find({})
+
+        .distinct("debt",
+            function (err, result) {
+                if (err) console.log(err);
+
+                console.log(result);
+                res.send(result);
+
+            });
+
+};
+
+exports.settlements_update_debt = function (req, res) {
+
+
+};
+
+
+exports.settlements_delete_debt = function (req, res) {
+    let id = req.params.receiptdId;
+
+    Receiptdebt.findByIdAndRemove(id, function (err, result) {
+        if (err) console.log(err);
+
+        console.log(result);
+        res.send(result);
+    });
 };
 
 //----------------------------------------------------------------
 
 
+exports.settlements_get_receipts = function (req, res) {
 
-exports.settlements_get_receipts = function (req, res){
-
-  Settlement.find({})
+    Settlement.find({})
 };
 
-exports.settlement_create_receipt = function (req, res){
+exports.settlement_create_receipt = function (req, res) {
 
 };
 
-exports.settlements_delete_settlement = function (req, res){
+exports.settlements_delete_settlement = function (req, res) {
 
 
 };

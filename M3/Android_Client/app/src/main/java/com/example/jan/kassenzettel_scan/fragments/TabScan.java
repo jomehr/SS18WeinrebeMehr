@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -35,6 +34,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Objects;
+
+/*
+Optical character recognition implementation to scan receipts with the camera and write recognized text in a TextView.
+It needs a trained data file for the german language in the devices external storage to work.
+To implement this feature the following sources were used:
+Original OCR engine: https://github.com/tesseract-ocr/tesseract
+A fork of Tesseract Tools for Android (tesseract-android-tools) that adds some additional functions:
+https://github.com/rmtheis/tess-two
+A simple implementation example: https://github.com/ashomokdev/Tess-two_example
+*/
 
 public class TabScan extends Fragment {
 
@@ -87,7 +96,7 @@ public class TabScan extends Fragment {
         final Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
 
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(Objects.requireNonNull(getActivity()).getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, PHOTO_REQUEST_CODE);
         }
     }
@@ -106,7 +115,7 @@ public class TabScan extends Fragment {
 
     private void copyTessDataFiles(String path) {
         try {
-            String fileList[] = getContext().getAssets().list(path);
+            String fileList[] = Objects.requireNonNull(getContext()).getAssets().list(path);
 
             for (String fileName : fileList) {
 
@@ -137,7 +146,7 @@ public class TabScan extends Fragment {
         }
     }
 
-    private void startOCR (Uri imgUri) {
+    private void prepareImage(Uri imgUri) {
         try {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 4; // 1 - means max size. 4 - means maxsize/4 size. Don't use value <4, because you need more memory in the heap to store your data.
@@ -238,7 +247,7 @@ public class TabScan extends Fragment {
         if (requestCode == PHOTO_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             prepareDirectory(DATA_PATH + TESSDATA);
             copyTessDataFiles(TESSDATA);
-            startOCR(outputFileUri);
+            prepareImage(outputFileUri);
         } else {
             Toast.makeText(this.getContext(), "ERROR: Image was not obtained.", Toast.LENGTH_SHORT).show();
         }

@@ -3,7 +3,6 @@ package com.example.jan.kassenzettel_scan.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jan.kassenzettel_scan.R;
 import com.example.jan.kassenzettel_scan.adapter.CreateArticleAdapter;
@@ -33,15 +33,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.ByteArrayEntity;
-import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import cz.msebera.android.httpclient.protocol.HTTP;
 
@@ -54,6 +51,8 @@ public class TabCreate extends Fragment {
     private EditText paidText;
     private RecyclerView recyclerView;
     private CreateArticleAdapter createArticleAdapter;
+
+    private Button saveButton;
 
     private List<ArticleData> dataArticle = new ArrayList<>();
     private List<UserData> dataUser = new ArrayList<>();
@@ -73,17 +72,18 @@ public class TabCreate extends Fragment {
         changeText = rootView.findViewById(R.id.create_changeValue);
         paidText = rootView.findViewById(R.id.create_paidValue);
         recyclerView = rootView.findViewById(R.id.create_recylerView);
-        Button saveButton = rootView.findViewById(R.id.create_saveButton);
+        saveButton = rootView.findViewById(R.id.create_saveButton);
         Button addButton = rootView.findViewById(R.id.create_addButton);
 
-        dataUser.add(new UserData("5b3c96b1d96557e668a9e759", "Jan Mehr", null));
-        dataUser.add(new UserData("5b3c96e8d96557e668a9e75b", "Armin Weinrebe", null));
-        dataUser.add(new UserData("5b3c96f9d96557e668a9e75c", "Sebastian Wiesendahl", null));
+        saveButton.setActivated(false);
+
+        dataUser.add(new UserData("5b3c96b1d96557e668a9e759", "Jan Mehr", "5b3e4e980a85503024f7b5c8"));
+        dataUser.add(new UserData("5b3c96e8d96557e668a9e75b", "Armin Weinrebe", "5b3e4e980a85503024f7b5c8"));
+        dataUser.add(new UserData("5b3c96f9d96557e668a9e75c", "Sebastian Wiesendahl", "5b3e4e980a85503024f7b5c8"));
 
         for (UserData user : dataUser) {
-            Log.d(TAG, String.valueOf(dataUser.size()));
             user.setDefaultParticipation(100 / dataUser.size());
-            Log.d(TAG, String.valueOf(user.getDefaultParticipation()));
+            Log.d(TAG, String.valueOf(dataUser.size()) + " " + String.valueOf(user.getDefaultParticipation()));
         }
 
         createArticleAdapter = new CreateArticleAdapter(getContext(), dataArticle, dataUser);
@@ -98,16 +98,22 @@ public class TabCreate extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == 0) s = "0";
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 double tmp = Double.parseDouble(s.toString()) - Double.parseDouble(totalText.getText().toString());
                 if (tmp < 0) {
                     paidText.setError("Dieser Wert ist zu klein!");
                 } else {
                     String result = String.format(Locale.US, "%.2f", tmp);
                     changeText.setText(result);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                double total = Double.parseDouble(totalText.getText().toString());
+                double paid = Double.parseDouble(paidText.getText().toString());
+                double change = Double.parseDouble(changeText.getText().toString());
+                if (total > 0 && (paid > 0 && paid > total) && change > 0) {
+                    saveButton.setActivated(true);
                 }
             }
         });
@@ -136,7 +142,7 @@ public class TabCreate extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createArticleAdapter.addArticle(new ArticleData(currencyName, 4));
+                createArticleAdapter.addArticle(new ArticleData(currencyName, dataUser.size()));
                 recyclerView.smoothScrollToPosition(createArticleAdapter.getItemCount());
             }
         });
@@ -144,7 +150,11 @@ public class TabCreate extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveData(createArticleAdapter);
+                if (saveButton.isActivated()) {
+                    saveData(createArticleAdapter);
+                } else {
+                    Toast.makeText(getContext(),"Erstelle mind. einen Artikel und fülle alle Felder aus!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -156,7 +166,7 @@ public class TabCreate extends Fragment {
         try {
             receiptData = new ReceiptData(
                     null,
-                    "5b3c96e8d96557e668a9e75b",
+                    "5b3c96b1d96557e668a9e759",
                     storeName,
                     null,
                     createArticleAdapter.getItemCount(),
@@ -175,6 +185,7 @@ public class TabCreate extends Fragment {
         try {
             JSONObject receiptObject = new JSONObject();
             receiptObject.put("type", "GROUP");
+            receiptObject.put("group", "5b3e4e980a85503024f7b5c8");
             receiptObject.put("owner", receiptData != null ? receiptData.getOwnerId() : null);
             receiptObject.put("store", receiptData != null ? receiptData.getStoreName() : null);
             receiptObject.put("total", receiptData != null ? receiptData.getTotalAmount() : 0);
@@ -189,17 +200,14 @@ public class TabCreate extends Fragment {
                 articleObject.put("amount", article.getNumberArticles());
                 articleObject.put("priceSingle", article.getPriceSingle());
                 articleObject.put("priceTotal", article.getPriceTotal());
-                Log.d(TAG, "ArticleObjectLength: "+articleObject.length());
 
                 JSONArray participantArray = new JSONArray();
                 for (UserData user : dataUser) {
                     JSONObject participationObject = new JSONObject();
                     participationObject.put("participant", user.getUserId());
                     participationObject.put("percentage", user.getDefaultParticipation());
-                    Log.d(TAG, "ParticipationObjectLength: "+participationObject.length());
 
                     participantArray.put(participationObject);
-                    Log.d(TAG, "ParticipationArrayLength: "+participantArray.length());
                 }
 
                 articleObject.put("participation", participantArray);
@@ -220,13 +228,17 @@ public class TabCreate extends Fragment {
             RestClient.post(this.getContext(),"receipt/", entity, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                    Log.d(TAG, "Succes with " + statusCode);
+                    Log.d(TAG, "Success with " + statusCode);
+                    Toast.makeText(getContext(), "Der Kassenzettel wurde erfolgreich erstellt", Toast.LENGTH_LONG).show();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     if (statusCode == 404) {
                         Log.d(TAG, "Failure with " + statusCode);
+                    } else if (statusCode == 201){
+                        Log.d(TAG, "Success with " + statusCode);
+                        Toast.makeText(getContext(), "Der Kassenzettel wurde erfolgreich erstellt", Toast.LENGTH_LONG).show();
                     } else {
                         Log.d(TAG, "Failure with " + statusCode);
                     }
@@ -236,6 +248,9 @@ public class TabCreate extends Fragment {
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     if (statusCode == 404) {
                         Log.d(TAG, "Failure with " + statusCode);
+                    } else if (statusCode == 201){
+                        Log.d(TAG, "Success with " + statusCode);
+                        Toast.makeText(getContext(), "Der Kassenzettel wurde erfolgreich erstellt", Toast.LENGTH_LONG).show();
                     } else {
                         Log.d(TAG, "Failure with " + statusCode);
                     }

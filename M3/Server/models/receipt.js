@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-let Receiptdebt = require("./receiptdebt");
 
 const Schema = mongoose.Schema;
 const TYPE = ["SOLO", "GROUP"];

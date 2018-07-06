@@ -2,13 +2,10 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-
 const settlementSchema = new Schema ({
 
-
-    startDate: {type: Date, default: Date.now(), valid: Boolean},
-    endDate:   {type: Date, valid: Boolean, required: true},
-    creditor:  {type: Schema.Types.ObjectId, ref: "User", required: true},
+    startDate: {type: Date, valid: Boolean, required: true},
+    endDate:   {type: Date, valid: Boolean},
     group: {type: Schema.Types.ObjectId, ref: "Group"},
     totalDebts:[{type: Schema.Types.ObjectId, ref:"TotalDebt"}],
     receipts: [{type: Schema.Types.ObjectId, ref: "Receipt"}],

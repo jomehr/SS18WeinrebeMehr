@@ -6,7 +6,7 @@ Dies ist das Repository von Armin Weinrebe und Jan Mehr für das Projekt "Entwic
 ### Server
 
 #### Node.js und NPM
-Es werden die aktuellsten Version von Node.js (derzeit 8.11.1) und NPM (derzeit 5.6.0) benötigt um den Server ausführen zu können.  
+Es werden die aktuellsten Version von Node.js (derzeit 9.11.1) und NPM (derzeit 6.1.0) benötigt um den Server ausführen zu können.  
 Download: https://nodejs.org/en/download/ (beinhaltet NPM)
 
 #### MongoDB
@@ -15,23 +15,23 @@ Download: https://www.mongodb.com/download-center?jmp=nav#community
 Die Datei mongod.exe muss ausgeführt werden und im Hintergrund laufen bevor der Server sich mit der Datenbank verknüpfen kann.  
 
 #### Command-Terminal
-Um die Befehle von Node, NPM oder git ausführen zu können wird ein Terminal benötigt. Wir empfehlen Git Bash für Windows.  
+Um die Befehle von Node, NPM oder git ausführen zu können wird ein Terminal benötigt. Wir verwenden Git Bash für Windows.  
 Download: https://git-scm.com/downloads  
 
 #### REST-Client
-Um den Server, ohne den in M2 folgenden Client, testen zu wollen, ist ein REST-Client nötig. Wir empfehlen Insomnia.  
+Um den Server, ohne den in M2 folgenden Client, testen zu wollen, ist ein REST-Client nötig. Wir verwenden Insomnia.  
 Download: https://insomnia.rest/download/
 
 #### Clone
 Klone das gesamte Repository mit folgendem Befehl:
 ```
-git clone https://github.com/jomehr/wba2ss17_mehr-nehmke-pruess.git
+git clone https://github.com/jomehr/EIS_WeinrebeMehr.git
 ```
 
 #### Serverinstallation
-Weitere serverspezifische Installationschritte sind in der Readme-Datei im Unterordner "M1/Prototyp/Server" zu finden"  
+Weitere serverspezifische Installationschritte sind in der Readme-Datei im Unterordner "M3/Implementation/Server" zu finden"  
 ```
-cd M1/Prototyp/Server
+cd M3/Implementation/Server
 ```
 
 ### Client

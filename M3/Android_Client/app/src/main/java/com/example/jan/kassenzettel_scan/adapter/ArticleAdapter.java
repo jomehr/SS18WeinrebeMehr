@@ -14,8 +14,14 @@ import com.example.jan.kassenzettel_scan.data.ArticleData;
 import java.util.List;
 
 /*
-
+Custom adapter to display a list of articles of a specific receipt in a custom xml container.
+To implement this the following sources were used:
+Tutorial displaying json data in recycler view: http://androidcss.com/android/fetch-json-data-android/
+The official android documentation:
+https://developer.android.com/guide/topics/ui/layout/recyclerview,
+https://developer.android.com/reference/android/support/v7/widget/RecyclerView
 */
+
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
 
     private LayoutInflater layoutInflater;

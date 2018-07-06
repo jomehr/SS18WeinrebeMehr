@@ -23,17 +23,21 @@ import java.util.List;
 import java.util.Locale;
 
 /*
-https://stackoverflow.com/questions/31844373/saving-edittext-content-in-recyclerview#31860393
- */
+Custom adapter to display a list of receipts in a custom xml container.
+To implement this the following sources were used:
+Tutorial displaying json data in recycler view: http://androidcss.com/android/fetch-json-data-android/
+The official android documentation:
+https://developer.android.com/guide/topics/ui/layout/recyclerview,
+https://developer.android.com/reference/android/support/v7/widget/RecyclerView
+https://developer.android.com/reference/android/text/TextWatcher
+*/
+
 public class CreateArticleAdapter extends RecyclerView.Adapter<CreateArticleAdapter.ViewHolder> {
 
     private static final String TAG = "CreateArticleAdapter";
 
     private List<ArticleData> articleData;
     private List<UserData> userData;
-
-
-
 
     private Context context;
 
@@ -68,8 +72,9 @@ public class CreateArticleAdapter extends RecyclerView.Adapter<CreateArticleAdap
     @Override
     // Bind data
     public void onBindViewHolder(@NonNull final CreateArticleAdapter.ViewHolder holder, int position) {
-        // Get current position of item in recyclerview to bind data and assign values from list
+        // Get current position of item in recyclerview to bind data and assign values
         Log.d(TAG, "calling onBindViewHolder at position: " + position);
+        //TODO: BUG: the delete-button doesn't completely delete data. If add-button is used after deleting, the new item contains data of deleted one
         curArticle = articleData.get(position);
 
         holder.currencyTotal.setText(curArticle.getCurrency());
@@ -93,6 +98,7 @@ public class CreateArticleAdapter extends RecyclerView.Adapter<CreateArticleAdap
             holder.priceSingle.setHint("0.0");
         }
 
+        //TODO: BUG: changes in participation overrides every other article participation
         final boolean isExpanded = position == mExpandedPosition;
         holder.participantLayout.setVisibility(isExpanded?View.VISIBLE:View.GONE);
 
@@ -105,6 +111,7 @@ public class CreateArticleAdapter extends RecyclerView.Adapter<CreateArticleAdap
         if (isExpanded)
             previousExpandedPosition = holder.getAdapterPosition();
 
+        //TODO: BUG: if content_height is wrap_content, the expanded layout only shows first participation
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +132,7 @@ public class CreateArticleAdapter extends RecyclerView.Adapter<CreateArticleAdap
         return articleData;
     }
 
+    //calculate total cost for each articles total price in data set
     private double setTotalCost() {
         double totalcost = 0;
         if (articleData.isEmpty()) {
@@ -139,16 +147,19 @@ public class CreateArticleAdapter extends RecyclerView.Adapter<CreateArticleAdap
         }
     }
 
+    //add new empty article to data set and view holder
     public void addArticle(ArticleData article) {
         articleData.add(article);
         notifyItemInserted(articleData.size() - 1);
         if (setTotalCost() != 0) total.setText(String.valueOf(setTotalCost()));
     }
 
+    //remove article from data set and view holder, calculates new total cost from remaining articles
     private void removeArticle(int position) {
         Log.d(TAG, String.valueOf(position));
         articleData.remove(position);
         notifyItemRemoved(position);
+        notifyItemRangeChanged(position, 1);
         total.setText(String.valueOf(setTotalCost()));
     }
 

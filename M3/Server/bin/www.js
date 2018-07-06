@@ -6,11 +6,11 @@ Für eine andere Art der Kommunikation nutze eine andere Datei.
 const app  = require("../app"),
     http = require("http"),
     mongoose = require("mongoose");
-    //faye = require("faye");
 
 //TODO implementiere eine andere ip, so dass sich echte Clients direkt verbinden können. Zurzeit funktioniert nur ein Emulator mit localhost-ip.
-const hostname = "192.168.0.172";
-const port = /*process.env.PORT || */1337;
+const localHostname = "192.168.0.172";
+const mobileHotspot = "192.168.43.1";
+const port = process.env.PORT || 1337;
 
 let server = http.createServer(app);
 
@@ -22,25 +22,6 @@ db.once('open', function() {
     console.log('Successfully connected to database!');
 });
 
-/*//faye pubsub
-let bayeux = new faye.NodeAdapter({mount: "/test", timeout: 20});
-bayeux.attach(server);*/
-
 server.listen(port,  () => {
-    console.log("Server running on http:/" + hostname + ":" + port)
+    console.log("Server running on http:/" + mobileHotspot + ":" + port)
 });
-/*
-
-//faye listener
-bayeux.on('subscribe', function(clientId, channel) {
-    console.log('[SUBSCRIBE] ' + clientId + ' -> ' + channel);
-});
-
-bayeux.on('unsubscribe', function(clientId, channel) {
-    console.log('[UNSUBSCRIBE] ' + clientId + ' -> ' + channel);
-});
-
-bayeux.on('disconnect', function(clientId) {
-    console.log('[DISCONNECT] ' + clientId);
-});
-*/

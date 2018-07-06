@@ -5,9 +5,12 @@ import android.content.Context;
 import com.loopj.android.http.*;
 
 import cz.msebera.android.httpclient.HttpEntity;
-import cz.msebera.android.httpclient.entity.ByteArrayEntity;
-import cz.msebera.android.httpclient.entity.StringEntity;
 
+/*
+Rest Client for handling http network requests to our server.
+https://github.com/loopj/android-async-http
+http://loopj.com/android-async-http/
+*/
 
 public class RestClient {
 

@@ -6,13 +6,13 @@ const express = require("express"),
     bodyParser = require("body-parser"),
     app = express();
 
-let user = require("./routes/user");
-let group = require("./routes/group");
-let receipt = require("./routes/receipt");
-let settlement = require("./routes/settlement");
+const user = require("./routes/user");
+const group = require("./routes/group");
+const receipt = require("./routes/receipt");
+const settlement = require("./routes/settlement");
 
-let admin = require("firebase-admin");
-let serviceAccount = require("./serviceAccountKey.json");
+const admin = require("firebase-admin");
+const serviceAccount = require("./serviceAccountKey.json");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
