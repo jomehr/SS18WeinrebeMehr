@@ -23,5 +23,5 @@ db.once('open', function() {
 });
 
 server.listen(port,  () => {
-    console.log("Server running on http:/" + mobileHotspot + ":" + port)
+    console.log("Server running on http:/" + localHostname + ":" + port)
 });

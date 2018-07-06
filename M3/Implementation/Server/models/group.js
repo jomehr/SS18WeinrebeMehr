@@ -1,5 +1,5 @@
-const mongoose = require("mongoose")
-const Settlement = require("../models/settlement");
+const mongoose = require("mongoose");
+const Settlement = require("./settlement");
 
 const Schema = mongoose.Schema;
 
