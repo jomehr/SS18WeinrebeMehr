@@ -28,11 +28,30 @@ Klone das gesamte Repository mit folgendem Befehl:
 git clone https://github.com/jomehr/EIS_WeinrebeMehr.git
 ```
 
-#### Serverinstallation
+#### Installation
 Weitere serverspezifische Installationschritte sind in der Readme-Datei im Unterordner "M3/Implementation/Server" zu finden"  
 ```
 cd M3/Implementation/Server
 ```
 
 ### Client
- Vorraussetzungen und Installationschritte für den Android-Client folgen in M2
+
+####Java
+Es wird die Java Version 10 verwendet.
+
+####Android SDK
+Um die Anwendung auf einem Android-Gerät installieren zu können, wird eine mind. SDK von 21 (aka Android 5.0 Lollipop) benötigt.  
+Die Ziel SDK ist 27 (aka Android 8.1 Oreo). Es wurde hauptsächlich auf Android 6 Marshmallow getestet.  
+
+####Android Studio
+Um die Anwendung auf einem echten Gerät oder einer VM installieren zu können, muss ein .apk-File erstellt werden. Dafür wird Android Studio benötigt.  
+Download: https://developer.android.com/studio/  
+
+Nachdem Java und die benötigten SDK installiert wurden, kann auf dem verbunden mobilen Endgerät oder der VM, 
+die Anwendung mit Android Studio gestartet werden (die benötigten dependencies werden automatisch installiert).  
+
+#### Installation
+Weitere clientspezifische Installationschritte sind in der Readme-Datei im Unterordner "M3/Implementation/Client" zu finden"  
+```
+cd M3/Implementation/Client
+```

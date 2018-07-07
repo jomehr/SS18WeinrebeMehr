@@ -7,8 +7,8 @@ const app  = require("../app"),
     http = require("http"),
     mongoose = require("mongoose");
 
-//TODO implementiere eine andere ip, so dass sich echte Clients direkt verbinden können. Zurzeit funktioniert nur ein Emulator mit localhost-ip.
-const localHostname = "192.168.0.172";
+const localHost = "127.0.0.1";
+const localWlan = "192.168.0.172";
 const mobileHotspot = "192.168.43.1";
 const port = process.env.PORT || 1337;
 
@@ -23,5 +23,5 @@ db.once('open', function() {
 });
 
 server.listen(port,  () => {
-    console.log("Server running on http:/" + localHostname + ":" + port)
+    console.log("Server running on http:/" + localWlan + ":" + port)
 });
