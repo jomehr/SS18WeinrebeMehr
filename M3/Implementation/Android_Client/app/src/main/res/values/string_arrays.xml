@@ -21,4 +21,9 @@
         <item>Fisch</item>
         <item>Salat</item>
     </string-array>
+    <string-array name="user_names">
+        <item>Jan Mehr</item>
+        <item>Armin Weinrebe</item>
+        <item> Sebastian Wiesendahl</item>
+    </string-array>
 </resources>

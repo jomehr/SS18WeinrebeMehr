@@ -2,6 +2,7 @@ let Settlement = require("../models/settlement");
 let TotalDebt = require("../models/totaldebt");
 let ReceiptDebt = require("../models/receiptdebt");
 
+let admin = require("firebase-admin");
 
 exports.distribute_debts = function (method, receiptData, articleData, participationData) {
 //TODO: implement async module to better control order of function calls and avoid "callback hell"
@@ -23,7 +24,7 @@ exports.distribute_debts = function (method, receiptData, articleData, participa
                         console.log("TotalDebts already exist in Settlement " + settlementId);
                         TotalDebt
                             .findOne({settlement: settlementId, debtor: participationData.participant})
-                            .select("_id", "totalDebt", "receiptDebt")
+                            .select("_id totalDebt receiptDebt")
                             .exec(function (err, result) {
                                 if (err) console.log(err);
                                 if (!result) {
@@ -32,11 +33,11 @@ exports.distribute_debts = function (method, receiptData, articleData, participa
                                 } else {
                                     let totalDebtResult = result;
                                     console.log("TotalDebt of Participant " + participationData.participant + " already exists!");
-                                    if (totalDebtResult.receiptDebt > 0) {
-                                        console.log("ReceiptDebt already exists in TotalDebt");
+                                    if (totalDebtResult.receiptDebt.length > 0) {
+                                        console.log("ReceiptDebts already exists in TotalDebt");
                                         ReceiptDebt
                                             .findOne({totalDebt: totalDebtResult._id, receipt: receiptData._id})
-                                            .select("_id", "articles", "debt")
+                                            .select("_id articles debt")
                                             .exec(function (err, result) {
                                                 if (err) console.log(err);
                                                 if (!result) {
@@ -170,15 +171,24 @@ updateReceiptDebt = function (oldReceiptDebt, articleData, participationData) {
         .findByIdAndUpdate(oldReceiptDebt._id, update, {new: true})
         .exec(function (err, result) {
             if (err) console.log(err);
-            console.log(result)
         });
 };
 
 createReceiptDebt = function (totalDebtId, receiptData, articleData, participationData) {
     console.log("Creating ReceiptDebt...");
 
+    let curDebt;
+    let fcmtmp = 0;
     let articleArray = [];
     articleArray.push(articleData._id);
+
+    if (receiptData.owner.toString() === participationData.participant.toString()) {
+        curDebt = receiptData.total - calculateDebt(articleData, participationData);
+        console.log("CreditorDebt: "+curDebt);
+    } else {
+        curDebt = -calculateDebt(articleData, participationData);
+        console.log("DebtorDebt: "+curDebt);
+    }
 
     let receiptDebt = new ReceiptDebt({
         creditor: receiptData.owner,
@@ -186,26 +196,38 @@ createReceiptDebt = function (totalDebtId, receiptData, articleData, participati
         receipt: receiptData._id,
         articles: articleArray,
         totalDebt: totalDebtId,
-        debt: calculateDebt(articleData, participationData)
+        debt: curDebt
     });
 
     receiptDebt.save(function (err, result) {
         if (err) console.log(err);
-        console.log(result);
 
-        let message = {
-            //data payload, used to trigger changes in app
-            data: {
-                activity: "4",
-                dataId: result._id.toString()
-            },
-            //notification data for statusbar
-            notification: {
-                title: "Neue Abrechnung",
-                body: "Es wurde eine Abrechnung eines neuen Kassenzettels erstellt"
-            },
-            topic: "settlement"
-        };
+        if (fcmtmp === 0){
+            fcmtmp = 1;
+            let message = {
+                //data payload, used to trigger changes in app
+                data: {
+                    activity: "4",
+                    dataId: result._id.toString()
+                },
+                //notification data for statusbar
+                notification: {
+                    title: "Neue Abrechnung",
+                    body: "Es wurde eine Abrechnung eines neuen Kassenzettels erstellt"
+                },
+                topic: "settlement"
+            };
+
+            admin.messaging().send(message)
+                .then((response) => {
+                    // Response is a message ID string.
+                    console.log('Successfully sent message:', response);
+                })
+                .catch((error) => {
+                    console.log('Error sending message:', error);
+                });
+        }
+
 
         TotalDebt.findByIdAndUpdate(
             totalDebtId,
@@ -213,7 +235,6 @@ createReceiptDebt = function (totalDebtId, receiptData, articleData, participati
             {new: true},
             function (err, result) {
                 if (err) console.log(err);
-                console.log("Success" + result);
             });
     });
 };

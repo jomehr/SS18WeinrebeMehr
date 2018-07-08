@@ -46,7 +46,7 @@ public class TabCreate extends Fragment {
 
     private static final String TAG = "TabCreate";
 
-    private String storeName, currencyName;
+    private String storeName, currencyName, ownerName;
     private TextView totalText, changeText;
     private EditText paidText;
     private RecyclerView recyclerView;
@@ -68,6 +68,7 @@ public class TabCreate extends Fragment {
 
         Spinner storeSpinner = rootView.findViewById(R.id.create_storeSpinner);
         Spinner currenySpinner = rootView.findViewById(R.id.create_currencySpinner);
+        Spinner userSpinner  = rootView.findViewById(R.id.create_ownerSpinner);
         totalText = rootView.findViewById(R.id.create_totalValue);
         changeText = rootView.findViewById(R.id.create_changeValue);
         paidText = rootView.findViewById(R.id.create_paidValue);
@@ -76,19 +77,22 @@ public class TabCreate extends Fragment {
         Button addButton = rootView.findViewById(R.id.create_addButton);
 
         saveButton.setActivated(false);
+        saveButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
+
 
         dataUser.add(new UserData("5b3c96b1d96557e668a9e759", "Jan Mehr", "5b3e4e980a85503024f7b5c8"));
         dataUser.add(new UserData("5b3c96e8d96557e668a9e75b", "Armin Weinrebe", "5b3e4e980a85503024f7b5c8"));
         dataUser.add(new UserData("5b3c96f9d96557e668a9e75c", "Sebastian Wiesendahl", "5b3e4e980a85503024f7b5c8"));
 
         for (UserData user : dataUser) {
-            user.setDefaultParticipation(100 / dataUser.size());
+            user.setDefaultParticipation(100.00 / ((double) dataUser.size()));
             Log.d(TAG, String.valueOf(dataUser.size()) + " " + String.valueOf(user.getDefaultParticipation()));
         }
 
         createArticleAdapter = new CreateArticleAdapter(getContext(), dataArticle, dataUser);
         recyclerView.setAdapter(createArticleAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+
 
         paidText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -112,8 +116,12 @@ public class TabCreate extends Fragment {
                 double total = Double.parseDouble(totalText.getText().toString());
                 double paid = Double.parseDouble(paidText.getText().toString());
                 double change = Double.parseDouble(changeText.getText().toString());
-                if (total > 0 && (paid > 0 && paid > total) && change > 0) {
+                if (total > 0 && (paid > 0 && paid >= total)) {
                     saveButton.setActivated(true);
+                    saveButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                } else {
+                    saveButton.setActivated(false);
+                    saveButton.setBackgroundColor(getResources().getColor(R.color.colorPrimaryLight));
                 }
             }
         });
@@ -131,6 +139,17 @@ public class TabCreate extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 currencyName = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        userSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ownerName = parent.getItemAtPosition(position).toString();
             }
 
             @Override
@@ -163,10 +182,15 @@ public class TabCreate extends Fragment {
 
     private void saveData(CreateArticleAdapter adapter) {
         ReceiptData receiptData = null;
+        String ownerId = null;
+        if (ownerName.equals("Jan Mehr")) ownerId = "5b3c96b1d96557e668a9e759";
+        if (ownerName.equals("Armin Weinrebe")) ownerId = "5b3c96e8d96557e668a9e75b";
+        if (ownerName.equals("Sebastian Wiesendahl")) ownerId = "5b3c96f9d96557e668a9e75c";
+
         try {
             receiptData = new ReceiptData(
                     null,
-                    "5b3c96b1d96557e668a9e759",
+                    ownerId,
                     storeName,
                     null,
                     createArticleAdapter.getItemCount(),
@@ -175,7 +199,6 @@ public class TabCreate extends Fragment {
                     Double.parseDouble(changeText.getText().toString()),
                     currencyName);
 
-            Log.d(TAG, "1:"+currencyName+ "2:"+receiptData.getCurrency());
         }catch (Exception e) {
             e.printStackTrace();
         }

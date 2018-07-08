@@ -59,23 +59,22 @@ exports.receipts_create_receipt = function (req, res) {
 
             article.save(function (err, result) {
                 if (err) console.log(err);
-                 articleData = result;
+                articleData = result;
                 let articleId = result._id;
 
                 Receipt.findByIdAndUpdate(
-                    receiptID, {$addToSet: {articles: articleId}}, {new:true},
-                    function(err, result) {
+                    receiptID, {$addToSet: {articles: articleId}}, {new: true},
+                    function (err, result) {
                         if (err) console.log(err);
                         receiptData = result;
-                        console.log(receiptData);
-                     });
+                    });
                 req.body.articles[index].participation.forEach(function (item) {
                     let participation = new Participation({
 
-                      receipt: receiptID,
-                      article: articleId,
-                      participant: item.participant,
-                      percentage: item.percentage
+                        receipt: receiptID,
+                        article: articleId,
+                        participant: item.participant,
+                        percentage: item.percentage
 
                     });
 
@@ -84,6 +83,7 @@ exports.receipts_create_receipt = function (req, res) {
                         participationData = result;
 
                         let method = req.method;
+                        let fcmtmp = 0;
                         console.log(method);
                         logic.distribute_debts(method, receiptData, articleData, participationData);
 
@@ -99,30 +99,33 @@ exports.receipts_create_receipt = function (req, res) {
                             function (err, result) {
                                 if (err) console.log(err);
                                 receiptData = result;
-                                console.log(receiptData);
 
-                                let message = {
-                                    //data payload, used to trigger changes in app
-                                    data: {
-                                        activity: "3",
-                                        dataId: receiptID.toString()
-                                    },
-                                    //notification data for statusbar
-                                    notification: {
-                                      title: "Neuer Kassenzettel",
-                                      body: "Ein neuer Kassenzzettel wurde in der Gruppe verlinkt"
-                                    },
-                                    topic: "group_receipts"
-                                };
+                                if (fcmtmp === 0) {
+                                    fcmtmp = 1;
 
-                                admin.messaging().send(message)
-                                    .then((response) => {
-                                        // Response is a message ID string.
-                                        console.log('Successfully sent message:', response);
-                                    })
-                                    .catch((error) => {
-                                        console.log('Error sending message:', error);
-                                    });
+                                    let message = {
+                                        //data payload, used to trigger changes in app
+                                        data: {
+                                            activity: "3",
+                                            dataId: receiptID.toString()
+                                        },
+                                        //notification data for statusbar
+                                        notification: {
+                                            title: "Neuer Kassenzettel",
+                                            body: "Ein neuer Kassenzzettel wurde in der Gruppe verlinkt"
+                                        },
+                                        topic: "group_receipts"
+                                    };
+
+                                    admin.messaging().send(message)
+                                        .then((response) => {
+                                            // Response is a message ID string.
+                                            console.log('Successfully sent message:', response);
+                                        })
+                                        .catch((error) => {
+                                            console.log('Error sending message:', error);
+                                        });
+                                }
                             }
                         );
                     });
@@ -135,12 +138,12 @@ exports.receipts_create_receipt = function (req, res) {
 exports.receipts_get_single = function (req, res) {
     let id = req.params.receiptId;
 
-    Receipt.findById(id, function (err, result) {
-        if (err) console.log(err);
-
-        console.log(result);
-        res.send(result);
-    });
+    Receipt.findById(id)
+            .populate("owner", "name")
+            .exec(function (err, result) {
+                if (err) console.log(err);
+                res.send(result);
+            });
 };
 
 exports.receipts_update_receipt = function (req, res) {

@@ -82,7 +82,7 @@ public class ReceiptDetails extends AppCompatActivity {
 
             if (getIntent().getExtras().containsKey("dataId")) {
                 Log.d(TAG, "Coming from notification");
-                getReceiptData(getIntent().getExtras().get("dataId").toString());
+                getReceiptData(getIntent().getExtras().getString("dataId"));
                 
             } else {
                 Log.d(TAG, "Coming from list-activity");

@@ -12,6 +12,7 @@ import com.example.jan.kassenzettel_scan.R;
 import com.example.jan.kassenzettel_scan.data.ArticleData;
 
 import java.util.List;
+import java.util.Locale;
 
 /*
 Custom adapter to display a list of articles of a specific receipt in a custom xml container.
@@ -48,11 +49,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     public void onBindViewHolder(@NonNull ArticleAdapter.ViewHolder holder, int position) {
         // Get current position of item in recyclerview to bind data and assign values from list
         ArticleData curArticle = articleData.get(position);
+
         holder.name.setText(curArticle.getArticleName());
-        holder.priceTotal.setText(String.valueOf(curArticle.getPriceTotal()));
+        holder.priceTotal.setText(String.format(Locale.US, "%.2f", curArticle.getPriceTotal()));
         holder.participants.setText(String.valueOf(curArticle.getParticipants()));
         holder.amount.setText(String.valueOf(curArticle.getNumberArticles()));
-        holder.priceSingle.setText(String.valueOf(curArticle.getPriceSingle()));
+        holder.priceSingle.setText(String.format(Locale.US, "%.2f", curArticle.getPriceSingle()));
         holder.currencyTotal.setText(curArticle.getCurrency());
         holder.currencySingle.setText(curArticle.getCurrency());
     }

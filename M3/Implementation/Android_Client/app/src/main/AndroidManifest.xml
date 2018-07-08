@@ -26,6 +26,10 @@
             android:name=".activities.ReceiptDetails"
             android:parentActivityName=".activities.MainActivity">
         </activity>
+        <activity
+            android:name=".activities.SettlementDetails"
+            android:parentActivityName=".activities.MainActivity">
+        </activity>
 
         <service android:name=".network.MyFirebaseInstanceIDService" >
             <intent-filter>

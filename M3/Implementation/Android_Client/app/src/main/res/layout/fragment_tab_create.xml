@@ -20,15 +20,15 @@
 
 
     <TextView
-        android:id="@+id/create_storeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Laden:"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:id="@+id/create_storeText"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Laden:"
+    android:textColor="@color/black"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/create_storeSpinner"
@@ -37,6 +37,15 @@
         android:spinnerMode="dropdown"
         android:entries="@array/store_names"
         app:layout_constraintStart_toEndOf="@+id/create_storeText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/create_ownerSpinner"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:entries="@array/user_names"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
