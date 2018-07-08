@@ -1,0 +1,3 @@
+{"_id":{"$oid":"5b3c96b1d96557e668a9e759"},"pastgroups":[],"receipts":[],"ratings":[],"name":"Jan Mehr","email":"wenigere@gmx.de","password":"$2b$10$/owpLnaYBM5gA/goNo0dzebANsg3qIymtEAN7hAumF74SI/OvDtKi","__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5b3c96e8d96557e668a9e75b"},"pastgroups":[],"receipts":[],"ratings":[],"name":"Armin Weinrebe","email":"armin@gmx.de","password":"$2b$10$5fxcn3OzDwntKVNfjr.W7OVIt00Gvxtsocsyh3zkzPSAbm0EdIzfa","__v":{"$numberInt":"0"}}
+{"_id":{"$oid":"5b3c96f9d96557e668a9e75c"},"pastgroups":[],"receipts":[],"ratings":[],"name":"Sebastian Wiesendahl","email":"sebastian@gmx.de","password":"$2b$10$PukmS5YoP4miuzl6cd..A.N5xWU.9MPYB031PuQDtHIV3PpWMAkBu","__v":{"$numberInt":"0"}}

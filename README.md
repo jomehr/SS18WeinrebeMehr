@@ -13,6 +13,8 @@ Download: https://nodejs.org/en/download/ (beinhaltet NPM)
 Für die Datenbank wird der aktuellste MongoDB Community Edition Treiber benötigt (derzeit 3.6.4).  
 Download: https://www.mongodb.com/download-center?jmp=nav#community  
 Die Datei mongod.exe muss ausgeführt werden und im Hintergrund laufen bevor der Server sich mit der Datenbank verknüpfen kann.  
+Um die Daten besser visualisieren zu können, sollte zudem MongoDB Compass verwendet werden. So können auch die Backup-Daten sehr einfach importiert werden.  
+Download: https://www.mongodb.com/download-center?jmp=nav#compass
 
 #### Command-Terminal
 Um die Befehle von Node, NPM oder git ausführen zu können wird ein Terminal benötigt. Wir verwenden Git Bash für Windows.  

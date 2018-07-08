@@ -1,0 +1,1 @@
+{"_id":{"$oid":"5b3e4e980a85503024f7b5c9"},"totalDebts":[{"$oid":"5b424f29b863dd04409aaf99"},{"$oid":"5b424f28b863dd04409aaf98"},{"$oid":"5b424f2ab863dd04409aaf9a"}],"receipts":[],"finished":false,"startDate":{"$date":{"$numberLong":"1530809765192"}},"endDate":{"$date":{"$numberLong":"1531414565192"}},"group":{"$oid":"5b3e4e980a85503024f7b5c8"},"__v":{"$numberInt":"0"}}

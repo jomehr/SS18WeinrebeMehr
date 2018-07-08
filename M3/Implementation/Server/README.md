@@ -31,8 +31,15 @@ https://github.com/jomehr/SS18WeinrebeMehr/tree/master/M3/Implementation/Server/
 Die Schemas der Datenbank befinden sich hier:
 https://github.com/jomehr/SS18WeinrebeMehr/tree/master/M3/Implementation/Server/models   
 
-Falls ein REST-Client verwendet wird, muss der body den Schemas entsprehchen, um die CRUD-Methoden erfolgreich durchführen zu können.  
+Falls ein REST-Client verwendet wird, muss der body den Schemas entsprechen, um die CRUD-Methoden erfolgreich durchführen zu können.  
 
-Falls mit dem Android-Client getestet wird, müssen im Vorfeld Nutzer und eine Gruppe in der Datenbank vorhanden sein bzw. erstellt werden, da dies auf dem Client noch nicht möglich ist. 
+Falls mit dem Android-Client getestet wird, müssen im Vorfeld Nutzer und eine Gruppe in der Datenbank vorhanden sein bzw. erstellt werden, da dies auf dem Client noch nicht möglich ist.  
+Dafür kann MongoDB Compass geöffnet werden. 
+* Falls noch keine Datenbank mit dem Namen "db" vorhanden ist, muss diese zuerst erstellt werden.
+* Dannach muss für jede Collection die aus dem Ornder "db-backups" importiert werden soll, eine leere Collection erstellt werden
+    * Diese sollte den gleichen Namen haben wie das zu importierende JSON
+* Abschließend klicke, wenn du dich in der leeren Collection befindest, in der oberen Navigationsleiste auf "Collection" und dann auf "Import Data"
+* Wähle die zugehörige JSON aus dem Dateipfad aus und klicke auf "Import"
+* Die Daten sollten nun erfolgreich importiert worden sein
 
 Kassenzettel können jedoch auf dem Client erstellt werden. Abrechnungen werden nach dem POST eines Kassenzettels automatisch erstellt.
