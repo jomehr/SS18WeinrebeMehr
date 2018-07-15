@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kassenzettel-OCR</string>
+    <string name="app_name">Get Even</string>
     <string name="create_receipt">Neuer Kassenzettel</string>
     <string name="solo_receipt_list">Deine Kassenzettel</string>
     <string name="group_receipt_list">Gruppenzettel</string>

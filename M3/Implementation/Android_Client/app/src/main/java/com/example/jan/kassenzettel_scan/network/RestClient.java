@@ -14,7 +14,7 @@ http://loopj.com/android-async-http/
 
 public class RestClient {
 
-    private static final String BASE_URL = "http://192.168.0.172:1337/";
+    private static final String BASE_URL = "http://192.168.0.171:1337/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

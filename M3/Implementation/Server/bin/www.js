@@ -8,7 +8,7 @@ const app  = require("../app"),
     mongoose = require("mongoose");
 
 const localHost = "127.0.0.1";
-const localWlan = "192.168.0.172";
+const localWlan = "192.168.0.171";
 const mobileHotspot = "192.168.43.1";
 const port = process.env.PORT || 1337;
 
